@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>JAVA collection : List Performance 비교</title>
+  <meta name="description" content="최초 전체노드 삽입시 / 중간 노드 삽입시 / 중간 노드 조회 시 Performance를 확인했습니다. 확인을 위해 작성한 로직 및 결과는 아래와 같습니다. * 아래 로직 중 TestCase 갯수는 {TCCNT}, 노드크기는 {NUM}을 의미합니다. ex) list 크기는 1000...">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="canonical" href="http://localhost:4000/java/2017/06/19/java_collection_list_performance.html">
+  <link rel="alternate" type="application/rss+xml" title="17billion" href="/feed.xml">
+
+
+  
+</head>
+
+  <body>
+	
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">17billion</a>
+	<a class="site-title-search"> <!— Html Elements for Search -->
+<div id="search-container" >
+<input type="text" id="search-input" placeholder="search...">
+<ul id="results-container"></ul>
+</div>
+
+<!-- Script pointing to jekyll-search.js -->
+<script src="/dest/jekyll-search.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+      SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('results-container'),
+        json: '/search.json',
+        searchResultTemplate: '<li class="results-li"><a href="{url}" title="{desc}">{title}</a></li>',
+        noResultsText: 'No results found',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      })
+</script>
+
+ 
+  
+
+
+
+        </a>
+
+ <a class="site-title"/> 
+    <nav class="site-nav">
+
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+
+        </svg>
+		
+
+      </span>
+				  
+      <div class="trigger">
+		
+       
+         
+          <a class="page-link" href="/about/">About</a>
+		 
+        
+         
+        
+         
+        
+         
+        
+         
+        
+         
+        
+         
+          <a class="page-link" href="/Tags/">Tags</a>
+		 
+        
+         
+        
+         
+        
+
+      </div>
+	 	
+    </nav>
+
+  </div>
+ 
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">JAVA collection : List Performance 비교</h1>
+
+	<div class="post-tags">
+  
+  
+  <a href="/tags/#java">java</a>
+  
+</div>
+
+    <p class="post-meta"><time datetime="2017-06-19T09:51:42+09:00" itemprop="datePublished">Jun 19, 2017</time></p>
+    </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>최초 전체노드 삽입시 / 중간 노드 삽입시 / 중간 노드 조회 시 Performance를 확인했습니다. <br />
+확인을 위해 작성한 로직 및 결과는 아래와 같습니다. <br /></p>
+<h5 id="-아래-로직-중-testcase-갯수는-tccnt-노드크기는-num을-의미합니다-ex-list-크기는-1000000-testcase-갯수는-10">* 아래 로직 중 TestCase 갯수는 {TCCNT}, 노드크기는 {NUM}을 의미합니다. ex) list 크기는 1000000, TestCase 갯수는 10</h5>
+
+<h5 id="listpraticejava-아래-내용과-동일"><a href="/storage/java/ListPratice.java">ListPratice.java (아래 내용과 동일)</a></h5>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Vector</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ListPratice</span> <span class="o">{</span>
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">NUM</span> <span class="o">=</span> <span class="mi">1000000</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">TCCNT</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>
+
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kt">long</span><span class="o">[]</span> <span class="n">allInsertTimeArr</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">long</span><span class="o">[</span><span class="n">TCCNT</span><span class="o">];</span>
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kt">long</span><span class="o">[]</span> <span class="n">middleInsertTimeArr</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">long</span><span class="o">[</span><span class="n">TCCNT</span><span class="o">];</span>
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kt">long</span><span class="o">[]</span> <span class="n">middleGetTimeArr</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">long</span><span class="o">[</span><span class="n">TCCNT</span><span class="o">];</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"--------VECTOR--------"</span><span class="o">);</span>
+		<span class="n">testTC</span><span class="o">(</span><span class="s">"vector"</span><span class="o">);</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"--------ARRAYLIST--------"</span><span class="o">);</span>
+		<span class="n">testTC</span><span class="o">(</span><span class="s">"arraylist"</span><span class="o">);</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"--------LINKEDLIST--------"</span><span class="o">);</span>
+		<span class="n">testTC</span><span class="o">(</span><span class="s">"linkedlist"</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="cm">/**
+	  * Vector insert, get practice
+	  * @param int cnt(testcase cnt)
+	  */</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">vecTest</span><span class="o">(</span><span class="kt">int</span> <span class="n">cnt</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">Vector</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+		<span class="kt">long</span> <span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUM</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="n">a</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="kt">long</span> <span class="n">endTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="n">allInsertTimeArr</span><span class="o">[</span><span class="n">cnt</span><span class="o">]</span> <span class="o">=</span> <span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">;</span>
+		<span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="n">a</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">100</span><span class="o">);</span>
+		<span class="n">endTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="n">middleInsertTimeArr</span><span class="o">[</span><span class="n">cnt</span><span class="o">]</span> <span class="o">=</span> <span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">;</span>
+
+		<span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="n">a</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="n">endTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="n">middleGetTimeArr</span><span class="o">[</span><span class="n">cnt</span><span class="o">]</span> <span class="o">=</span> <span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">;</span>
+
+	<span class="o">}</span>
+
+	<span class="cm">/**
+	  * arraylist insert, get practice
+	  * @param int cnt(testcase cnt)
+	  */</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">arrListTest</span><span class="o">(</span><span class="kt">int</span> <span class="n">cnt</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+		<span class="kt">long</span> <span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUM</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="n">a</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="kt">long</span> <span class="n">endTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="n">allInsertTimeArr</span><span class="o">[</span><span class="n">cnt</span><span class="o">]</span> <span class="o">=</span> <span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">;</span>
+		<span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="n">a</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">100</span><span class="o">);</span>
+		<span class="n">endTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="n">middleInsertTimeArr</span><span class="o">[</span><span class="n">cnt</span><span class="o">]</span> <span class="o">=</span> <span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">;</span>
+
+		<span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="n">a</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="n">endTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="n">middleGetTimeArr</span><span class="o">[</span><span class="n">cnt</span><span class="o">]</span> <span class="o">=</span> <span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="cm">/**
+	  * linkedlist insert, get practice
+	  * @param int cnt(testcase cnt)
+	  */</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">linListTest</span><span class="o">(</span><span class="kt">int</span> <span class="n">cnt</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">LinkedList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">LinkedList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>
+		<span class="kt">long</span> <span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUM</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="n">a</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="kt">long</span> <span class="n">endTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="n">allInsertTimeArr</span><span class="o">[</span><span class="n">cnt</span><span class="o">]</span> <span class="o">=</span> <span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">;</span>
+		<span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="n">a</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">100</span><span class="o">);</span>
+		<span class="n">endTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="n">middleInsertTimeArr</span><span class="o">[</span><span class="n">cnt</span><span class="o">]</span> <span class="o">=</span> <span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">;</span>
+
+		<span class="n">startTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="n">a</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="n">endTime</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="n">middleGetTimeArr</span><span class="o">[</span><span class="n">cnt</span><span class="o">]</span> <span class="o">=</span> <span class="n">endTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="cm">/**
+	  * print time (ns)
+	  */</span>
+	<span class="kd">static</span> <span class="kt">void</span> <span class="nf">outputArr</span><span class="o">()</span> <span class="o">{</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"---allInsertTimeArr---"</span><span class="o">);</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">TCCNT</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">allInsertTimeArr</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">+</span> <span class="s">"ns"</span><span class="o">);</span>
+		<span class="o">}</span>
+
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"---middleInsertTimeArr---"</span><span class="o">);</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">TCCNT</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">middleInsertTimeArr</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">+</span> <span class="s">"ns"</span><span class="o">);</span>
+		<span class="o">}</span>
+		
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"---middleGetTimeArr---"</span><span class="o">);</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">TCCNT</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">middleGetTimeArr</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">+</span> <span class="s">"ns"</span><span class="o">);</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+	<span class="cm">/**
+	  * call list
+	  */</span>
+	<span class="kd">static</span> <span class="kt">void</span> <span class="nf">testTC</span><span class="o">(</span><span class="n">String</span> <span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">TCCNT</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">type</span> <span class="o">==</span> <span class="s">"vector"</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">ListPratice</span><span class="o">.</span><span class="na">vecTest</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+			<span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">type</span> <span class="o">==</span> <span class="s">"arraylist"</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">ListPratice</span><span class="o">.</span><span class="na">arrListTest</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+			<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+				<span class="n">ListPratice</span><span class="o">.</span><span class="na">linListTest</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+		<span class="n">ListPratice</span><span class="o">.</span><span class="na">outputArr</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre>
+</div>
+
+<h4 id="결과">결과</h4>
+<h5 id="아래는-결과를-표로-작성한-내용입니다-시간-단위는-nanotime이하-ns-기준입니다">아래는 결과를 표로 작성한 내용입니다. 시간 단위는 nanoTime(이하 ns) 기준입니다.</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th> </th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>average (ns)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>VECTOR</td>
+      <td>allInsertTime (ns)</td>
+      <td>55565100</td>
+      <td>56296930</td>
+      <td>28933174</td>
+      <td>9141184</td>
+      <td>14301033</td>
+      <td>9947982</td>
+      <td>9217044</td>
+      <td>41523778</td>
+      <td>10230005</td>
+      <td>9446857</td>
+      <td>27178120.78</td>
+    </tr>
+    <tr>
+      <td>ARRAYLIST</td>
+      <td>allInsertTime (ns)</td>
+      <td>27274061</td>
+      <td>27590891</td>
+      <td>29797983</td>
+      <td>13085481</td>
+      <td>9073355</td>
+      <td>8556166</td>
+      <td>41103867</td>
+      <td>12495108</td>
+      <td>10826178</td>
+      <td>10294709</td>
+      <td>21121977.67</td>
+    </tr>
+    <tr>
+      <td>LINKEDLIST</td>
+      <td>allInsertTime (ns)</td>
+      <td>34844488</td>
+      <td>30426287</td>
+      <td>22108858</td>
+      <td>26453877</td>
+      <td>56918093</td>
+      <td>9737358</td>
+      <td>11850740</td>
+      <td>11189416</td>
+      <td>8888613</td>
+      <td>10878835</td>
+      <td>24810729.44</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>average (ns)</td>
+    </tr>
+    <tr>
+      <td>VECTOR</td>
+      <td>middleIertTime (ns)</td>
+      <td>742540</td>
+      <td>854100</td>
+      <td>761281</td>
+      <td>698809</td>
+      <td>856777</td>
+      <td>805013</td>
+      <td>828217</td>
+      <td>1025009</td>
+      <td>688545</td>
+      <td>691669</td>
+      <td>883551.1111</td>
+    </tr>
+    <tr>
+      <td>ARRAYLIST</td>
+      <td>middleIertTime (ns)</td>
+      <td>1494897</td>
+      <td>799659</td>
+      <td>1043751</td>
+      <td>694792</td>
+      <td>778685</td>
+      <td>795196</td>
+      <td>1081235</td>
+      <td>1136121</td>
+      <td>1050444</td>
+      <td>689884</td>
+      <td>1062740.444</td>
+    </tr>
+    <tr>
+      <td>LINKEDLIST</td>
+      <td>middleIertTime (ns)</td>
+      <td>62027</td>
+      <td>39269</td>
+      <td>50871</td>
+      <td>9817</td>
+      <td>13387</td>
+      <td>9371</td>
+      <td>9817</td>
+      <td>12495</td>
+      <td>9817</td>
+      <td>12941</td>
+      <td>25534.66667</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>average (ns)</td>
+    </tr>
+    <tr>
+      <td>VECTOR</td>
+      <td>middleGetTime (ns)</td>
+      <td>2192367</td>
+      <td>164215</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>447</td>
+      <td>0</td>
+      <td>447</td>
+      <td>0</td>
+      <td>261941.7778</td>
+    </tr>
+    <tr>
+      <td>ARRAYLIST</td>
+      <td>middleGetTime (ns)</td>
+      <td>1099530</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>446</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>122219.5556</td>
+    </tr>
+    <tr>
+      <td>LINKEDLIST</td>
+      <td>middleGetTime (ns)</td>
+      <td>130757529</td>
+      <td>115901823</td>
+      <td>118114716</td>
+      <td>112607694</td>
+      <td>167855965</td>
+      <td>113191373</td>
+      <td>120311099</td>
+      <td>112903549</td>
+      <td>114896002</td>
+      <td>118121856</td>
+      <td>136073511.8</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="결론">결론</h3>
+<h5 id="1-최초-전체-노드삽입-시-vector의-경우는-동기화를-하며서-삽입하고-공간이-부족할-경우-배열크기를-2배씩-늘리기-때문에-시간이-비교적-arraylist보다-오래-소요됩니다-">1) 최초 전체 노드삽입 시 Vector의 경우는 동기화를 하며서 삽입하고 공간이 부족할 경우 배열크기를 2배씩 늘리기 때문에 시간이 비교적 ArrayList보다 오래 소요됩니다. <br /></h5>
+<h5 id="2-중간에-데이터를-삽입할때는-vector-arraylist-둘다-배열을-사용해서-중간에-넣고-나머지-배열을-복사-후-삽입하는-과정을-거치기-때문에-linkedlist에-비해서-시간이-오래걸립니다-">2) 중간에 데이터를 삽입할때는 Vector, ArrayList 둘다 배열을 사용해서 중간에 넣고 나머지 배열을 복사 후 삽입하는 과정을 거치기 때문에 LinkedList에 비해서 시간이 오래걸립니다. <br /></h5>
+<h5 id="linkedlist의-경우는-중간에-삽입할-노드와-노드-간-주소값만-변경해주면-되기때문에-노드-추가-및-제거는-훨씬-빠름-">(LinkedList의 경우는 중간에 삽입할 노드와 노드 간 주소값만 변경해주면 되기때문에 노드 추가 및 제거는 훨씬 빠름) <br /></h5>
+<h5 id="3-중간-노드를-검색할-때-index가-있는-vector-arraylist는-성능이-좋지만-순차검색을-하는-linkedlist의-성능은-현저히-낮게-나타납니다">3) 중간 노드를 검색할 때 index가 있는 Vector, ArrayList는 성능이 좋지만 순차검색을 하는 LinkedList의 성능은 현저히 낮게 나타납니다.</h5>
+
+
+
+  </div>
+
+
+  
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+this.page.url = 'http://localhost:4000/java/2017/06/19/java_collection_list_performance.html';
+this.page.identifier = 'http://localhost:4000/java/2017/06/19/java_collection_list_performance.html';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://17billion.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">17billion</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              17billion
+            
+            </li>
+            
+            <li><a href="mailto:17earlgrey@gmail.com">17earlgrey@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jekyll</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">jekyllrb</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

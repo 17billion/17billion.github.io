@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Kubernetes 클러스터 설치 및 구성(kube 1.5.1, ubuntu 14.04)</title>
+  <meta name="description" content="지난 글 “Kubernetes Overview” 이번 글에서는 ubuntu 14.04, kubernetes 1.5.1 버전을 기준으로 kube-up을 통해 설치 및 구성하는 방법을 알아보겠습니다. (https://kubernetes.io/docs/getting-started-gui...">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="canonical" href="http://localhost:4000/kubernetes/2017/04/23/kubernetes_install_exec.html">
+  <link rel="alternate" type="application/rss+xml" title="17billion" href="/feed.xml">
+
+
+  
+</head>
+
+  <body>
+	
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">17billion</a>
+	<a class="site-title-search"> <!— Html Elements for Search -->
+<div id="search-container" >
+<input type="text" id="search-input" placeholder="search...">
+<ul id="results-container"></ul>
+</div>
+
+<!-- Script pointing to jekyll-search.js -->
+<script src="/dest/jekyll-search.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+      SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('results-container'),
+        json: '/search.json',
+        searchResultTemplate: '<li class="results-li"><a href="{url}" title="{desc}">{title}</a></li>',
+        noResultsText: 'No results found',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      })
+</script>
+
+ 
+  
+
+
+
+        </a>
+
+ <a class="site-title"/> 
+    <nav class="site-nav">
+
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+
+        </svg>
+		
+
+      </span>
+				  
+      <div class="trigger">
+		
+       
+         
+          <a class="page-link" href="/about/">About</a>
+		 
+        
+         
+        
+         
+        
+         
+        
+         
+        
+         
+        
+         
+          <a class="page-link" href="/Tags/">Tags</a>
+		 
+        
+         
+        
+         
+        
+
+      </div>
+	 	
+    </nav>
+
+  </div>
+ 
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Kubernetes 클러스터 설치 및 구성(kube 1.5.1, ubuntu 14.04)</h1>
+
+	<div class="post-tags">
+  
+  
+  <a href="/tags/#kubernetes">kubernetes</a>
+  
+</div>
+
+    <p class="post-meta"><time datetime="2017-04-23T09:51:42+09:00" itemprop="datePublished">Apr 23, 2017</time></p>
+    </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h3 id="지난-글-kubernetes-overview-">지난 글 “<a href="/kubernetes/2017/04/20/kubernetes_overview.html">Kubernetes Overview</a>” <br /></h3>
+<p>이번 글에서는 ubuntu 14.04, kubernetes 1.5.1 버전을 기준으로 kube-up을 통해 설치 및 구성하는 방법을 알아보겠습니다. (<a href="https://kubernetes.io/docs/getting-started-guides/ubuntu/manual/">https://kubernetes.io/docs/getting-started-guides/ubuntu/manual/</a>)</p>
+
+<hr />
+<p>예시) 제가 구성할 클러스터는 아래와 같습니다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">IP Address</th>
+      <th style="text-align: center">Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">192.168.56.101</td>
+      <td style="text-align: center">both master and node</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">192.168.56.102</td>
+      <td style="text-align: center">node1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">192.168.56.103</td>
+      <td style="text-align: center">node2</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h4 id="설치-전-필수조건-prerequisites">설치 전 필수조건 (Prerequisites)</h4>
+<h5 id="1-각-노드서버는-docker-버전-12-이상-bridge-utils이-설치가-되어-있어야-합니다-apt-get-install-bridge-utils">1. 각 노드(서버)는 docker 버전 1.2 이상, bridge-utils이 설치가 되어 있어야 합니다. (apt-get install bridge-utils)</h5>
+<h5 id="2-각-노드는-서로-통신-할-수-있어야-합니다-마스터-노드는-인터넷에-연결되어-있어야-합니다">2. 각 노드는 서로 통신 할 수 있어야 합니다. 마스터 노드는 인터넷에 연결되어 있어야 합니다.</h5>
+<h5 id="3-이-가이드는-ubuntu-1404-lts-64bit-서버기준이며-upstart-대신-systemd를-사용하는-ubuntu-15에서는-작동하지-않습니다">3. 이 가이드는 Ubuntu 14.04 LTS 64bit 서버기준이며, upstart 대신 systemd를 사용하는 Ubuntu 15에서는 작동하지 않습니다.</h5>
+<h5 id="4-etcd-flannel-k8s는-최신버전-설치를-권장합니다-이-글에서는-k8s-151-버전을-설치합니다">4. etcd, flannel, k8s는 최신버전 설치를 권장합니다. (이 글에서는 k8s 1.5.1 버전을 설치합니다.)</h5>
+<h5 id="5-각-노드-간-패스워드-없이-ssh-통신이-되어야-합니다-ubuntu--rsa-비대칭키를-이용하여-패스워드-없이-ssh-접속방법-참고-">5. 각 노드 간 패스워드 없이 ssh 통신이 되어야 합니다. (<a href="/elastic/2017/07/19/ubuntu_rsa_conn_no_pw.html">Ubuntu : RSA 비대칭키를 이용하여 패스워드 없이 ssh 접속방법 참고</a>) <br /></h5>
+<h5 id="6-모든-컴퓨터의-원격-사용자는-binbash를-로그인-쉘로-사용가능해야하고-sudo-액세스-권한을-갖고-있어야-합니다-">6. 모든 컴퓨터의 원격 사용자는 /bin/bash를 로그인 쉘로 사용가능해야하고 sudo 액세스 권한을 갖고 있어야 합니다. <br /></h5>
+
+<hr />
+
+<h3 id="kubernetes-구성-및-실행-master로-설정할-서버에서-진행">kubernetes 구성 및 실행 (master로 설정할 서버에서 진행)</h3>
+
+<h4 id="1-kubernetesgit-clone-">1. kubernetes.git clone <br /></h4>
+<blockquote>
+  <p>(설치를 원하는 디렉토리에서 실행) <br />
+$ git clone –depth 1 -b v1.5.1 –single-branch  https://github.com/kubernetes/kubernetes.git <br /></p>
+</blockquote>
+
+<h5 id="최신버전의-경우는-git-clone을-통해-가져올-수-있으나-kubeadm을-통해-설치가-가능합니다--git-clone---depth-1-httpsgithubcomkuberneteskubernetesgit">(최신버전의 경우는 git clone을 통해 가져올 수 있으나 kubeadm을 통해 설치가 가능합니다.) $ git clone --depth 1 https://github.com/kubernetes/kubernetes.git</h5>
+
+<h4 id="2-flannel-etcd-kubernetes-export-flannel-etcd은-최신버전-권장">2. flannel, etcd, kubernetes export (flannel, etcd은 최신버전 권장)</h4>
+<p>해당 변수를 변경하여 etcd 버전, flannel 버전, K8S 버전를 정의 할 수 있습니다. (확인은 $ env로 가능)</p>
+<blockquote>
+  <p>$ export KUBE_VERSION=1.5.1 <br />
+$ export FLANNEL_VERSION=0.8.0 <br />
+$ export ETCD_VERSION=3.2.5 <br /></p>
+</blockquote>
+
+<ul>
+  <li>각 최신버전 조회 : <a href="https://github.com/coreos/etcd/releases/">https://github.com/coreos/etcd/releases/</a>, <a href="https://github.com/kubernetes/kubernetes/releases">https://github.com/kubernetes/kubernetes/releases</a>, <a href="https://github.com/coreos/flannel/releases">https://github.com/coreos/flannel/releases</a> <br /></li>
+</ul>
+
+<h4 id="3-클러스터-config-설정">3. 클러스터 config 설정</h4>
+<blockquote>
+  <p>$ vi {kubernetes}/cluster/ubuntu/config-default.sh <br /></p>
+  <div class="highlighter-rouge"><pre class="highlight"><code>export nodes="root@192.168.56.101 root@192.168.56.102 root@192.168.56.103"
+export roles="ai i i"
+export NUM_NODES=${NUM_NODES:-3}
+export SERVICE_CLUSTER_IP_RANGE=192.168.3.0/24
+export FLANNEL_NET=172.16.0.0/16
+</code></pre>
+  </div>
+</blockquote>
+
+<h5 id="--nodes는-각-노드에-원격으로-접속가능한-계정과-ip를-의미합니다">- nodes는 각 노드에 원격으로 접속가능한 계정과 IP를 의미합니다.</h5>
+<h5 id="--role에서-a는-마스터-i는-노드-ai는-마스터노드를-의미합니다-">- role에서 a는 마스터, i는 노드, ai는 마스터/노드를 의미합니다. <br /></h5>
+<h5 id="--num_nodes는-전체-노드의-수를-정의합니다-master-포함-">- NUM_NODES는 전체 노드의 수를 정의합니다. (master 포함) <br /></h5>
+<h5 id="--service_cluster_ip_range변수는-kubernetes-서비스-ip-범위를-정의합니다-">- SERVICE_CLUSTER_IP_RANGE변수는 Kubernetes 서비스 IP 범위를 정의합니다. <br /></h5>
+<h5 id="--flannel_net변수는-아래-ip와-충돌하지-않아야-flannel-오버레이-네트워크에-사용되는-ip-범위를-정의할-수-있습니다-">- FLANNEL_NET변수는 아래 IP와 충돌하지 않아야 flannel 오버레이 네트워크에 사용되는 IP 범위를 정의할 수 있습니다. <br /></h5>
+<h5 id="10000------------10255255255--108-prefix-">10.0.0.0        -   10.255.255.255  (10/8 prefix) <br /></h5>
+<h5 id="1721600----------17231255255--1721612-prefix-">172.16.0.0      -   172.31.255.255  (172.16/12 prefix) <br /></h5>
+<h5 id="19216800---------192168255255-19216816-prefix-">192.168.0.0     -   192.168.255.255 (192.168/16 prefix) <br /></h5>
+
+<h5 id="-프록시-설정이-필요한-경우-proxy_setting을-kubernetesclusterubuntuconfig-defaultsh에서-설정할-수-있습니다---proxy_settinghttp_proxyhttpserverport-https_proxyhttpsserverport-">※ 프록시 설정이 필요한 경우 PROXY_SETTING을 {kubernetes}/cluster/ubuntu/config-default.sh에서 설정할 수 있습니다 . $ PROXY_SETTING=”http_proxy=http://{server}:{port} https_proxy=https://{server}:{port}” <br /></h5>
+
+<h4 id="4-클러스터-실행">4. 클러스터 실행</h4>
+<h5 id="위의-모든-변수가-올바르게-설정되면-다음-명령을-사용-하여-전체-클러스터를-구성합니다">위의 모든 변수가 올바르게 설정되면 다음 명령을 사용 하여 전체 클러스터를 구성합니다.</h5>
+<blockquote>
+  <p>{kubernetes}/cluster/ 에서 싱행
+$ KUBERNETES_PROVIDER=ubuntu ./kube-up.sh</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>... Starting cluster using provider: ubuntu
+... calling verify-prereqs
+Identity added: /root/.ssh/id_rsa <span class="o">(</span>/root/.ssh/id_rsa<span class="o">)</span>
+... calling kube-up
+.
+.
+.
+Cluster validation succeeded
+Done, listing cluster services:
+
+Kubernetes master is running at http://192.168.56.101:8080
+</code></pre>
+</div>
+
+<h4 id="5-어디서든-kubectl-명령어-사용할-수-있도록-복사">5. 어디서든 kubectl 명령어 사용할 수 있도록 복사</h4>
+<blockquote>
+  <p>{kubernetes}/cluster 에서 아래 커맨드 실행 <br />
+$ cp ubuntu/binaries/kubectl /opt/bin/.</p>
+</blockquote>
+
+<h4 id="6-노드-구성-확인">6. 노드 구성 확인</h4>
+<blockquote>
+  <p>$ kubectl get nodes</p>
+  <div class="highlighter-rouge"><pre class="highlight"><code>NAME             STATUS    AGE
+192.168.56.101   Ready     1m
+192.168.56.102   Ready     56s
+192.168.56.103   Ready     37s
+</code></pre>
+  </div>
+</blockquote>
+
+<p>참고 사이트 <br />
+release-notes : <a href="https://cloud.google.com/container-engine/release-notes">https://cloud.google.com/container-engine/release-notes</a> <br />
+kubernetes docs: <a href="https://kubernetes.io/docs/getting-started-guides/ubuntu/manual/">https://kubernetes.io/docs/getting-started-guides/ubuntu/manual/</a></p>
+
+
+
+  </div>
+
+
+  
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+this.page.url = 'http://localhost:4000/kubernetes/2017/04/23/kubernetes_install_exec.html';
+this.page.identifier = 'http://localhost:4000/kubernetes/2017/04/23/kubernetes_install_exec.html';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://17billion.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">17billion</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              17billion
+            
+            </li>
+            
+            <li><a href="mailto:17earlgrey@gmail.com">17earlgrey@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jekyll</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">jekyllrb</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

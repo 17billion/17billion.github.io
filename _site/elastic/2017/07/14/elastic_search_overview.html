@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Elastic Search란?</title>
+  <meta name="description" content="1. 특징 1) Apache Lucene 기반 (Full Text 검색엔진을 만들 수 있는 라이브러리를 제공, 자바언어로 개발, 사용자위치정보, 다국어 검색지원, 자동완성 지원, 미리보기 지원, 철자수정 기능 지원 / 대부분 Elasticsearch에서도 지원)">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="canonical" href="http://localhost:4000/elastic/2017/07/14/elastic_search_overview.html">
+  <link rel="alternate" type="application/rss+xml" title="17billion" href="/feed.xml">
+
+
+  
+</head>
+
+  <body>
+	
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">17billion</a>
+	<a class="site-title-search"> <!— Html Elements for Search -->
+<div id="search-container" >
+<input type="text" id="search-input" placeholder="search...">
+<ul id="results-container"></ul>
+</div>
+
+<!-- Script pointing to jekyll-search.js -->
+<script src="/dest/jekyll-search.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+      SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('results-container'),
+        json: '/search.json',
+        searchResultTemplate: '<li class="results-li"><a href="{url}" title="{desc}">{title}</a></li>',
+        noResultsText: 'No results found',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      })
+</script>
+
+ 
+  
+
+
+
+        </a>
+
+ <a class="site-title"/> 
+    <nav class="site-nav">
+
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+
+        </svg>
+		
+
+      </span>
+				  
+      <div class="trigger">
+		
+       
+         
+          <a class="page-link" href="/about/">About</a>
+		 
+        
+         
+        
+         
+        
+         
+        
+         
+        
+         
+        
+         
+          <a class="page-link" href="/Tags/">Tags</a>
+		 
+        
+         
+        
+         
+        
+
+      </div>
+	 	
+    </nav>
+
+  </div>
+ 
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Elastic Search란?</h1>
+
+	<div class="post-tags">
+  
+  
+  <a href="/tags/#elastic">elastic</a>
+  
+</div>
+
+    <p class="post-meta"><time datetime="2017-07-14T09:51:42+09:00" itemprop="datePublished">Jul 14, 2017</time></p>
+    </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h3 id="1-특징-">1. 특징 <br /></h3>
+<p>1) Apache Lucene 기반 (Full Text 검색엔진을 만들 수 있는 라이브러리를 제공, 자바언어로 개발, 사용자위치정보, 다국어 검색지원, 자동완성 지원, 미리보기 지원, 철자수정 기능 지원 / 대부분 Elasticsearch에서도 지원) <br /></p>
+
+<p>2) 분산시스템 <br />
+- 여러개의 Node로 구성되어 있는 분산시스템 <br />
+- Node는 데이터를 색인하고 검색을 수행하는 단위 프로세스 <br />
+- 데이터는 각 데이터 Node에 분산저장 <br />
+- Replica를 유지하여 데이터 보호 <br /></p>
+
+<p>3) REST API를 통해 데이터 처리 <br /></p>
+
+<p>4) <a href="https://www.slideshare.net/seunghyuneom/elastic-search-52724188#38">RDBMS와 Elastic Search 구조 비교</a> (seunghyuneom님의 SliceShare) <br /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">RDBMS</th>
+      <th style="text-align: center">ElasticSearch</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Database</td>
+      <td style="text-align: center">Index</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Table</td>
+      <td style="text-align: center">Type</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Row</td>
+      <td style="text-align: center">Document</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Column</td>
+      <td style="text-align: center">Field</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Scheme</td>
+      <td style="text-align: center">Mapping</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="2-용어-">2. 용어 <br /></h3>
+<p>1) Cluster : ElasticSearch의 가장 큰 시스템 단위 <br />
+- 하나의 Cluster는 동일한 cluster.name 내 여러개 Node로 구성되어 있음 <br />
+- 같은 Cluster 이름으로 노드를 실행 시키면 자동확장 (네트워크 바인딩) <br /></p>
+
+<p>2) Node : 실행중인 ElasticSearch Instance <br />
+- Master Node : Cluster 메타 정보 관리, Node 추가 삭제 <br />
+- Data Node : 실제 데이터를 저장하는 Node <br /></p>
+
+<p>3) Index : 관련성이 있는 데이터의 저장 위치 <br />
+- 물리적인 Shard에 대한 논리적인 이름 공간 <br /></p>
+
+<p>4) Shard : Index의 데이터를 저장하여 Indexing된 Document가 실제 저장되는 곳 <br />
+- Primary Shard : 모든 Document는 단 하나의 Primary Shard에 위치, 갯수는 Index를 생성할 때 결정되고 변경될 수 있음(default) <br />
+- Replicat Shard : Primary Shard의 복사본 <br />
+- 장애발생 시 복구, 검색에 대한 Concurrnt Read 보장 <br /></p>
+
+<p>5) 네트워크 바인딩 : 다른 서버의 노드와 바인딩 (자유롭게 Scale-in/out 가능) <br /></p>
+
+<h3 id="3-rest-api-예제-">3. Rest API 예제 <br /></h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">CRUD</th>
+      <th style="text-align: center">Elastic Search</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Create</td>
+      <td style="text-align: center">Post</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Read</td>
+      <td style="text-align: center">Get</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Update</td>
+      <td style="text-align: center">Put</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Delete</td>
+      <td style="text-align: center">Delete</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="--curl--x-method-httphostportindextypeid-">- curl -X {method} http://host:port/{Index}/{Type}/{Id} <br /></h5>
+<p>1) POST (생성)</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>curl -XPOST http://localhost:9200/custom/test/1 -d <span class="s1">'
+{
+  "title": "Elasticsearch Test",
+  "name": "Lee",
+  "date": "2017-07-10"
+}'</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Response
+    <blockquote>
+      <p>{“_index”:”custom”,”_type”:”test”,”_id”:”1”,”_version”:1,”result”:”created”,”_shards”:{“total”:2,”successful”:1,”failed”:0},”created”:true}</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p>2) PUT (업데이트)</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>curl -XPUT http://localhost:9200/custom/test/1 -d <span class="s1">'
+{
+  "title": "Elasticsearch Test Update",
+  "name": ["Lee", "Cho"],
+  "date": "2017-07-11"
+}'</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Response
+    <blockquote>
+      <p>{“_index”:”custom”,”_type”:”test”,”_id”:”1”,”_version”:2,”result”:”updated”,”_shards”:{“total”:2,”successful”:1,”failed”:0},”created”:false}</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p>3) GET (조회 / pretty 옵션은 보기좋게 출력하고 싶을때 사용)</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>curl -XGET http://localhost:9200/custom/test/1?pretty<span class="o">=</span><span class="nb">true</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>Response
+    <blockquote>
+      <p>{ <br />
+“_index” : “custom”, <br />
+“_type” : “test”, <br />
+“_id” : “1”, <br />
+“_version” : 2, <br />
+“found” : true, <br />
+“_source” : { <br />
+  “title” : “Elasticsearch Test Update”, <br />
+  “name” : [ <br />
+    “Lee”, <br />
+    “Cho” <br />
+  ], <br />
+  “date” : “2017-07-11” <br />
+} <br />
+} <br /></p>
+    </blockquote>
+  </li>
+</ul>
+
+<p>4) DELETE (삭제)</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>curl -XDELETE http://localhost:9200/custom/test/1
+</code></pre>
+</div>
+
+<ul>
+  <li>Response
+    <blockquote>
+      <p>{“found”:true,”_index”:”custom”,”_type”:”test”,”_id”:”1”,”_version”:3,”result”:”deleted”,”_shards”:{“total”:2,”successful”:1,”failed”:0}}</p>
+    </blockquote>
+  </li>
+</ul>
+
+<h3 id="기타-">기타. <br /></h3>
+<p>1) Elasric Search의 동작방식 (NAVER D2) <br />
+- <a href="https://www.slideshare.net/deview/2d1elasticsearch#12">Creating, indexing and deleting a document</a> <br />
+- <a href="https://www.slideshare.net/deview/2d1elasticsearch#13">Retrieve, query and fetch a document</a> <br /></p>
+
+<p>2) 설치방법  <br />
+- <a href="/elastic/2017/07/05/ELK_install_exec.html">‘ELK 설치/실행 (Elastic Search + Kibana + Logstash)’ : ‘1. ElasticSearch를 설치합니다. (ubuntu 기준) 참고’</a> <br /></p>
+
+<p>참고 사이트 <br />
+seunghyuneom님의 SliceShare : <a href="https://www.slideshare.net/seunghyuneom/elastic-search-52724188">https://www.slideshare.net/seunghyuneom/elastic-search-52724188</a> <br />
+NAVER D2 SliceShare : <a href="https://www.slideshare.net/deview/2d1elasticsearch">https://www.slideshare.net/deview/2d1elasticsearch</a></p>
+
+
+
+  </div>
+
+
+  
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+this.page.url = 'http://localhost:4000/elastic/2017/07/14/elastic_search_overview.html';
+this.page.identifier = 'http://localhost:4000/elastic/2017/07/14/elastic_search_overview.html';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://17billion.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">17billion</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              17billion
+            
+            </li>
+            
+            <li><a href="mailto:17earlgrey@gmail.com">17earlgrey@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jekyll</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">jekyllrb</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

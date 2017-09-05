@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Docker Command - build / push / pull / run </title>
+  <meta name="description" content="Docker는 다양한 명령어를 옵션과 함께 제공합니다. 이번 글에서는 build / push / pull / run / exec에 대해 알아보도록 하겠습니다.">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="canonical" href="http://localhost:4000/docker/2017/03/20/docker_command_build_push_pull_run.html">
+  <link rel="alternate" type="application/rss+xml" title="17billion" href="/feed.xml">
+
+
+  
+</head>
+
+  <body>
+	
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">17billion</a>
+	<a class="site-title-search"> <!— Html Elements for Search -->
+<div id="search-container" >
+<input type="text" id="search-input" placeholder="search...">
+<ul id="results-container"></ul>
+</div>
+
+<!-- Script pointing to jekyll-search.js -->
+<script src="/dest/jekyll-search.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+      SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('results-container'),
+        json: '/search.json',
+        searchResultTemplate: '<li class="results-li"><a href="{url}" title="{desc}">{title}</a></li>',
+        noResultsText: 'No results found',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      })
+</script>
+
+ 
+  
+
+
+
+        </a>
+
+ <a class="site-title"/> 
+    <nav class="site-nav">
+
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+
+        </svg>
+		
+
+      </span>
+				  
+      <div class="trigger">
+		
+       
+         
+          <a class="page-link" href="/about/">About</a>
+		 
+        
+         
+        
+         
+        
+         
+        
+         
+        
+         
+        
+         
+          <a class="page-link" href="/Tags/">Tags</a>
+		 
+        
+         
+        
+         
+        
+
+      </div>
+	 	
+    </nav>
+
+  </div>
+ 
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Docker Command - build / push / pull / run </h1>
+
+	<div class="post-tags">
+  
+  
+  <a href="/tags/#docker">docker</a>
+  
+</div>
+
+    <p class="post-meta"><time datetime="2017-03-20T09:51:42+09:00" itemprop="datePublished">Mar 20, 2017</time></p>
+    </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <blockquote>
+  <p>Docker는 다양한 명령어를 옵션과 함께 제공합니다.
+이번 글에서는 build / push / pull / run / exec에 대해 알아보도록 하겠습니다.</p>
+</blockquote>
+
+<hr />
+
+<h3 id="docker-build">Docker build</h3>
+<h5 id="build를-할-경우-dockerfile이-레이어화-되어-이미지가-로컬에-생성됩니다-빌드-후-조회방법--docker-images">build를 할 경우 Dockerfile이 레이어화 되어 이미지가 로컬에 생성됩니다. (빌드 후 조회방법 $ docker images)</h5>
+<blockquote>
+  <p>docker build [OPTIONS] PATH | URL | -</p>
+</blockquote>
+
+<h5 id="options-httpsdocsdockercomenginereferencecommandlinebuildusage">OPTIONS (<a href="https://docs.docker.com/engine/reference/commandline/build/#usage">https://docs.docker.com/engine/reference/commandline/build/#usage</a>)</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>NAME</th>
+      <th style="text-align: center">DEFAULT</th>
+      <th>DESCRIPTION</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>–add-host</td>
+      <td style="text-align: center"> </td>
+      <td>호스트 - IP 매핑 추가 (호스트 : ip)</td>
+    </tr>
+    <tr>
+      <td>–build-arg</td>
+      <td style="text-align: center"> </td>
+      <td>빌드 타임 변수 추가</td>
+    </tr>
+    <tr>
+      <td>–cache-from</td>
+      <td style="text-align: center"> </td>
+      <td>캐시 소스로 고려할 이미지 지정</td>
+    </tr>
+    <tr>
+      <td>–cgroup-parent</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너의 선택적 부모 cgroup</td>
+    </tr>
+    <tr>
+      <td>–compress</td>
+      <td style="text-align: center">FALSE</td>
+      <td>gzip을 사용하여 빌드 컨텍스트 압축</td>
+    </tr>
+    <tr>
+      <td>–cpu-period</td>
+      <td style="text-align: center">0</td>
+      <td>CPU CFS 기간 제한</td>
+    </tr>
+    <tr>
+      <td>–cpu-quota</td>
+      <td style="text-align: center">0</td>
+      <td>CPU CFS 할당량 제한</td>
+    </tr>
+    <tr>
+      <td>–cpu-shares, -c</td>
+      <td style="text-align: center">0</td>
+      <td>CPU 점유율 (상대적 가중치)</td>
+    </tr>
+    <tr>
+      <td>–cpuset-cpus</td>
+      <td style="text-align: center"> </td>
+      <td>실행을 허용하는 CPU (0-3, 0,1)</td>
+    </tr>
+    <tr>
+      <td>–cpuset-mems</td>
+      <td style="text-align: center"> </td>
+      <td>실행을 허용 할 MEM (0-3, 0,1)</td>
+    </tr>
+    <tr>
+      <td>–disable-content-trust</td>
+      <td style="text-align: center">TRUE</td>
+      <td>이미지 확인 건너 뛰기</td>
+    </tr>
+    <tr>
+      <td>–file, -f</td>
+      <td style="text-align: center"> </td>
+      <td>Dockerfile의 이름 (기본값 : ‘PATH / Dockerfile’)</td>
+    </tr>
+    <tr>
+      <td>–force-rm</td>
+      <td style="text-align: center">FALSE</td>
+      <td>이미지 생성을 실패했을때 임시컨테이너 제거</td>
+    </tr>
+    <tr>
+      <td>–iidfile</td>
+      <td style="text-align: center"> </td>
+      <td>이미지 ID를 파일에 기록</td>
+    </tr>
+    <tr>
+      <td>–isolation</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너 격리 기술</td>
+    </tr>
+    <tr>
+      <td>–label</td>
+      <td style="text-align: center"> </td>
+      <td>이미지 메타데이터 설정</td>
+    </tr>
+    <tr>
+      <td>–memory, -m</td>
+      <td style="text-align: center">0</td>
+      <td>메모리 제한</td>
+    </tr>
+    <tr>
+      <td>–memory-swap</td>
+      <td style="text-align: center">0</td>
+      <td>스왑 한도는 메모리 + 스왑과 같음, ‘-1’은 무제한 스왑을 가능하게 하는 설정</td>
+    </tr>
+    <tr>
+      <td>–network</td>
+      <td style="text-align: center">default</td>
+      <td>빌드하는 동안 RUN 명령어의 네트워킹 모드 설정</td>
+    </tr>
+    <tr>
+      <td>–no-cache</td>
+      <td style="text-align: center">FALSE</td>
+      <td>이미지를 만들 때 이전 빌드 때 사용한 캐시 미사용</td>
+    </tr>
+    <tr>
+      <td>–pull</td>
+      <td style="text-align: center">FALSE</td>
+      <td>항상 최신 버전의 이미지 pull</td>
+    </tr>
+    <tr>
+      <td>–quiet, -q</td>
+      <td style="text-align: center">FALSE</td>
+      <td>성공시 빌드 출력 및 인쇄 이미지 ID 미표시</td>
+    </tr>
+    <tr>
+      <td>–rm</td>
+      <td style="text-align: center">TRUE</td>
+      <td>성공적인 빌드 후에 임시 컨테이너 제거</td>
+    </tr>
+    <tr>
+      <td>–security-opt</td>
+      <td style="text-align: center"> </td>
+      <td>보안 옵션</td>
+    </tr>
+    <tr>
+      <td>–shm-size</td>
+      <td style="text-align: center">0</td>
+      <td>/ dev / shm의 크기</td>
+    </tr>
+    <tr>
+      <td>–squash</td>
+      <td style="text-align: center">FALSE</td>
+      <td>새로운 레이어로 생성</td>
+    </tr>
+    <tr>
+      <td>–tag, -t</td>
+      <td style="text-align: center"> </td>
+      <td>저장소, 이름 (‘name(저장소) : tag’)</td>
+    </tr>
+    <tr>
+      <td>–target</td>
+      <td style="text-align: center"> </td>
+      <td>빌드 할 대상의 단계 설정 (Dockerfile 내에서 단계를 지정가능)</td>
+    </tr>
+    <tr>
+      <td>–ulimit</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너 내 제한조건 설정</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h3 id="docker-push">Docker push</h3>
+
+<h5 id="로컬에-있는-이미지를-docker-hubpublic이나-각-사용자가-생성한-private-보관소에-업로드-하는-명령어입니다">로컬에 있는 이미지를 Docker Hub(public)이나 각 사용자가 생성한 Private 보관소에 업로드 하는 명령어입니다.</h5>
+
+<blockquote>
+  <p>docker push [OPTIONS] NAME[:TAG]</p>
+</blockquote>
+
+<h5 id="options-httpsdocsdockercomenginereferencecommandlinepushdescription">OPTIONS (<a href="https://docs.docker.com/engine/reference/commandline/push/#description">https://docs.docker.com/engine/reference/commandline/push/#description</a>)</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>NAME</th>
+      <th style="text-align: center">DEFAULT</th>
+      <th>DESCRIPTION</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>–disable-content-trust</td>
+      <td style="text-align: center">true</td>
+      <td>키를 이용한 이미지 서명 건너뛰기 (이미지 변조 방지 목적)</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h3 id="docker-pull">Docker pull</h3>
+<h5 id="docker-hubpublic이나-각-사용자가-생성한-private-보관소의-이미지를-로컬로-불러오는-명령어입니다">Docker Hub(public)이나 각 사용자가 생성한 Private 보관소의 이미지를 로컬로 불러오는 명령어입니다.</h5>
+
+<blockquote>
+  <p>docker pull [OPTIONS] NAME[:TAG|@DIGEST]</p>
+</blockquote>
+
+<h5 id="options-httpsdocsdockercomenginereferencecommandlinepull">OPTIONS (<a href="https://docs.docker.com/engine/reference/commandline/pull/">https://docs.docker.com/engine/reference/commandline/pull/</a>)</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>NAME</th>
+      <th style="text-align: center">DEFAULT</th>
+      <th>DESCRIPTION</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>–all-tags, -a</td>
+      <td style="text-align: center">false</td>
+      <td>저장소에있는 모든 태그가 있는 이미지 다운로드</td>
+    </tr>
+    <tr>
+      <td>–disable-content-trust</td>
+      <td style="text-align: center">true</td>
+      <td>이미지 서명 건너 뛰기</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h3 id="docker-run">Docker run</h3>
+
+<h5 id="이미지를-컨테이너화시키는-명령어입니다-실행-후-확인-명령어-docker-ps">이미지를 컨테이너화시키는 명령어입니다. (실행 후 확인 명령어 docker ps)</h5>
+<h5 id="build는-이미지를-생성하는-명령어-run은-실제-동작하는-프로세스로-컨테이너화-한다고-보시면-됩니다">build는 이미지를 생성하는 명령어, run은 실제 동작하는 프로세스로 컨테이너화 한다고 보시면 됩니다.</h5>
+
+<blockquote>
+  <p>docker run [OPTIONS] IMAGE [COMMAND] [ARG…]</p>
+</blockquote>
+
+<h5 id="options-httpsdocsdockercomenginereferencecommandlinerundescription">OPTIONS (<a href="https://docs.docker.com/engine/reference/commandline/run/#description">https://docs.docker.com/engine/reference/commandline/run/#description</a>)</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>NAME</th>
+      <th style="text-align: center">DEFAULT</th>
+      <th>DESCRIPTION</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>add-host</td>
+      <td style="text-align: center"> </td>
+      <td>맞춤 호스트 - IP 매핑 추가 (호스트 : ip)</td>
+    </tr>
+    <tr>
+      <td>–attach, -a</td>
+      <td style="text-align: center"> </td>
+      <td>표준 입력(STDIN), 표준 출력(STDOUT) 또는 표준 에러(STDERR)를 연결</td>
+    </tr>
+    <tr>
+      <td>–blkio-weight</td>
+      <td style="text-align: center">0</td>
+      <td>10과 1000 사이의 IO(상대적 가중치)를 차단하거나 사용하지 않으려면 0</td>
+    </tr>
+    <tr>
+      <td>–blkio-weight-device</td>
+      <td style="text-align: center"> </td>
+      <td>block IO 가중치 (상대 장치 무게)</td>
+    </tr>
+    <tr>
+      <td>–cap-add</td>
+      <td style="text-align: center"> </td>
+      <td>cgroups의 특정 Capability를 사용, ALL을 지정하면 모든 Capability를 사용</td>
+    </tr>
+    <tr>
+      <td>–cap-drop</td>
+      <td style="text-align: center"> </td>
+      <td>cgroups의 특정 Capability를 사용을 제외</td>
+    </tr>
+    <tr>
+      <td>–cgroup-parent</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너의 부모 cgroup 선택</td>
+    </tr>
+    <tr>
+      <td>–cidfile</td>
+      <td style="text-align: center"> </td>
+      <td>파일에 컨테이너 ID를 사용</td>
+    </tr>
+    <tr>
+      <td>–cpu-count</td>
+      <td style="text-align: center">0</td>
+      <td>CPU 수 (Windows 만 해당)</td>
+    </tr>
+    <tr>
+      <td>–cpu-percent</td>
+      <td style="text-align: center">0</td>
+      <td>CPU 비율 (Windows 만 해당)</td>
+    </tr>
+    <tr>
+      <td>–cpu-period</td>
+      <td style="text-align: center">0</td>
+      <td>CPU CFS (완전 공정 스케줄러) 기간 제한</td>
+    </tr>
+    <tr>
+      <td>–cpu-quota</td>
+      <td style="text-align: center">0</td>
+      <td>CPU CFS (완전 공정한 스케줄러) 할당량 제한</td>
+    </tr>
+    <tr>
+      <td>–cpu-rt-period</td>
+      <td style="text-align: center">0</td>
+      <td>마이크로 초 단위로 CPU 실시간 기간 제한</td>
+    </tr>
+    <tr>
+      <td>–cpu-rt-runtime</td>
+      <td style="text-align: center">0</td>
+      <td>마이크로 초 단위로 CPU 실시간 런타임 제한</td>
+    </tr>
+    <tr>
+      <td>–cpu-shares, -c</td>
+      <td style="text-align: center">0</td>
+      <td>CPU 점유율 (기본 값은 1024이며 각 값은 상대적 가중치)</td>
+    </tr>
+    <tr>
+      <td>–cpus</td>
+      <td style="text-align: center"> </td>
+      <td>CPU 수</td>
+    </tr>
+    <tr>
+      <td>–cpuset-cpus</td>
+      <td style="text-align: center"> </td>
+      <td>실행을 허용하는 CPU (0-3, 0,1)</td>
+    </tr>
+    <tr>
+      <td>–cpuset-mems</td>
+      <td style="text-align: center"> </td>
+      <td>실행을 허용 할 MEM (0-3, 0,1)</td>
+    </tr>
+    <tr>
+      <td>–detach, -d</td>
+      <td style="text-align: center">FALSE</td>
+      <td>백그라운드에서 컨테이너 실행</td>
+    </tr>
+    <tr>
+      <td>–detach-keys</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너를 분리하기 위한 key sequence 재정의</td>
+    </tr>
+    <tr>
+      <td>–device</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너에 호스트 장치 추가</td>
+    </tr>
+    <tr>
+      <td>–device-cgroup-rule</td>
+      <td style="text-align: center"> </td>
+      <td>cgroup allowed devices 목록에 규칙 추가</td>
+    </tr>
+    <tr>
+      <td>–device-read-bps</td>
+      <td style="text-align: center"> </td>
+      <td>장치에서 읽기 속도 (바이트 / 초) 제한</td>
+    </tr>
+    <tr>
+      <td>–device-read-iops</td>
+      <td style="text-align: center"> </td>
+      <td>장치에서 읽기 속도 (초당 IO) 제한</td>
+    </tr>
+    <tr>
+      <td>–device-write-bps</td>
+      <td style="text-align: center"> </td>
+      <td>장치에 쓰기 속도 (바이트 / 초) 제한</td>
+    </tr>
+    <tr>
+      <td>–device-write-iops</td>
+      <td style="text-align: center"> </td>
+      <td>장치에 쓰기 속도 (초당 IO) 제한</td>
+    </tr>
+    <tr>
+      <td>–disable-content-trust</td>
+      <td style="text-align: center">TRUE</td>
+      <td>이미지 서명 확인 건너 뛰기</td>
+    </tr>
+    <tr>
+      <td>–dns</td>
+      <td style="text-align: center"> </td>
+      <td>사용자 지정 DNS 서버 설정</td>
+    </tr>
+    <tr>
+      <td>–dns-opt</td>
+      <td style="text-align: center"> </td>
+      <td>DNS 옵션 설정</td>
+    </tr>
+    <tr>
+      <td>–dns-option</td>
+      <td style="text-align: center"> </td>
+      <td>DNS 옵션 설정</td>
+    </tr>
+    <tr>
+      <td>–dns-search</td>
+      <td style="text-align: center"> </td>
+      <td>사용자 지정 DNS 검색 도메인 설정</td>
+    </tr>
+    <tr>
+      <td>–entrypoint</td>
+      <td style="text-align: center"> </td>
+      <td>이미지의 기본 ENTRYPOINT를 덮어쓰기</td>
+    </tr>
+    <tr>
+      <td>–env, -e</td>
+      <td style="text-align: center"> </td>
+      <td>환경 변수 설정</td>
+    </tr>
+    <tr>
+      <td>–env-file</td>
+      <td style="text-align: center"> </td>
+      <td>환경 변수 파일 읽기</td>
+    </tr>
+    <tr>
+      <td>–expose</td>
+      <td style="text-align: center"> </td>
+      <td>포트 또는 포트 범위 노출</td>
+    </tr>
+    <tr>
+      <td>–group-add</td>
+      <td style="text-align: center"> </td>
+      <td>가입 할 추가 그룹추가</td>
+    </tr>
+    <tr>
+      <td>–health-cmd</td>
+      <td style="text-align: center"> </td>
+      <td>Health 상태 점검</td>
+    </tr>
+    <tr>
+      <td>–health-interval</td>
+      <td style="text-align: center">0s</td>
+      <td>검사를 실행하는 시간 (ms | s | m | h) (기본값 0)</td>
+    </tr>
+    <tr>
+      <td>–health-retries</td>
+      <td style="text-align: center">0</td>
+      <td>Health 체크 시 시도하는 횟수</td>
+    </tr>
+    <tr>
+      <td>–health-start-period</td>
+      <td style="text-align: center">0s</td>
+      <td>Health-Retries Countdown (ms | s | m | h)을 시작하기 전에 컨테이너를 초기화하는 시작 기간 (기본값 0)</td>
+    </tr>
+    <tr>
+      <td>–health-timeout</td>
+      <td style="text-align: center">0s</td>
+      <td>하나의 검사를 실행할 수있는 최대 시간 (ms | s | m | h) (기본값 0)</td>
+    </tr>
+    <tr>
+      <td>–help</td>
+      <td style="text-align: center">FALSE</td>
+      <td>도움말</td>
+    </tr>
+    <tr>
+      <td>–hostname, -h</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너 호스트 이름</td>
+    </tr>
+    <tr>
+      <td>–init</td>
+      <td style="text-align: center">FALSE</td>
+      <td>ex)/bin/bash를 PID를 1로 실행 (TRUE일 경우 /dev/init가 pid 1)</td>
+    </tr>
+    <tr>
+      <td>–interactive, -i</td>
+      <td style="text-align: center">FALSE</td>
+      <td>컨테이너와 연결(attach)되어 있지 않더라도 표준 입력을 유지</td>
+    </tr>
+    <tr>
+      <td>–io-maxbandwidth</td>
+      <td style="text-align: center">0</td>
+      <td>시스템 드라이브의 최대 입출력 대역폭 제한 (Windows 만 해당)</td>
+    </tr>
+    <tr>
+      <td>–io-maxiops</td>
+      <td style="text-align: center">0</td>
+      <td>시스템 드라이브의 최대 입출력 제한 (Windows에만 해당)</td>
+    </tr>
+    <tr>
+      <td>–ip</td>
+      <td style="text-align: center"> </td>
+      <td>IPv4 주소 (예 : 172.30.100.104)</td>
+    </tr>
+    <tr>
+      <td>–ip6</td>
+      <td style="text-align: center"> </td>
+      <td>IPv6 주소 (예 : 2001 : db8 :: 33)</td>
+    </tr>
+    <tr>
+      <td>–ipc</td>
+      <td style="text-align: center"> </td>
+      <td>사용할 IPC 네임 스페이스</td>
+    </tr>
+    <tr>
+      <td>–isolation</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너의 격리유형을 설정</td>
+    </tr>
+    <tr>
+      <td>–kernel-memory</td>
+      <td style="text-align: center">0</td>
+      <td>커널 메모리 제한</td>
+    </tr>
+    <tr>
+      <td>–label, -l</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너에 메타 데이터 설정</td>
+    </tr>
+    <tr>
+      <td>–label-file</td>
+      <td style="text-align: center"> </td>
+      <td>레이블로 구분 된 파일을 읽기</td>
+    </tr>
+    <tr>
+      <td>–link</td>
+      <td style="text-align: center"> </td>
+      <td>다른 컨테이너에 링크 추가</td>
+    </tr>
+    <tr>
+      <td>–link-local-ip</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너 IPv4 / IPv6 링크 로컬 주소</td>
+    </tr>
+    <tr>
+      <td>–log-driver</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너에 대한 로깅 드라이버</td>
+    </tr>
+    <tr>
+      <td>–log-opt</td>
+      <td style="text-align: center"> </td>
+      <td>로깅 드라이버 옵션</td>
+    </tr>
+    <tr>
+      <td>–mac-address</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너 MAC 주소 (예 : 92 : d0 : c6 ​​: 0a : 29 : 33)</td>
+    </tr>
+    <tr>
+      <td>–memory, -m</td>
+      <td style="text-align: center">0</td>
+      <td>메모리 제한</td>
+    </tr>
+    <tr>
+      <td>–memory-reservation</td>
+      <td style="text-align: center">0</td>
+      <td>유동적인 메모리 제한</td>
+    </tr>
+    <tr>
+      <td>–memory-swap</td>
+      <td style="text-align: center">0</td>
+      <td>스왑 한도 = 메모리 + 스왑, ‘-1’은 무제한 스왑을 가능</td>
+    </tr>
+    <tr>
+      <td>–memory-swappiness</td>
+      <td style="text-align: center">-1</td>
+      <td>컨테이너 메모리 스왑 (0 ~ 100) 조정</td>
+    </tr>
+    <tr>
+      <td>–mount</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너에 파일 시스템을 마운트</td>
+    </tr>
+    <tr>
+      <td>–name</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너에 이름 지정</td>
+    </tr>
+    <tr>
+      <td>–net</td>
+      <td style="text-align: center">default</td>
+      <td>컨테이너를 네트워크에 연결</td>
+    </tr>
+    <tr>
+      <td>–net-alias</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너에 네트워크 범위 별칭 추가</td>
+    </tr>
+    <tr>
+      <td>–network</td>
+      <td style="text-align: center">default</td>
+      <td>컨테이너를 네트워크에 연결</td>
+    </tr>
+    <tr>
+      <td>–network-alias</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너에 네트워크 범위 별칭 추가</td>
+    </tr>
+    <tr>
+      <td>–no-healthcheck</td>
+      <td style="text-align: center">FALSE</td>
+      <td>컨테이너가 지정한 HEALTHCHECK 비활성화</td>
+    </tr>
+    <tr>
+      <td>–oom-kill-disable</td>
+      <td style="text-align: center">FALSE</td>
+      <td>OOM 킬러 미사용</td>
+    </tr>
+    <tr>
+      <td>–oom-score-adj</td>
+      <td style="text-align: center">0</td>
+      <td>호스트의 OOM 환경 설정 조정 (-1000 - 1000)</td>
+    </tr>
+    <tr>
+      <td>–pid</td>
+      <td style="text-align: center"> </td>
+      <td>사용할 PID 네임 스페이스</td>
+    </tr>
+    <tr>
+      <td>–pids-limit</td>
+      <td style="text-align: center">0</td>
+      <td>컨테이너 pids 한도 조정 (무제한의 경우 -1로 설정)</td>
+    </tr>
+    <tr>
+      <td>–privileged</td>
+      <td style="text-align: center">FALSE</td>
+      <td>이 컨테이너에 확장 된 리눅스 커널 기능(Capability) 권한을 부여</td>
+    </tr>
+    <tr>
+      <td>–publish, -p</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너의 포트를 호스트에 게시</td>
+    </tr>
+    <tr>
+      <td>–publish-all, -P</td>
+      <td style="text-align: center">FALSE</td>
+      <td>호스트에 연결된 컨테이너의 모든 포트를 외부에 노출</td>
+    </tr>
+    <tr>
+      <td>–read-only</td>
+      <td style="text-align: center">FALSE</td>
+      <td>컨테이너의 루트 파일 시스템을 읽기 전용으로 마운트</td>
+    </tr>
+    <tr>
+      <td>–restart</td>
+      <td style="text-align: center">no</td>
+      <td>컨테이너가 종료 할 때 적용 할 정책을 다시 시작</td>
+    </tr>
+    <tr>
+      <td>–rm</td>
+      <td style="text-align: center">FALSE</td>
+      <td>컨테이너가 종료되면 컨테이너도 자동으로 제거합니다.</td>
+    </tr>
+    <tr>
+      <td>–runtime</td>
+      <td style="text-align: center"> </td>
+      <td>이 컨테이너에 사용하는 런타임</td>
+    </tr>
+    <tr>
+      <td>–security-opt</td>
+      <td style="text-align: center"> </td>
+      <td>보안 옵션</td>
+    </tr>
+    <tr>
+      <td>–shm-size</td>
+      <td style="text-align: center">0</td>
+      <td>/ dev / shm의 크기</td>
+    </tr>
+    <tr>
+      <td>–sig-proxy</td>
+      <td style="text-align: center">TRUE</td>
+      <td>모든 시그널을 프로세스에 전달(TTY 모드가 아닐 때도). 단 SIGCHLD, SIGKILL, SIGSTOP 시그널은 전달</td>
+    </tr>
+    <tr>
+      <td>–stop-signal</td>
+      <td style="text-align: center">SIGTERM</td>
+      <td>컨테이너를 멈추게하는 신호</td>
+    </tr>
+    <tr>
+      <td>–stop-timeout</td>
+      <td style="text-align: center">0</td>
+      <td>컨테이너를 중지하는 시간 초과 (초)</td>
+    </tr>
+    <tr>
+      <td>–storage-opt</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너의 저장소 드라이버 옵션</td>
+    </tr>
+    <tr>
+      <td>–sysctl</td>
+      <td style="text-align: center">map[]</td>
+      <td>Sysctl 옵션</td>
+    </tr>
+    <tr>
+      <td>–tmpfs</td>
+      <td style="text-align: center"> </td>
+      <td>tmpfs 디렉토리 마운트</td>
+    </tr>
+    <tr>
+      <td>–tty, -t</td>
+      <td style="text-align: center">FALSE</td>
+      <td>가상 TTY 할당</td>
+    </tr>
+    <tr>
+      <td>–ulimit</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너 내 제한조건 설정</td>
+    </tr>
+    <tr>
+      <td>–user, -u</td>
+      <td style="text-align: center"> </td>
+      <td>사용자 이름 또는 UID (형식 : &lt;name | uid&gt; [: &lt;group | gid&gt;])</td>
+    </tr>
+    <tr>
+      <td>–userns</td>
+      <td style="text-align: center"> </td>
+      <td>사용할 사용자 이름 공간</td>
+    </tr>
+    <tr>
+      <td>–uts</td>
+      <td style="text-align: center"> </td>
+      <td>사용할 UTS 네임 스페이스</td>
+    </tr>
+    <tr>
+      <td>–volume, -v</td>
+      <td style="text-align: center"> </td>
+      <td>볼륨 마운트</td>
+    </tr>
+    <tr>
+      <td>–volume-driver</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너 용 선택적 볼륨 드라이버</td>
+    </tr>
+    <tr>
+      <td>–volumes-from</td>
+      <td style="text-align: center"> </td>
+      <td>지정된 컨테이너에서 볼륨 마운트</td>
+    </tr>
+    <tr>
+      <td>–workdir, -w</td>
+      <td style="text-align: center"> </td>
+      <td>컨테이너 내부 작업 디렉토리</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p>참고 사이트</p>
+<ul>
+  <li>Docker 문서 사이트 : (<a href="https://docs.docker.com/engine/reference/commandline/">https://docs.docker.com/engine/reference/commandline/</a>)</li>
+  <li>류재영님의 블로그 : (<a href="http://longbe00.blogspot.kr/">http://longbe00.blogspot.kr/</a>)</li>
+</ul>
+
+
+
+  </div>
+
+
+  
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+this.page.url = 'http://localhost:4000/docker/2017/03/20/docker_command_build_push_pull_run.html';
+this.page.identifier = 'http://localhost:4000/docker/2017/03/20/docker_command_build_push_pull_run.html';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://17billion.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">17billion</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              17billion
+            
+            </li>
+            
+            <li><a href="mailto:17earlgrey@gmail.com">17earlgrey@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jekyll</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">jekyllrb</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

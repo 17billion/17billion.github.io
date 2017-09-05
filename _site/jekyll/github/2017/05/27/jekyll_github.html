@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Github와 연동하여 Jekyll 프로젝트 호스팅하기</title>
+  <meta name="description" content="Jekyll과 Github를 연동하면 자신의 프로젝트 페이지나 블로그, 웹사이트를 무료로 GitHub에 호스팅을 할 수 있습니다. 이번 글에서는 지난번에 생성한 로컬의 Jekyll 프로젝트를 Github를 이용하여 호스팅하는 것까지 알려드리겠습니다. 아래 설명 중 Command C...">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="canonical" href="http://localhost:4000/jekyll/github/2017/05/27/jekyll_github.html">
+  <link rel="alternate" type="application/rss+xml" title="17billion" href="/feed.xml">
+
+
+  
+</head>
+
+  <body>
+	
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">17billion</a>
+	<a class="site-title-search"> <!— Html Elements for Search -->
+<div id="search-container" >
+<input type="text" id="search-input" placeholder="search...">
+<ul id="results-container"></ul>
+</div>
+
+<!-- Script pointing to jekyll-search.js -->
+<script src="/dest/jekyll-search.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+      SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('results-container'),
+        json: '/search.json',
+        searchResultTemplate: '<li class="results-li"><a href="{url}" title="{desc}">{title}</a></li>',
+        noResultsText: 'No results found',
+        limit: 10,
+        fuzzy: false,
+        exclude: ['Welcome']
+      })
+</script>
+
+ 
+  
+
+
+
+        </a>
+
+ <a class="site-title"/> 
+    <nav class="site-nav">
+
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+
+        </svg>
+		
+
+      </span>
+				  
+      <div class="trigger">
+		
+       
+         
+          <a class="page-link" href="/about/">About</a>
+		 
+        
+         
+        
+         
+        
+         
+        
+         
+        
+         
+        
+         
+          <a class="page-link" href="/Tags/">Tags</a>
+		 
+        
+         
+        
+         
+        
+
+      </div>
+	 	
+    </nav>
+
+  </div>
+ 
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Github와 연동하여 Jekyll 프로젝트 호스팅하기</h1>
+
+	<div class="post-tags">
+  
+  
+  <a href="/tags/#jekyll">jekyll</a>, 
+  
+  <a href="/tags/#github">github</a>
+  
+</div>
+
+    <p class="post-meta"><time datetime="2017-05-27T09:51:42+09:00" itemprop="datePublished">May 27, 2017</time></p>
+    </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <blockquote>
+  <p><strong>Jekyll</strong>과 <strong>Github</strong>를 연동하면 자신의 프로젝트 페이지나 블로그, 웹사이트를 무료로 GitHub에 호스팅을 할 수 있습니다. <br />
+ 이번 글에서는 지난번에 생성한 로컬의 Jekyll 프로젝트를 Github를 이용하여 호스팅하는 것까지 알려드리겠습니다.</p>
+</blockquote>
+
+<blockquote>
+  <p>아래 설명 중 Command Console은 대부분 Git Bash를 설치하여 진행했으며 <br />
+$ .. 부분의 명령어를 실행하여 진행해주시면 됩니다.</p>
+</blockquote>
+
+<h4 id="1-github-가입-httpsgithubcom">1. github 가입 (<a href="https://github.com/">https://github.com/</a>)</h4>
+<p><img src="/images/jekyll_github/1_signup_github.jpg" alt="1_signup_github" /></p>
+<h4 id="1-2-public-repository-선택-후-continue-클릭-private-repository는-유로">1-2. public repository 선택 후 Continue 클릭 (private repository는 유로)</h4>
+<p><img src="/images/jekyll_github/1_2_signup_github.jpg" alt="1_2_signup_github" /></p>
+<h4 id="1-3-사용자-정보-기입-기입을-원하지-않을-경우-아래-skip-the-step-클릭">1-3. 사용자 정보 기입 (기입을 원하지 않을 경우 아래 skip the step 클릭)</h4>
+<p><img src="/images/jekyll_github/1_3_signup_github.jpg" alt="1_3_signup_github" /></p>
+<h4 id="1-4-가입-완료">1-4. 가입 완료</h4>
+<p><img src="/images/jekyll_github/1_4_signup_github.jpg" alt="1_4_signup_github" /></p>
+<h4 id="1-5-가입할때-입력한-e-mail에-로그인하여-인증-verify-email-address-클릭">1-5. 가입할때 입력한 E-mail에 로그인하여 인증 (Verify email address 클릭)</h4>
+<p><img src="/images/jekyll_github/1_5_signup_github_email.jpg" alt="1_5_signup_github_email" /></p>
+<h4 id="2-repository-생성">2. repository 생성</h4>
+<h5 id="repository-name을-원하는-namegithubio으로-입력-후-create-repository-클릭-private는-유료">repository name을 원하는 name.github.io으로 입력 후 Create repository 클릭 (private는 유료)</h5>
+<p><img src="/images/jekyll_github/2_make_github_repository.jpg" alt="2_make_github_repository" /></p>
+<h4 id="3-로컬에-있는-jekyll-프로젝트를-생성한-github-repository로-commit-후-push">3. 로컬에 있는 Jekyll 프로젝트를 생성한 github repository로 commit 후 push</h4>
+<h5 id="중간에-인증을-위해-로그인-화면이-나타나는데-가입한-정보로-로그인해주면-됩니다">중간에 인증을 위해 로그인 화면이 나타나는데 가입한 정보로 로그인해주면 됩니다.</h5>
+<h5 id="저는-jekyll-프로젝트를-jekyll_site17billion에-생성했었습니다-아래-과정은-각자-생성한-프로젝트-경로에서-진행해주시면-됩니다-아래-과정중에--git-init---git-remote-add-origin-httpsgithubcom17billion17billiongithubiogit---echo--17billion--readmemd-부분은-최초일때만-진행해하시면-되고-그-이후-업데이트-시에는-github-addcommitpush만-진행해주시면-됩니다">저는 Jekyll 프로젝트를 Jekyll_site/17billion에 생성했었습니다. 아래 과정은 각자 생성한 프로젝트 경로에서 진행해주시면 됩니다. 아래 과정중에 $ git init / $ git remote add origin https://github.com/17billion/17billion.github.io.git / $ echo “# 17billion” » README.md 부분은 최초일때만 진행해하시면 되고 그 이후 업데이트 시에는 github add/commit/push만 진행해주시면 됩니다.</h5>
+<blockquote>
+  <p>$ cd /c/Jekyll_site/17billion <br />
+$ git init</p>
+  <div class="highlighter-rouge"><pre class="highlight"><code>Initialized empty Git repository in C:/Jekyll_site/17billion/.git/
+</code></pre>
+  </div>
+  <p>$ git remote add origin https://github.com/17billion/17billion.github.io.git <br />
+$ echo “# 17billion” » README.md <br />
+$ git add . <br />
+$ git commit -m “first commit”</p>
+  <div class="highlighter-rouge"><pre class="highlight"><code>[master (root-commit) 528fa52] first commit
+ 8 files changed, 174 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 Gemfile
+ create mode 100644 Gemfile.lock
+ create mode 100644 README.md
+ create mode 100644 _config.yml
+ create mode 100644 _posts/2017-05-03-welcome-to-Jekyll.markdown
+ create mode 100644 about.md
+ create mode 100644 index.md
+</code></pre>
+  </div>
+</blockquote>
+
+<blockquote>
+  <p>$ git push -u origin master</p>
+  <div class="highlighter-rouge"><pre class="highlight"><code>Counting objects: 79, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (62/62), done.
+Writing objects: 100% (79/79), 1.70 MiB | 252.00 KiB/s, done.
+Total 79 (delta 7), reused 0 (delta 0)
+remote: Resolving deltas: 100% (7/7), done.
+Branch master set up to track remote branch master from origin.
+To https://github.com/17billion/17billion.github.io.git
+ * [new branch]      master -&gt; master
+</code></pre>
+  </div>
+</blockquote>
+
+<h4 id="3-push-된-jekyll-프로젝트-확인">3. push 된 Jekyll 프로젝트 확인</h4>
+<p><img src="/images/jekyll_github/3_2_github_jekyll_commit.jpg" alt="3_2_github_Jekyll_commit" /></p>
+
+<h4 id="4-호스팅된-주소로-접속확인-httpsrepository-namegithubio">4. 호스팅된 주소로 접속확인 (https://{Repository Name}.github.io/)</h4>
+<p><img src="/images/jekyll_github/4_end_github_jekyll_conn.jpg" alt="4_end_github_Jekyll_conn" /></p>
+
+
+
+  </div>
+
+
+  
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+this.page.url = 'http://localhost:4000/jekyll/github/2017/05/27/jekyll_github.html';
+this.page.identifier = 'http://localhost:4000/jekyll/github/2017/05/27/jekyll_github.html';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://17billion.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">17billion</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              17billion
+            
+            </li>
+            
+            <li><a href="mailto:17earlgrey@gmail.com">17earlgrey@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/jekyll"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jekyll</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/jekyllrb"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">jekyllrb</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
