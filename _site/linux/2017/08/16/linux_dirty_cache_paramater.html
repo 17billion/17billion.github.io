@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>RSA 비대칭키를 이용하여 패스워드 없이 ssh 접속방법</title>
-  <meta name="description" content="각 서버간 RSA 비대칭키를 이용 패스워드 없이 접속하는 방법 $ ssh-keygen $ ssh-copy-id {계정}@{목적지 서버}">
+  <title>Linux : Dirty Page Parameters</title>
+  <meta name="description" content="Dirty Page 란 (링크)">
 
   <link rel="stylesheet" href="/css/styles.css">
-  <link rel="canonical" href="http://localhost:4000/elastic/2017/07/19/ubuntu_rsa_conn_no_pw.html">
+  <link rel="canonical" href="http://localhost:4000/linux/2017/08/16/linux_dirty_cache_paramater.html">
   <link rel="alternate" type="application/rss+xml" title="17billion" href="/feed.xml">
 
 
@@ -108,69 +108,84 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">RSA 비대칭키를 이용하여 패스워드 없이 ssh 접속방법</h1>
+    <h1 class="post-title" itemprop="name headline">Linux : Dirty Page Parameters</h1>
 
 	<div class="post-tags">
   
   
-  <a href="/tags/#Ubuntu">Ubuntu</a>
+  <a href="/tags/#linux">linux</a>
   
 </div>
 
-    <p class="post-meta"><time datetime="2017-07-19T09:51:42+09:00" itemprop="datePublished">Jul 19, 2017</time></p>
+    <p class="post-meta"><time datetime="2017-08-16T09:51:42+09:00" itemprop="datePublished">Aug 16, 2017</time></p>
     </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>각 서버간 RSA 비대칭키를 이용 패스워드 없이 접속하는 방법</p>
+    <h3 id="dirty-page-란-링크"><a href="/linux/2017/08/10/linux_page_cache_dirty_page.html">Dirty Page 란 (링크)</a></h3>
+
+<h4 id="dirty-page-parameters-참고링크-">Dirty Page Parameters (<a href="https://www.kernel.org/doc/Documentation/sysctl/vm.txt">참고링크</a>) <br /></h4>
+<p>(ubuntu 14.04, Kernal 4.2.0-27-generic 기준)</p>
 <blockquote>
-  <ol>
-    <li>$ ssh-keygen</li>
-    <li>$ ssh-copy-id {계정}@{목적지 서버}</li>
-  </ol>
+  <p>$ sysctl -a | grep dirty</p>
 </blockquote>
 
-<p>예시) node2(192.168.56.102)에서 node1(192.168.56.101)로 패스워드 없이 ssh 접속 <br />
-접속을 시도하는 서버(node2)는 Private Key가 필요, 목적지 서버(node1)는 Public Key가 필요 <br />
-(Public Key키는 자물쇠, Private Key는 그 자물쇠를 여는 키)</p>
-
-<h3 id="1-private--public-key-생성-node2에서-실행">1. Private / Public Key 생성 (node2에서 실행)</h3>
-<blockquote>
-  <p>$ ssh-keygen</p>
-  <div class="language-bash highlighter-rouge"><pre class="highlight"><code>Generating public/private rsa key pair.
-Enter file <span class="k">in </span>which to save the key <span class="o">(</span>/home/user/.ssh/id_rsa<span class="o">)</span>:
-Enter passphrase <span class="o">(</span>empty <span class="k">for </span>no passphrase<span class="o">)</span>:
-Enter same passphrase again:
-Your identification has been saved <span class="k">in</span> /home/user/.ssh/id_rsa.
-Your public key has been saved <span class="k">in</span> /home/user/.ssh/id_rsa.pub.
-The key fingerprint is:
+<div class="highlighter-rouge"><pre class="highlight"><code>vm.dirty_background_bytes = 0
+vm.dirty_background_ratio = 10
+vm.dirty_bytes = 0
+vm.dirty_expire_centisecs = 3000
+vm.dirty_ratio = 20
+vm.dirty_writeback_centisecs = 500
+vm.dirtytime_expire_seconds = 43200
 </code></pre>
-  </div>
-  <p>위처럼 메세지가 뜨는데 저장할 경로를 입력하라는 의미, 엔터를 누르면 /home/{계정명}/.ssh/ 경로에 키들이 생성 <br />
-(Private Key : /home/{계정명}/.ssh/id_rsa / Public Key : /home/{계정명}/.ssh/id_rsa.pub) <br /></p>
-</blockquote>
+</div>
 
-<h3 id="2-생성한-public-key를-목적지-서버node1에-복사-">2. 생성한 public Key를 목적지 서버(node1)에 복사 <br /></h3>
+<ul>
+  <li>
+    <p>vm.dirty_background_bytes : 해당 임계치 사이즈(bytes)까지 dirty page가 도달하게 될 경우 flusher threads가 writeback을 진행</p>
+  </li>
+  <li>
+    <p>vm.dirty_background_ratio : 사용가능한 총 메모리에서의 백분율로 해당 임계치 백분율까지 dirty page가 도달하게 될 경우 flusher threads가 writeback을 진행</p>
+  </li>
+  <li>
+    <p>vm.dirty_bytes : 메모리에 flushing 되기 전 dirty page로 채울 수 있는 최대 값 (bytes)</p>
+  </li>
+  <li>
+    <p>vm.dirty_expire_centisecs :  flushing 전 dirty page에 있을 수 있는 기간.  flusher threads가 writeback을 진행하면 더티 페이지가 얼마나 오래된 지 확인하고, 이 값보다 오래된 경우 디스크에 비동기 적으로 기록 (메모리에 더티 페이지를 보유하는 것이 안전하지 않기 때문에 이는 데이터 손실에 대한 보호 장치이기도 함)</p>
+  </li>
+  <li>vm.dirty_ratio : 메모리에 flushing 되기 전 dirty page로 채울 수있는 시스템 메모리의 최대 백분율(%)
+    <ul>
+      <li>설정(dirty_ratio)보다 많은 dirty page를 지속적으로 사용하게 되면 linux에서는 flushing을 정상적으로 수행하지 못하는 것으로 판단하고 write를 중지함, 거기에 높은 load average까지 발생시킴</li>
+    </ul>
+  </li>
+  <li>
+    <p>vm.dirty_writeback_centisecs : pdflush/flush/kdmflush 프로세스가 깨어나고 작업이 완료되어야하는지 확인하는 빈도 (500 &gt; 5초)</p>
+  </li>
+  <li>vm.dirtytime_expire_seconds : dirty time 만료되는 시간 조정하는 파라메터 (http://lists.ceph.com/pipermail/ceph-commit-ceph.com/2015-April/000083.html)</li>
+</ul>
 
-<h4 id="방법-1-">방법 1) <br /></h4>
-<p>생성된 public 키를 조회(cat)하여 그 내용을 목적지 서버의 /home/{계정}/.ssh/authorized_keys에 복사 <br />
-(authorized_keys파일이 없으면 700권한으로 생성) <br /></p>
-
-<h4 id="방법-2-">방법 2) <br /></h4>
-<p>ssh-copy-id {계정}@{목적지 서버 ip} 명령어로 복사 (자동으로 /home/{계정}/.ssh/authorized_keys에 복사됨) <br /></p>
+<p>※ <a href="https://www.kernel.org/doc/Documentation/sysctl/vm.txt">_bytes 버전을 설정하면 _ratio 버전은 0이되고 그 반대의 경우도 마찬가지임</a>   <br />
+※ <a href="https://lwn.net/Articles/216853/">dirty_ratio보다 dirty_backround_ratio 수치가 클 경우 자동으로 dirty_backround_ratio = dirty_ratio / 2로 설정 </a>  <br />
+※ dirty_ratio, background_ratio의 수치는 사용가능한 총 메모리에서의 백분율로 계산 (<a href="https://www.kernel.org/doc/Documentation/sysctl/vm.txt">시스템 총 메모리와 동일하지 않음</a>)  <br /></p>
 <blockquote>
-  <p>$ ssh-copy-id user@192.168.56.101</p>
-  <div class="language-bash highlighter-rouge"><pre class="highlight"><code>The authenticity of host <span class="s1">'192.168.56.101 (192.168.56.101)'</span> can<span class="s1">'t be established.
-ECDSA key fingerprint is 83:38:0a:e4:16:d5:20:c0:30:e7:0b:00:f1:0f:6d:b0.
-Are you sure you want to continue connecting (yes/no)? yes
-/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
-/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
-user@192.168.56.101'</span>s password:
-Number of key<span class="o">(</span>s<span class="o">)</span> added: 1
-Now try logging into the machine, with:   <span class="s2">"ssh 'user@192.168.56.101'"</span>
-and check to make sure that only the key<span class="o">(</span>s<span class="o">)</span> you wanted were added.
-</code></pre>
-  </div>
+  <p>ratio = dirty / MemAvailable * 100 ($ cat /proc/meminfo) <br />
+(MemAvailable이 없을 경우 : <a href="https://www.reddit.com/r/linux/comments/3h7w8f/better_linux_disk_caching_performance_with/">이용 가능한 메모리 = (MemFree + Cached - Mapped)</a> <br /></p>
 </blockquote>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>※ parameter 변경 및 적용방법
+예) dirty_ratio, dirty_background_ratio
+1) 설정 변경
+$ sudo sysctl -w vm.dirty_ratio=10
+$ sudo sysctl -w vm.dirty_background_ratio=5
+2) 변경내용 적용 (커밋)
+$ sudo sysctl -p
+</code></pre>
+</div>
+
+<p>참고 사이트
+kernel.org : <a href="https://www.kernel.org/doc/Documentation/sysctl/vm.txt">https://www.kernel.org/doc/Documentation/sysctl/vm.txt</a>
+lists.ceph.com : <a href="http://lists.ceph.com/pipermail/ceph-commit-ceph.com/2015-April/000083.html">http://lists.ceph.com/pipermail/ceph-commit-ceph.com/2015-April/000083.html</a>
+lwn.net : <a href="https://lwn.net/Articles/216853/">https://lwn.net/Articles/216853/</a>
+reddit : <a href="https://www.reddit.com/r/linux/comments/3h7w8f/better_linux_disk_caching_performance_with/">https://www.reddit.com/r/linux/comments/3h7w8f/better_linux_disk_caching_performance_with/</a> <br /></p>
 
 
 
@@ -181,8 +196,8 @@ and check to make sure that only the key<span class="o">(</span>s<span class="o"
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
-this.page.url = 'http://localhost:4000/elastic/2017/07/19/ubuntu_rsa_conn_no_pw.html';
-this.page.identifier = 'http://localhost:4000/elastic/2017/07/19/ubuntu_rsa_conn_no_pw.html';
+this.page.url = 'http://localhost:4000/linux/2017/08/16/linux_dirty_cache_paramater.html';
+this.page.identifier = 'http://localhost:4000/linux/2017/08/16/linux_dirty_cache_paramater.html';
 };
 
 (function() { // DON'T EDIT BELOW THIS LINE

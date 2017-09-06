@@ -1,6 +1,24 @@
 [
   
     {
+      "title"    : "Linux : Dirty Page Parameters",
+      "category" : "",
+      "tags"     : "linux",
+      "url"      : "/linux/2017/08/16/linux_dirty_cache_paramater.html",
+      "date"     : "2017-08-16 09:51:42 +0900",
+  "content"   : "[\n  {% for post in site.posts %}\n    {\n      \"title\"    : \"{{ post.title | escape }}\",\n      \"category\" : \"{{ post.category }}\",\n      \"tags\"     : \"{{ post.tags | join: ', ' }}\",\n      \"url\"      : \"{{ site.baseurl }}{{ post.url }}\",\n      \"date\"     : \"{{ post.date }}\",\n  \"content\"   : {{ page.content | jsonify }}\n    } {% unless forloop.last %},{% endunless %}\n  {% endfor %}\n  ,\n  {% for page in site.pages %}\n   {\n     {% if page.title != nil %}\n        \"title\"    : \"{{ page.title | escape }}\",\n        \"category\" : \"{{ page.category }}\",\n        \"tags\"     : \"{{ page.tags | join: ', ' }}\",\n        \"url\"      : \"{{ site.baseurl }}{{ page.url }}\",\n        \"date\"     : \"{{ page.date }}\",\n  \"content\"   : {{ page.content | jsonify }}\n     {% endif %}\n   } {% unless forloop.last %},{% endunless %}\n  {% endfor %}\n]\n\n \n  \n\n\n\n        "
+    } ,
+  
+    {
+      "title"    : "Linux : Page Cache, Dirty Page",
+      "category" : "",
+      "tags"     : "linux",
+      "url"      : "/linux/2017/08/10/linux_page_cache_dirty_page.html",
+      "date"     : "2017-08-10 09:51:42 +0900",
+  "content"   : "[\n  {% for post in site.posts %}\n    {\n      \"title\"    : \"{{ post.title | escape }}\",\n      \"category\" : \"{{ post.category }}\",\n      \"tags\"     : \"{{ post.tags | join: ', ' }}\",\n      \"url\"      : \"{{ site.baseurl }}{{ post.url }}\",\n      \"date\"     : \"{{ post.date }}\",\n  \"content\"   : {{ page.content | jsonify }}\n    } {% unless forloop.last %},{% endunless %}\n  {% endfor %}\n  ,\n  {% for page in site.pages %}\n   {\n     {% if page.title != nil %}\n        \"title\"    : \"{{ page.title | escape }}\",\n        \"category\" : \"{{ page.category }}\",\n        \"tags\"     : \"{{ page.tags | join: ', ' }}\",\n        \"url\"      : \"{{ site.baseurl }}{{ page.url }}\",\n        \"date\"     : \"{{ page.date }}\",\n  \"content\"   : {{ page.content | jsonify }}\n     {% endif %}\n   } {% unless forloop.last %},{% endunless %}\n  {% endfor %}\n]\n\n \n  \n\n\n\n        "
+    } ,
+  
+    {
       "title"    : "퀵정렬 (quick Sort)",
       "category" : "",
       "tags"     : "algorithm",
@@ -19,7 +37,7 @@
     } ,
   
     {
-      "title"    : "Ubuntu : RSA 비대칭키를 이용하여 패스워드 없이 ssh 접속방법",
+      "title"    : "RSA 비대칭키를 이용하여 패스워드 없이 ssh 접속방법",
       "category" : "",
       "tags"     : "Ubuntu",
       "url"      : "/elastic/2017/07/19/ubuntu_rsa_conn_no_pw.html",

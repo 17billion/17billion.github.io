@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>RSA 비대칭키를 이용하여 패스워드 없이 ssh 접속방법</title>
-  <meta name="description" content="각 서버간 RSA 비대칭키를 이용 패스워드 없이 접속하는 방법 $ ssh-keygen $ ssh-copy-id {계정}@{목적지 서버}">
+  <title>Linux : Page Cache, Dirty Page</title>
+  <meta name="description" content="1. Page Cache란 ($ cat /proc/meminfo의 Cached) Linux Page Cache의 역할은 디스크의 파일에 대한 액세스 속도를 향상시키기 위함 Write back 방식에서 page cache는 사용자 프로세스가 읽기 또는 쓰기를 시작할 때마다 사용되며 ...">
 
   <link rel="stylesheet" href="/css/styles.css">
-  <link rel="canonical" href="http://localhost:4000/elastic/2017/07/19/ubuntu_rsa_conn_no_pw.html">
+  <link rel="canonical" href="http://localhost:4000/linux/2017/08/10/linux_page_cache_dirty_page.html">
   <link rel="alternate" type="application/rss+xml" title="17billion" href="/feed.xml">
 
 
@@ -108,69 +108,58 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">RSA 비대칭키를 이용하여 패스워드 없이 ssh 접속방법</h1>
+    <h1 class="post-title" itemprop="name headline">Linux : Page Cache, Dirty Page</h1>
 
 	<div class="post-tags">
   
   
-  <a href="/tags/#Ubuntu">Ubuntu</a>
+  <a href="/tags/#linux">linux</a>
   
 </div>
 
-    <p class="post-meta"><time datetime="2017-07-19T09:51:42+09:00" itemprop="datePublished">Jul 19, 2017</time></p>
+    <p class="post-meta"><time datetime="2017-08-10T09:51:42+09:00" itemprop="datePublished">Aug 10, 2017</time></p>
     </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>각 서버간 RSA 비대칭키를 이용 패스워드 없이 접속하는 방법</p>
-<blockquote>
-  <ol>
-    <li>$ ssh-keygen</li>
-    <li>$ ssh-copy-id {계정}@{목적지 서버}</li>
-  </ol>
-</blockquote>
+    <h3 id="1-page-cache란--cat-procmeminfo의-cached">1. Page Cache란 ($ cat /proc/meminfo의 Cached)</h3>
+<ul>
+  <li><a href="http://www.linux-tutorial.info/modules.php?name=MContent&amp;pageid=310">Linux Page Cache의 역할은 디스크의 파일에 대한 액세스 속도를 향상시키기 위함</a></li>
+  <li><a href="http://unixadminschool.com/blog/2013/10/rhel-6-controlling-cache-memory-page-cache-size/">Write back 방식에서 page cache는 사용자 프로세스가 읽기 또는 쓰기를 시작할 때마다 사용되며 커널은 사용자가 작업중인 파일의 사본을 찾으며 그러한 사본이없는 경우 캐시 메모리의 한 페이지를 새로 할당하고 디스크에서 읽은 해당 내용을 적재</a></li>
+  <li>page cache는 linux에서 유동적으로 할당됨 (<a href="https://www.kernel.org/doc/gorman/html/understand/understand009.html">Physical Page Allocation</a>)</li>
+  <li>임의적으로 disable 할 수 없음</li>
+</ul>
 
-<p>예시) node2(192.168.56.102)에서 node1(192.168.56.101)로 패스워드 없이 ssh 접속 <br />
-접속을 시도하는 서버(node2)는 Private Key가 필요, 목적지 서버(node1)는 Public Key가 필요 <br />
-(Public Key키는 자물쇠, Private Key는 그 자물쇠를 여는 키)</p>
+<h3 id="2-dirty-page란--cat-procmeminfo의-dirty">2. Dirty Page란 ($ cat /proc/meminfo의 Dirty)</h3>
+<ul>
+  <li>읽은 파일이 디스크에 업데이트 되지 않고 page cache 내 특정 공간에만 업데이트 되어 있는 경우가 있는데 이때 그 특정 공간을 dirty page라고 함</li>
+  <li>dirty page의 내용들은 page cache의 효율화를 위해 정해진 설정을 통해 주기적으로 디스크에 적재되고 dirty 공간을 비우게 되는데 이를 flushing이라고 함
+    <blockquote>
+      <p><a href="http://unixadminschool.com/blog/2013/10/rhel-6-controlling-cache-memory-page-cache-size/">dflush (kernel version 2.6.31까지), flush (커널 버전 2.6.32 이상)</a></p>
+    </blockquote>
+  </li>
+  <li>설정(dirty_ratio)보다 많은 dirty page를 지속적으로 사용하게 되면 linux에서는 flushing을 정상적으로 수행하지 못하는 것으로 판단하고 write를 중지. 거기에 상태 D 프로세스 증가시키며 높은 load average까지 발생시킴 <br />
+  ※ 이때 커널 로그(/var/log/kern.log)에서는 아래와 같은 로그가 발생<br />
+      <code class="highlighter-rouge">
+      INFO: task {process}:{port} blocked for more than 120 seconds.
+      "echo 0 &gt; /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+     </code>			  	
+      <br />- hung_task.c 이 코드에 의하면 위는 state D 상태에 머물러 있는 작업을 감지하는 커널스래드이며 위 로그는 해당 작업이 D 상태로 머물러 있다는 의미 <br />
+      - 아래처럼 튜닝을 해주면 해결되는 경우가 있음 (<a href="https://www.blackmoreops.com/2014/09/22/linux-kernel-panic-issue-fix-hung_task_timeout_secs-blocked-120-seconds-problem/">참고 사이트</a>)
+    <blockquote>
+      <p>$ sudo sysctl -w vm.dirty_ratio=10  <br />
+$ sudo sysctl -w vm.dirty_background_ratio=5  <br />
+$ sudo sysctl -p  <br /></p>
+    </blockquote>
+  </li>
+</ul>
 
-<h3 id="1-private--public-key-생성-node2에서-실행">1. Private / Public Key 생성 (node2에서 실행)</h3>
-<blockquote>
-  <p>$ ssh-keygen</p>
-  <div class="language-bash highlighter-rouge"><pre class="highlight"><code>Generating public/private rsa key pair.
-Enter file <span class="k">in </span>which to save the key <span class="o">(</span>/home/user/.ssh/id_rsa<span class="o">)</span>:
-Enter passphrase <span class="o">(</span>empty <span class="k">for </span>no passphrase<span class="o">)</span>:
-Enter same passphrase again:
-Your identification has been saved <span class="k">in</span> /home/user/.ssh/id_rsa.
-Your public key has been saved <span class="k">in</span> /home/user/.ssh/id_rsa.pub.
-The key fingerprint is:
-</code></pre>
-  </div>
-  <p>위처럼 메세지가 뜨는데 저장할 경로를 입력하라는 의미, 엔터를 누르면 /home/{계정명}/.ssh/ 경로에 키들이 생성 <br />
-(Private Key : /home/{계정명}/.ssh/id_rsa / Public Key : /home/{계정명}/.ssh/id_rsa.pub) <br /></p>
-</blockquote>
-
-<h3 id="2-생성한-public-key를-목적지-서버node1에-복사-">2. 생성한 public Key를 목적지 서버(node1)에 복사 <br /></h3>
-
-<h4 id="방법-1-">방법 1) <br /></h4>
-<p>생성된 public 키를 조회(cat)하여 그 내용을 목적지 서버의 /home/{계정}/.ssh/authorized_keys에 복사 <br />
-(authorized_keys파일이 없으면 700권한으로 생성) <br /></p>
-
-<h4 id="방법-2-">방법 2) <br /></h4>
-<p>ssh-copy-id {계정}@{목적지 서버 ip} 명령어로 복사 (자동으로 /home/{계정}/.ssh/authorized_keys에 복사됨) <br /></p>
-<blockquote>
-  <p>$ ssh-copy-id user@192.168.56.101</p>
-  <div class="language-bash highlighter-rouge"><pre class="highlight"><code>The authenticity of host <span class="s1">'192.168.56.101 (192.168.56.101)'</span> can<span class="s1">'t be established.
-ECDSA key fingerprint is 83:38:0a:e4:16:d5:20:c0:30:e7:0b:00:f1:0f:6d:b0.
-Are you sure you want to continue connecting (yes/no)? yes
-/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
-/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
-user@192.168.56.101'</span>s password:
-Number of key<span class="o">(</span>s<span class="o">)</span> added: 1
-Now try logging into the machine, with:   <span class="s2">"ssh 'user@192.168.56.101'"</span>
-and check to make sure that only the key<span class="o">(</span>s<span class="o">)</span> you wanted were added.
-</code></pre>
-  </div>
-</blockquote>
+<p>참고 사이트 <br />
+linux-tutorial.info : <a href="http://www.linux-tutorial.info/modules.php?name=MContent&amp;pageid=310">http://www.linux-tutorial.info/modules.php?name=MContent&amp;pageid=310</a> <br />
+unixadminschool.com : <a href="http://unixadminschool.com/blog/2013/10/rhel-6-controlling-cache-memory-page-cache-size/">http://unixadminschool.com/blog/2013/10/rhel-6-controlling-cache-memory-page-cache-size/</a> <br />
+kernel.org(1) : <a href="https://www.kernel.org/doc/gorman/html/understand/understand009.html">https://www.kernel.org/doc/gorman/html/understand/understand009.html</a> <br />
+kernel.org(2) : <a href="https://www.kernel.org/doc/Documentation/sysctl/vm.txt">https://www.kernel.org/doc/Documentation/sysctl/vm.txt</a> <br />
+www.blackmoreops.com : <a href="https://www.blackmoreops.com/2014/09/22/linux-kernel-panic-issue-fix-hung_task_timeout_secs-blocked-120-seconds-problem/">https://www.blackmoreops.com/2014/09/22/linux-kernel-panic-issue-fix-hung_task_timeout_secs-blocked-120-seconds-problem/</a> <br />
+Linux Tuning The VM (memory) Subsystem : <a href="https://www.cyberciti.biz/faq/linux-kernel-tuning-virtual-memory-subsystem/">https://www.cyberciti.biz/faq/linux-kernel-tuning-virtual-memory-subsystem/</a> <br /></p>
 
 
 
@@ -181,8 +170,8 @@ and check to make sure that only the key<span class="o">(</span>s<span class="o"
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
-this.page.url = 'http://localhost:4000/elastic/2017/07/19/ubuntu_rsa_conn_no_pw.html';
-this.page.identifier = 'http://localhost:4000/elastic/2017/07/19/ubuntu_rsa_conn_no_pw.html';
+this.page.url = 'http://localhost:4000/linux/2017/08/10/linux_page_cache_dirty_page.html';
+this.page.identifier = 'http://localhost:4000/linux/2017/08/10/linux_page_cache_dirty_page.html';
 };
 
 (function() { // DON'T EDIT BELOW THIS LINE
