@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://localhost:4000/kafka/2017/09/05/kafka_install_exec.html</loc>
+    <lastmod>2017-09-05T09:51:42+09:00</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:4000/kafka/2017/09/01/kafka_leader_not_available.html</loc>
+    <lastmod>2017-09-01T09:51:42+09:00</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:4000/kafka/2017/08/31/kafka_delete_topic.html</loc>
+    <lastmod>2017-08-31T09:51:42+09:00</lastmod>
+  </url>
+  <url>
     <loc>http://localhost:4000/linux/2017/08/16/linux_dirty_cache_paramater.html</loc>
     <lastmod>2017-08-16T09:51:42+09:00</lastmod>
   </url>
@@ -213,6 +225,15 @@
     </url>
     <url>
       <loc>http://localhost:4000/linux/2017/08/16/linux_dirty_cache_paramater.html</loc>
+    </url>
+    <url>
+      <loc>http://localhost:4000/kafka/2017/08/31/kafka_delete_topic.html</loc>
+    </url>
+    <url>
+      <loc>http://localhost:4000/kafka/2017/09/01/kafka_leader_not_available.html</loc>
+    </url>
+    <url>
+      <loc>http://localhost:4000/kafka/2017/09/05/kafka_install_exec.html</loc>
     </url>
   <url>
     <loc>http://localhost:4000/google7924642da2040245.html</loc>
