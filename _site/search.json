@@ -1,6 +1,24 @@
 [
   
     {
+      "title"    : "Kafka 메세지를 Logstash를 이용하여 Elastic Search에 저장하기 Kafka(0.10.0.1) / Logstash(5.5.1) / Elastic Search(5.5.1)",
+      "category" : "",
+      "tags"     : "elastic, kafka",
+      "url"      : "/elastic,/kafka/2017/10/05/elastic_stack_elk_kafka.html",
+      "date"     : "2017-10-05 09:51:42 +0900",
+  "content"   : "[\n  {% for post in site.posts %}\n    {\n      \"title\"    : \"{{ post.title | escape }}\",\n      \"category\" : \"{{ post.category }}\",\n      \"tags\"     : \"{{ post.tags | join: ', ' }}\",\n      \"url\"      : \"{{ site.baseurl }}{{ post.url }}\",\n      \"date\"     : \"{{ post.date }}\",\n  \"content\"   : {{ page.content | jsonify }}\n    } {% unless forloop.last %},{% endunless %}\n  {% endfor %}\n  ,\n  {% for page in site.pages %}\n   {\n     {% if page.title != nil %}\n        \"title\"    : \"{{ page.title | escape }}\",\n        \"category\" : \"{{ page.category }}\",\n        \"tags\"     : \"{{ page.tags | join: ', ' }}\",\n        \"url\"      : \"{{ site.baseurl }}{{ page.url }}\",\n        \"date\"     : \"{{ page.date }}\",\n  \"content\"   : {{ page.content | jsonify }}\n     {% endif %}\n   } {% unless forloop.last %},{% endunless %}\n  {% endfor %}\n]\n\n \n  \n\n\n\n        "
+    } ,
+  
+    {
+      "title"    : "log를 filebeat(5.3.0) 이용하여 kafka(0.10.0.1)로 프로듀싱하기",
+      "category" : "",
+      "tags"     : "elastic, kafka",
+      "url"      : "/elastic,/kafka/2017/09/20/filebeat_kafka.html",
+      "date"     : "2017-09-20 09:51:42 +0900",
+  "content"   : "[\n  {% for post in site.posts %}\n    {\n      \"title\"    : \"{{ post.title | escape }}\",\n      \"category\" : \"{{ post.category }}\",\n      \"tags\"     : \"{{ post.tags | join: ', ' }}\",\n      \"url\"      : \"{{ site.baseurl }}{{ post.url }}\",\n      \"date\"     : \"{{ post.date }}\",\n  \"content\"   : {{ page.content | jsonify }}\n    } {% unless forloop.last %},{% endunless %}\n  {% endfor %}\n  ,\n  {% for page in site.pages %}\n   {\n     {% if page.title != nil %}\n        \"title\"    : \"{{ page.title | escape }}\",\n        \"category\" : \"{{ page.category }}\",\n        \"tags\"     : \"{{ page.tags | join: ', ' }}\",\n        \"url\"      : \"{{ site.baseurl }}{{ page.url }}\",\n        \"date\"     : \"{{ page.date }}\",\n  \"content\"   : {{ page.content | jsonify }}\n     {% endif %}\n   } {% unless forloop.last %},{% endunless %}\n  {% endfor %}\n]\n\n \n  \n\n\n\n        "
+    } ,
+  
+    {
       "title"    : "kafka(0.10.0.1) 설치 및 실행",
       "category" : "",
       "tags"     : "kafka",

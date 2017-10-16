@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>kafka(0.10.0.1) 설치 및 실행</title>
-  <meta name="description" content="kafka 설치 및 실행 방법(ubuntu 14.04 기준)">
+  <title>log를 filebeat(5.3.0) 이용하여 kafka(0.10.0.1)로 프로듀싱하기</title>
+  <meta name="description" content="filebeat(5.3.0), kafka(2.10-0.10.0.1) 기준">
 
   <link rel="stylesheet" href="/css/styles.css">
-  <link rel="canonical" href="http://localhost:4000/kafka/2017/09/05/kafka_install_exec.html">
+  <link rel="canonical" href="http://localhost:4000/elastic,/kafka/2017/09/20/filebeat_kafka.html">
   <link rel="alternate" type="application/rss+xml" title="17billion" href="/feed.xml">
 
 
@@ -121,114 +121,118 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">kafka(0.10.0.1) 설치 및 실행</h1>
+    <h1 class="post-title" itemprop="name headline">log를 filebeat(5.3.0) 이용하여 kafka(0.10.0.1)로 프로듀싱하기</h1>
 
 	<div class="post-tags">
   
+  
+  <a href="/tags/#elastic">elastic</a>, 
   
   <a href="/tags/#kafka">kafka</a>
   
 </div>
 
-    <p class="post-meta"><time datetime="2017-09-05T09:51:42+09:00" itemprop="datePublished">Sep 5, 2017</time></p>
+    <p class="post-meta"><time datetime="2017-09-20T09:51:42+09:00" itemprop="datePublished">Sep 20, 2017</time></p>
     </header>
 
   <div class="post-content" itemprop="articleBody">
-    <h3 id="kafka-설치-및-실행-방법ubuntu-1404-기준-">kafka 설치 및 실행 방법(ubuntu 14.04 기준) <br /></h3>
+    <p>filebeat(5.3.0), kafka(2.10-0.10.0.1) 기준</p>
 
-<h4 id="1-java-설치">1. JAVA 설치</h4>
-<blockquote>
-  <p>$ sudo add-apt-repository ppa:openjdk-r/ppa <br />
-$ sudo apt-get update  <br />
-$ sudo apt-get install openjdk-8-jdk  <br /></p>
-</blockquote>
+<hr />
 
-<h4 id="2-kafka-설치-usrlocal-디렉토리-내-설치-후-심볼링-링크-설정-">2. kafka 설치 (/usr/local/ 디렉토리 내 설치 후 심볼링 링크 설정) <br /></h4>
-<blockquote>
-  <p>$ wget http://apache.mirror.cdnetworks.com/kafka/0.10.0.1/kafka_2.10-0.10.0.1.tgz <br />
-$ tar zxvf kafka_2.10-0.10.0.1.tgz <br />
-$ sudo cp -r kafka_2.10-0.10.0.1 /usr/local/ <br />
-$ sudo ln -s /usr/local/kafka_2.10-0.10.0.1/ /usr/local/kafka <br />
-$ sudo mkdir -p /tmp/zookeeper</p>
-</blockquote>
+<h4 id="예시-filebeat을-이용해서-서버의-apache-log를-kafka로-프로듀싱하기">예시) filebeat을 이용해서 서버의 apache log를 kafka로 프로듀싱하기</h4>
 
-<h4 id="3-kafka-broker-설정">3. kafka broker 설정</h4>
+<h4 id="1-apach2-설치">1. apach2 설치</h4>
 <blockquote>
-  <p>$ vi {$KAFKA_HOME}/config/server.properties <br /></p>
+  <p>$ sudo apt-get update <br />
+$ sudo apt-get install apache2 <br /></p>
   <ul>
-    <li>broker.id=0 부분의 0을 1이상으로 변경 (각 kafka broker 마다 id가 달라야 함)<br /></li>
-    <li>로그를 저장하는 디렉토리 설정은 log.dirs=/tmp/kafka-logs 부분 <br /></li>
-    <li>참고. zookeeper 관련 설정변경은 {$KAFKA_HOME}/config/zookeeper.properties 파일 <br /></li>
+    <li>실행확인 <br />
+$ curl localhost <br /></li>
+    <li>로그 조회 <br />
+$ tail -F /var/log/apache2/access.log <br /></li>
   </ul>
 </blockquote>
 
-<h4 id="4-zookeeper-및-kafka-broker-실행--중지-shell-생성">4. zookeeper 및 kafka broker 실행 / 중지 shell 생성</h4>
+<h4 id="2-kafka-설치-및-실행-topic-생성-">2. kafka 설치 및 실행, Topic 생성 <br /></h4>
+<p>※ <a href="/kafka/2017/09/05/kafka_install_exec.html">‘kafka(0.10.0.1) 설치 및 실행’ 참고 </a> <br /></p>
+<ul>
+  <li>apache_logs topic 생성 <br />
+    <blockquote>
+      <p>(../kafka 디렉토리에서 실행) <br />
+$ bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic apache_logs <br /></p>
+    </blockquote>
+  </li>
+</ul>
+
+<h4 id="3-filebeat-설치-및-실행-">3. filebeat 설치 및 실행 <br /></h4>
 <blockquote>
-  <p>../usr/local/kafka$ vi kafka-start.sh <br /></p>
-  <div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-<span class="nv">KAFKA_HOME</span><span class="o">=</span>/usr/local/kafka 
-<span class="nv">$KAFKA_HOME</span>/bin/kafka-server-start.sh -daemon <span class="nv">$KAFKA_HOME</span>/config/server.properties 
-</code></pre>
-  </div>
-  <p>../usr/local/kafka$ vi kafka-stop.sh</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-<span class="nv">KAFKA_HOME</span><span class="o">=</span>/usr/local/kafka
-<span class="nv">$KAFKA_HOME</span>/bin/kafka-server-stop.sh
-</code></pre>
-  </div>
-  <p>../usr/local/kafka$ vi zk-start.sh</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-nohup bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
-</code></pre>
-  </div>
-  <p>../usr/local/kafka$ vi zk-stop.sh</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-<span class="nv">KAFKA_HOME</span><span class="o">=</span>/usr/local/kafka
-<span class="nv">$KAFKA_HOME</span>/bin/zookeeper-server-stop.sh
-</code></pre>
-  </div>
+  <p>3-1 파일 다운로드 <br />
+$ wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.3.0-linux-x86_64.tar.gz <br />
+3-2. 압축 해제 <br />
+$ tar xzvf filebeat-5.3.0-linux-x86_64.tar.gz  <br />
+3-3. 설정 파일 수정 <br />
+$ cd filebeat-5.3.0-linux-x86_64/ <br />
+$ vi filebeat.yml <br /></p>
 </blockquote>
 
-<h4 id="5-zookeeper-kafka-broker-실행">5. zookeeper, kafka broker 실행</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code>filebeat.prospectors:
+
+- input_type: log
+
+  paths:
+    - /var/log/apache2/access.log
+
+logging.level: debug
+logging.to_files: true
+logging.to_syslog: false
+logging.files:
+  path: /home/user/es/filebeat
+  name: mybeat.log
+  keepfiles: 7
+
+output.kafka:
+   hosts: ["192.168.56.103:9092"]
+   topic: 'apache_logs'
+   partition.round_robin:
+      reachable_only: false
+   required_acks: 1
+   compression: gzip
+   max_message_bytes: 1000000
+</code></pre>
+</div>
+
+<p>※ hosts: [“192.168.56.103:9092”]의 IP부분은 kafka가 설치된 인스턴스의 IP</p>
+
+<h4 id="4-filebeat-실행">4. filebeat 실행</h4>
 <blockquote>
-  <p>$ sudo ./zk-start.sh <br />
-$ sudo ./kafka-start.sh</p>
+  <blockquote>
+    <p>(../filebeat 디렉토리에서 실행) <br />
+$ nohup ./filebeat -e -c filebeat.yml &amp; <br />
+(실행 후 로그를 보기위해서는 $ ./filebeat -e -c filebeat.yml) <br /></p>
+    <ul>
+      <li>참고 : 실행이 정상적으로 되지 않고 Failed to connect to broker localhost:9092 이런 로그가 노출될 때 kafka의 설정을 아래처럼 localhost가 아닌 위처럼 ip를 써줘야 함
+        <div class="highlighter-rouge"><pre class="highlight"><code>$ sudo vi /usr/local/kafka/config/server.properties
+advertised.listeners=PLAINTEXT://192.168.56.103:9092
+zookeeper.connect=192.168.56.103:2181
+</code></pre>
+        </div>
+      </li>
+    </ul>
+  </blockquote>
 </blockquote>
 
-<h4 id="6-topic-생성-및-테스트-bin-디렉토리-내에서-실행-">6. topic 생성 및 테스트 (bin 디렉토리 내에서 실행) <br /></h4>
+<h4 id="5-kafka에-저장되어-있는-apache-로그-확인">5. kafka에 저장되어 있는 apache 로그 확인</h4>
 <blockquote>
-  <p>6-1. topic 생성 (replication-factor 1, partitions 1) <br />
-$ ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test_topic <br /></p>
+  <p>(../kafka 디렉토리에서 실행) <br />
+$ bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic apache_logs --from-beginning <br /></p>
   <div class="highlighter-rouge"><pre class="highlight"><code>결과
-Created topic "test_topic".
-</code></pre>
-  </div>
-  <p>6-2. 생성된 topic 정보 조회 <br />
-$ ./kafka-topics.sh --describe --zookeeper localhost:2181 --topic test_topic <br /></p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>결과
-Topic:test_topic        PartitionCount:1        ReplicationFactor:1     Configs: &lt;br&gt;
-        Topic: test_topic       Partition: 0    Leader: 1       Replicas: 1     Isr: 1
-</code></pre>
-  </div>
-  <p>6-3 토픽 내 메세지 생성 (produce / 종료는 ctrl + c) - <a href="/kafka/2017/09/01/kafka_leader_not_available.html">LEADER_NOT_AVAILABLE 에러 발생 시 - 참고</a>  <br />
-$ ./kafka-console-producer.sh --broker-list localhost:9092 --topic test_topic <br /></p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>(입력) message test
-</code></pre>
-  </div>
-  <p>6-4 생성된 메세지 확인 (consume / 종료는 ctrl + c) <br />
-$ ./kafka-console-consumer.sh --zookeeper localhost:2181 --topic test_topic --from-beginning</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>결과
-message test
+user@node2:/usr/local/kafka$ bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic apache_logs --from-beginning
+{"@timestamp":"2017-09-14T00:45:06.589Z","beat":{"hostname":"node1","name":"node1","version":"5.3.0"},"input_type":"log","message":"::1 - - [14/Sep/2017:09:32:21 +0900] \"GET / HTTP/1.1\" 200 11764 \"-\" \"curl/7.35.0\"","offset":82,"source":"/var/log/apache2/access.log","type":"log"}
 Processed a total of 1 messages
 </code></pre>
   </div>
-  <p>6-5 토픽 삭제 (<a href="/kafka/2017/08/31/kafka_delete_topic.html">삭제 전 설정 변경 필요 - 참고</a>) <br />
-$ ./kafka-topics.sh --delete --zookeeper localhost:2181 --topic test_topic</p>
 </blockquote>
-
-<p>참고 사이트 <br />
-kafka.apache.org : <a href="https://kafka.apache.org/quickstart">https://kafka.apache.org/quickstart</a> <br />
-김용환님의 블로그 : <a href="http://knight76.tistory.com/entry/kafka-01011-%EC%84%A4%EC%B9%98">http://knight76.tistory.com/entry/kafka-01011-%EC%84%A4%EC%B9%98</a> <br /></p>
 
 
 
@@ -239,8 +243,8 @@ kafka.apache.org : <a href="https://kafka.apache.org/quickstart">https://kafka.a
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
-this.page.url = 'http://localhost:4000/kafka/2017/09/05/kafka_install_exec.html';
-this.page.identifier = 'http://localhost:4000/kafka/2017/09/05/kafka_install_exec.html';
+this.page.url = 'http://localhost:4000/elastic,/kafka/2017/09/20/filebeat_kafka.html';
+this.page.identifier = 'http://localhost:4000/elastic,/kafka/2017/09/20/filebeat_kafka.html';
 };
 
 (function() { // DON'T EDIT BELOW THIS LINE

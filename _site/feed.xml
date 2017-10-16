@@ -1,5 +1,275 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-10-09T11:06:17+09:00</updated><id>http://localhost:4000/</id><title type="html">17billion</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
-</subtitle><entry><title type="html">kafka(0.10.0.1) 설치 및 실행</title><link href="http://localhost:4000/kafka/2017/09/05/kafka_install_exec.html" rel="alternate" type="text/html" title="kafka(0.10.0.1) 설치 및 실행" /><published>2017-09-05T09:51:42+09:00</published><updated>2017-09-05T09:51:42+09:00</updated><id>http://localhost:4000/kafka/2017/09/05/kafka_install_exec</id><content type="html" xml:base="http://localhost:4000/kafka/2017/09/05/kafka_install_exec.html">&lt;h3 id=&quot;kafka-설치-및-실행-방법ubuntu-1404-기준-&quot;&gt;kafka 설치 및 실행 방법(ubuntu 14.04 기준) &lt;br /&gt;&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-10-16T22:10:38+09:00</updated><id>http://localhost:4000/</id><title type="html">17billion</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</subtitle><entry><title type="html">Kafka 메세지를 Logstash를 이용하여 Elastic Search에 저장하기 Kafka(0.10.0.1) / Logstash(5.5.1) / Elastic Search(5.5.1)</title><link href="http://localhost:4000/elastic,/kafka/2017/10/05/elastic_stack_elk_kafka.html" rel="alternate" type="text/html" title="Kafka 메세지를 Logstash를 이용하여 Elastic Search에 저장하기 Kafka(0.10.0.1) / Logstash(5.5.1) / Elastic Search(5.5.1)" /><published>2017-10-05T09:51:42+09:00</published><updated>2017-10-05T09:51:42+09:00</updated><id>http://localhost:4000/elastic,/kafka/2017/10/05/elastic_stack_elk_kafka</id><content type="html" xml:base="http://localhost:4000/elastic,/kafka/2017/10/05/elastic_stack_elk_kafka.html">&lt;p&gt;Kafka(2.10-0.10.0.1) + Logstash(5.5.1) + Elastic Search(5.5.1)&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&quot;kafka에-저장된-메세지apache-log를-logstash를-이용하여-elastic-search에-저장하기-&quot;&gt;Kafka에 저장된 메세지(apache log)를 Logstash를 이용하여 Elastic Search에 저장하기 &lt;br /&gt;&lt;/h4&gt;
+
+&lt;h3 id=&quot;1-elastic-search-설치-및-실행-&quot;&gt;1. elastic search 설치 및 실행 &lt;br /&gt;&lt;/h3&gt;
+&lt;p&gt;1-1. elastic search 설치 &lt;br /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;/elastic/2017/07/05/ELK_install_exec.html&quot;&gt;‘ELK 구축 (Elastic Search + Kibana + Logstash) 1. ElasticSearch를 설치합니다.’ 참고&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;1-2. elasticsearch.yml 설정변경 &lt;br /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;elastic search를 localhost가 아닌 외부에서 접근하기 위해서는 elasticsearch.yml에서 network.host를 ip로 지정 후 재시작 필요
+    &lt;blockquote&gt;
+      &lt;p&gt;(../elasticsearch-5.5.1/config 디렉토리에서 실행) &lt;br /&gt;
+$ vi elasticsearch.yml&lt;/p&gt;
+      &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;...
+network.host: 192.168.56.102
+...
+&lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+      &lt;p&gt;※ 192.168.56.102는 elasticsearch 설치된 인스턴스 ip로 변경&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;1-3. system 환경 설정&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;$ sudo vi /etc/security/limits.conf&lt;/p&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(아래내용 추가, user는 사용자 계정으로 변경)
+user hard nofile 65536
+user soft nofile 65536
+user hard nproc 65536
+user soft nproc 65536
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;$ sudo vi /etc/rc.local&lt;/p&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(exit 0 윗 부분에 아래 내용추가 )
+echo 1048575 &amp;gt; /proc/sys/vm/max_map_count
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+  &lt;p&gt;$ sudo sysctl -w fs.file-max=65536&lt;/p&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(확인)
+cat /proc/sys/fs/file-max
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+  &lt;p&gt;$ sudo reboot 0&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;1-4 실행&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;(../elasticsearch-5.5.1/bin 디렉토리에서 실행) &lt;br /&gt;
+$ ./elasticsearch&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;2-kafka-설치-및-실행-및-메세지-프로듀싱-&quot;&gt;2. kafka 설치 및 실행 및 메세지 프로듀싱 &lt;br /&gt;&lt;/h3&gt;
+&lt;p&gt;2-1. kafka 설치 및 topic 생성 &lt;br /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;/elastic/2017/09/20/filebeat_kafka.html&quot;&gt;‘로그를 filebeat(5.3.0) 이용해서 kafka(0.10.0.1)로 프로듀싱하기’ 참고&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;3-logstash-설치-및-실행-&quot;&gt;3. logstash 설치 및 실행 &lt;br /&gt;&lt;/h3&gt;
+&lt;p&gt;3-1. logstash 설치 &lt;br /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;/elastic/2017/07/05/ELK_install_exec.html&quot;&gt;‘ELK 구축 (Elastic Search + Kibana + Logstash)’ 2-1. Logstash 다운로드 및 unzip 참고&lt;/a&gt; &lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;3-2. logstash-input-kafka 플러그인 설치&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;(../logstash-5.5.1/bin 디렉토리에서 실행) &lt;br /&gt;
+$ ./logstash-plugin install --version 8.0.2 logstash-input-kafka&lt;/p&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Validating logstash-input-kafka-8.0.2
+Installing logstash-input-kafka
+Installation successful
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+  &lt;p&gt;(확인) ./logstash-plugin list --verbose input-kafka&lt;/p&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;logstash-input-kafka (8.0.2)
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;3-3. logstash-output-elasticsearch 플러그인 설치&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;(../logstash-5.5.1/bin 디렉토리에서 실행) &lt;br /&gt;
+$ ./logstash-plugin install logstash-output-elasticsearch&lt;/p&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Validating logstash-output-elasticsearch
+Installing logstash-output-elasticsearch
+Installation successful
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+  &lt;p&gt;(확인) $ ./logstash-plugin list --verbose logstash-output-elasticsearch&lt;/p&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;logstash-output-elasticsearch (7.3.7)
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;3-4 config 설정&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;(../logstash-5.5.1/bin 디렉토리에서 실행) &lt;br /&gt;
+$ vi logstash-kafka-elasticsearch.conf &lt;br /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;input {
+  kafka {
+    bootstrap_servers =&amp;gt; &quot;192.168.56.103:9092&quot;
+    group_id =&amp;gt; &quot;logstash&quot;
+    topics =&amp;gt; [&quot;apache_logs&quot;]
+    consumer_threads =&amp;gt; 1
+    decorate_events =&amp;gt; true
+    }
+}
+
+output {
+  elasticsearch{
+        hosts =&amp;gt; &quot;192.168.56.102:9200&quot;
+        index =&amp;gt; &quot;server-status-%{+YYYY.MM.dd}&quot;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;input의 bootstrap_servers는 kafka IP주소&lt;/li&gt;
+  &lt;li&gt;topics명을 kafka에 생성되어 있는 topic 명&lt;/li&gt;
+  &lt;li&gt;output의 hosts는 elasticsearch의 IP 주소를 입력&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;3-5. 실행&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;(../logstash-5.5.1/bin 디렉토리에서 실행) &lt;br /&gt;
+$ ./logstash -f logstash-kafka-elasticsearch.conf&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;참고 ‘logstash Setting “xpack.monitoring.enabled” has not been registered’ 로그가 발생하며 실행이 안될때 x-pack 플러그인 설치가 필요 &lt;br /&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;(../logstash-5.5.1/bin 디렉토리에서 실행) &lt;br /&gt;
+$ sudo bin/logstash-plugin install x-pack&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;4-kafka-메세지가-logstash에서-정상적으로-소비되었는지-확인방법&quot;&gt;4. kafka 메세지가 logstash에서 정상적으로 소비되었는지 확인방법&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;(kafka가 설치된 디렉토리에서 실행)
+$ bin/kafka-run-class.sh kafka.tools.ConsumerOffsetChecker –zookeeper localhost:2181 –group logstash –topic apache_logs&lt;/p&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(결과)
+Group           Topic                          Pid Offset          logSize         Lag             Owner
+logstash        apache_logs                    0   3               3               0               none
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Group은 소비그룹&lt;/li&gt;
+    &lt;li&gt;logsize는 전체 메세지 개수&lt;/li&gt;
+    &lt;li&gt;Offset은 소비된 메세지 개수&lt;/li&gt;
+    &lt;li&gt;Log은 남은 메세지 개수&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;5-elastic-search에-생성된-인덱스-및-내용-확인&quot;&gt;5. elastic search에 생성된 인덱스 및 내용 확인&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;$ curl -XGET 'http://{elastic search가 실행된 ip}:9200/{index}/_search?size=50&amp;amp;pretty' &lt;br /&gt;
+예시) $ curl -XGET 'http://192.168.56.102:9200/server-*/_search?size=50&amp;amp;pretty' &lt;br /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;참고 사이트 &lt;br /&gt;
+elastic : &lt;a href=&quot;https://www.elastic.co/guide/en/logstash/current/plugins-inputs-kafka.html&quot;&gt;https://www.elastic.co/guide/en/logstash/current/plugins-inputs-kafka.html&lt;/a&gt; &lt;br /&gt;
+elastic(discuss) : &lt;a href=&quot;https://discuss.elastic.co/t/how-to-setup-kafka-input-in-logstash/67155&quot;&gt;https://discuss.elastic.co/t/how-to-setup-kafka-input-in-logstash/67155&lt;/a&gt; &lt;br /&gt;
+github(logstash-input-kafka) : &lt;a href=&quot;https://github.com/logstash-plugins/logstash-input-kafka/issues/219&quot;&gt;https://github.com/logstash-plugins/logstash-input-kafka/issues/219&lt;/a&gt; &lt;br /&gt;&lt;/p&gt;</content><author><name></name></author><category term="elastic" /><category term="kafka" /><summary type="html">Kafka(2.10-0.10.0.1) + Logstash(5.5.1) + Elastic Search(5.5.1)</summary></entry><entry><title type="html">log를 filebeat(5.3.0) 이용하여 kafka(0.10.0.1)로 프로듀싱하기</title><link href="http://localhost:4000/elastic,/kafka/2017/09/20/filebeat_kafka.html" rel="alternate" type="text/html" title="log를 filebeat(5.3.0) 이용하여 kafka(0.10.0.1)로 프로듀싱하기" /><published>2017-09-20T09:51:42+09:00</published><updated>2017-09-20T09:51:42+09:00</updated><id>http://localhost:4000/elastic,/kafka/2017/09/20/filebeat_kafka</id><content type="html" xml:base="http://localhost:4000/elastic,/kafka/2017/09/20/filebeat_kafka.html">&lt;p&gt;filebeat(5.3.0), kafka(2.10-0.10.0.1) 기준&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&quot;예시-filebeat을-이용해서-서버의-apache-log를-kafka로-프로듀싱하기&quot;&gt;예시) filebeat을 이용해서 서버의 apache log를 kafka로 프로듀싱하기&lt;/h4&gt;
+
+&lt;h4 id=&quot;1-apach2-설치&quot;&gt;1. apach2 설치&lt;/h4&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;$ sudo apt-get update &lt;br /&gt;
+$ sudo apt-get install apache2 &lt;br /&gt;&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;실행확인 &lt;br /&gt;
+$ curl localhost &lt;br /&gt;&lt;/li&gt;
+    &lt;li&gt;로그 조회 &lt;br /&gt;
+$ tail -F /var/log/apache2/access.log &lt;br /&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;2-kafka-설치-및-실행-topic-생성-&quot;&gt;2. kafka 설치 및 실행, Topic 생성 &lt;br /&gt;&lt;/h4&gt;
+&lt;p&gt;※ &lt;a href=&quot;/kafka/2017/09/05/kafka_install_exec.html&quot;&gt;‘kafka(0.10.0.1) 설치 및 실행’ 참고 &lt;/a&gt; &lt;br /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;apache_logs topic 생성 &lt;br /&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;(../kafka 디렉토리에서 실행) &lt;br /&gt;
+$ bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic apache_logs &lt;br /&gt;&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;3-filebeat-설치-및-실행-&quot;&gt;3. filebeat 설치 및 실행 &lt;br /&gt;&lt;/h4&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;3-1 파일 다운로드 &lt;br /&gt;
+$ wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.3.0-linux-x86_64.tar.gz &lt;br /&gt;
+3-2. 압축 해제 &lt;br /&gt;
+$ tar xzvf filebeat-5.3.0-linux-x86_64.tar.gz  &lt;br /&gt;
+3-3. 설정 파일 수정 &lt;br /&gt;
+$ cd filebeat-5.3.0-linux-x86_64/ &lt;br /&gt;
+$ vi filebeat.yml &lt;br /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;filebeat.prospectors:
+
+- input_type: log
+
+  paths:
+    - /var/log/apache2/access.log
+
+logging.level: debug
+logging.to_files: true
+logging.to_syslog: false
+logging.files:
+  path: /home/user/es/filebeat
+  name: mybeat.log
+  keepfiles: 7
+
+output.kafka:
+   hosts: [&quot;192.168.56.103:9092&quot;]
+   topic: 'apache_logs'
+   partition.round_robin:
+      reachable_only: false
+   required_acks: 1
+   compression: gzip
+   max_message_bytes: 1000000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;※ hosts: [“192.168.56.103:9092”]의 IP부분은 kafka가 설치된 인스턴스의 IP&lt;/p&gt;
+
+&lt;h4 id=&quot;4-filebeat-실행&quot;&gt;4. filebeat 실행&lt;/h4&gt;
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;(../filebeat 디렉토리에서 실행) &lt;br /&gt;
+$ nohup ./filebeat -e -c filebeat.yml &amp;amp; &lt;br /&gt;
+(실행 후 로그를 보기위해서는 $ ./filebeat -e -c filebeat.yml) &lt;br /&gt;&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;참고 : 실행이 정상적으로 되지 않고 Failed to connect to broker localhost:9092 이런 로그가 노출될 때 kafka의 설정을 아래처럼 localhost가 아닌 위처럼 ip를 써줘야 함
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo vi /usr/local/kafka/config/server.properties
+advertised.listeners=PLAINTEXT://192.168.56.103:9092
+zookeeper.connect=192.168.56.103:2181
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;5-kafka에-저장되어-있는-apache-로그-확인&quot;&gt;5. kafka에 저장되어 있는 apache 로그 확인&lt;/h4&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;(../kafka 디렉토리에서 실행) &lt;br /&gt;
+$ bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic apache_logs --from-beginning &lt;br /&gt;&lt;/p&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;결과
+user@node2:/usr/local/kafka$ bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic apache_logs --from-beginning
+{&quot;@timestamp&quot;:&quot;2017-09-14T00:45:06.589Z&quot;,&quot;beat&quot;:{&quot;hostname&quot;:&quot;node1&quot;,&quot;name&quot;:&quot;node1&quot;,&quot;version&quot;:&quot;5.3.0&quot;},&quot;input_type&quot;:&quot;log&quot;,&quot;message&quot;:&quot;::1 - - [14/Sep/2017:09:32:21 +0900] \&quot;GET / HTTP/1.1\&quot; 200 11764 \&quot;-\&quot; \&quot;curl/7.35.0\&quot;&quot;,&quot;offset&quot;:82,&quot;source&quot;:&quot;/var/log/apache2/access.log&quot;,&quot;type&quot;:&quot;log&quot;}
+Processed a total of 1 messages
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+&lt;/blockquote&gt;</content><author><name></name></author><category term="elastic" /><category term="kafka" /><summary type="html">filebeat(5.3.0), kafka(2.10-0.10.0.1) 기준</summary></entry><entry><title type="html">kafka(0.10.0.1) 설치 및 실행</title><link href="http://localhost:4000/kafka/2017/09/05/kafka_install_exec.html" rel="alternate" type="text/html" title="kafka(0.10.0.1) 설치 및 실행" /><published>2017-09-05T09:51:42+09:00</published><updated>2017-09-05T09:51:42+09:00</updated><id>http://localhost:4000/kafka/2017/09/05/kafka_install_exec</id><content type="html" xml:base="http://localhost:4000/kafka/2017/09/05/kafka_install_exec.html">&lt;h3 id=&quot;kafka-설치-및-실행-방법ubuntu-1404-기준-&quot;&gt;kafka 설치 및 실행 방법(ubuntu 14.04 기준) &lt;br /&gt;&lt;/h3&gt;
 
 &lt;h4 id=&quot;1-java-설치&quot;&gt;1. JAVA 설치&lt;/h4&gt;
 &lt;blockquote&gt;
@@ -63,32 +333,32 @@ $ sudo ./kafka-start.sh&lt;/p&gt;
 &lt;h4 id=&quot;6-topic-생성-및-테스트-bin-디렉토리-내에서-실행-&quot;&gt;6. topic 생성 및 테스트 (bin 디렉토리 내에서 실행) &lt;br /&gt;&lt;/h4&gt;
 &lt;blockquote&gt;
   &lt;p&gt;6-1. topic 생성 (replication-factor 1, partitions 1) &lt;br /&gt;
-$ ./kafka-topics.sh –create –zookeeper localhost:2181 –replication-factor 1 –partitions 1 –topic test_topic &lt;br /&gt;&lt;/p&gt;
+$ ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test_topic &lt;br /&gt;&lt;/p&gt;
   &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;결과
 Created topic &quot;test_topic&quot;.
 &lt;/code&gt;&lt;/pre&gt;
   &lt;/div&gt;
   &lt;p&gt;6-2. 생성된 topic 정보 조회 &lt;br /&gt;
-$ ./kafka-topics.sh –describe –zookeeper localhost:2181 –topic test_topic &lt;br /&gt;&lt;/p&gt;
+$ ./kafka-topics.sh --describe --zookeeper localhost:2181 --topic test_topic &lt;br /&gt;&lt;/p&gt;
   &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;결과
 Topic:test_topic        PartitionCount:1        ReplicationFactor:1     Configs: &amp;lt;br&amp;gt;
         Topic: test_topic       Partition: 0    Leader: 1       Replicas: 1     Isr: 1
 &lt;/code&gt;&lt;/pre&gt;
   &lt;/div&gt;
   &lt;p&gt;6-3 토픽 내 메세지 생성 (produce / 종료는 ctrl + c) - &lt;a href=&quot;/kafka/2017/09/01/kafka_leader_not_available.html&quot;&gt;LEADER_NOT_AVAILABLE 에러 발생 시 - 참고&lt;/a&gt;  &lt;br /&gt;
-$ ./kafka-console-producer.sh –broker-list localhost:9092 –topic test_topic &lt;br /&gt;&lt;/p&gt;
+$ ./kafka-console-producer.sh --broker-list localhost:9092 --topic test_topic &lt;br /&gt;&lt;/p&gt;
   &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(입력) message test
 &lt;/code&gt;&lt;/pre&gt;
   &lt;/div&gt;
   &lt;p&gt;6-4 생성된 메세지 확인 (consume / 종료는 ctrl + c) &lt;br /&gt;
-$ ./kafka-console-consumer.sh –zookeeper localhost:2181 –topic test_topic –from-beginning&lt;/p&gt;
+$ ./kafka-console-consumer.sh --zookeeper localhost:2181 --topic test_topic --from-beginning&lt;/p&gt;
   &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;결과
 message test
 Processed a total of 1 messages
 &lt;/code&gt;&lt;/pre&gt;
   &lt;/div&gt;
   &lt;p&gt;6-5 토픽 삭제 (&lt;a href=&quot;/kafka/2017/08/31/kafka_delete_topic.html&quot;&gt;삭제 전 설정 변경 필요 - 참고&lt;/a&gt;) &lt;br /&gt;
-$ ./kafka-topics.sh –delete –zookeeper localhost:2181 –topic test_topic&lt;/p&gt;
+$ ./kafka-topics.sh --delete --zookeeper localhost:2181 --topic test_topic&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;참고 사이트 &lt;br /&gt;
@@ -482,269 +752,4 @@ Now try logging into the machine, with:   &lt;span class=&quot;s2&quot;&gt;&quot
 and check to make sure that only the key&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; you wanted were added.
 &lt;/code&gt;&lt;/pre&gt;
   &lt;/div&gt;
-&lt;/blockquote&gt;</content><author><name></name></author><category term="Ubuntu" /><summary type="html">각 서버간 RSA 비대칭키를 이용 패스워드 없이 접속하는 방법 $ ssh-keygen $ ssh-copy-id {계정}@{목적지 서버}</summary></entry><entry><title type="html">Elastic Search란?</title><link href="http://localhost:4000/elastic/2017/07/14/elastic_search_overview.html" rel="alternate" type="text/html" title="Elastic Search란?" /><published>2017-07-14T09:51:42+09:00</published><updated>2017-07-14T09:51:42+09:00</updated><id>http://localhost:4000/elastic/2017/07/14/elastic_search_overview</id><content type="html" xml:base="http://localhost:4000/elastic/2017/07/14/elastic_search_overview.html">&lt;h3 id=&quot;1-특징-&quot;&gt;1. 특징 &lt;br /&gt;&lt;/h3&gt;
-&lt;p&gt;1) Apache Lucene 기반 (Full Text 검색엔진을 만들 수 있는 라이브러리를 제공, 자바언어로 개발, 사용자위치정보, 다국어 검색지원, 자동완성 지원, 미리보기 지원, 철자수정 기능 지원 / 대부분 Elasticsearch에서도 지원) &lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;2) 분산시스템 &lt;br /&gt;
-- 여러개의 Node로 구성되어 있는 분산시스템 &lt;br /&gt;
-- Node는 데이터를 색인하고 검색을 수행하는 단위 프로세스 &lt;br /&gt;
-- 데이터는 각 데이터 Node에 분산저장 &lt;br /&gt;
-- Replica를 유지하여 데이터 보호 &lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;3) REST API를 통해 데이터 처리 &lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;4) &lt;a href=&quot;https://www.slideshare.net/seunghyuneom/elastic-search-52724188#38&quot;&gt;RDBMS와 Elastic Search 구조 비교&lt;/a&gt; (seunghyuneom님의 SliceShare) &lt;br /&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;RDBMS&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;ElasticSearch&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Database&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Index&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Table&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Type&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Row&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Document&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Column&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Field&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Scheme&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Mapping&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;2-용어-&quot;&gt;2. 용어 &lt;br /&gt;&lt;/h3&gt;
-&lt;p&gt;1) Cluster : ElasticSearch의 가장 큰 시스템 단위 &lt;br /&gt;
-- 하나의 Cluster는 동일한 cluster.name 내 여러개 Node로 구성되어 있음 &lt;br /&gt;
-- 같은 Cluster 이름으로 노드를 실행 시키면 자동확장 (네트워크 바인딩) &lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;2) Node : 실행중인 ElasticSearch Instance &lt;br /&gt;
-- Master Node : Cluster 메타 정보 관리, Node 추가 삭제 &lt;br /&gt;
-- Data Node : 실제 데이터를 저장하는 Node &lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;3) Index : 관련성이 있는 데이터의 저장 위치 &lt;br /&gt;
-- 물리적인 Shard에 대한 논리적인 이름 공간 &lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;4) Shard : Index의 데이터를 저장하여 Indexing된 Document가 실제 저장되는 곳 &lt;br /&gt;
-- Primary Shard : 모든 Document는 단 하나의 Primary Shard에 위치, 갯수는 Index를 생성할 때 결정되고 변경될 수 있음(default) &lt;br /&gt;
-- Replicat Shard : Primary Shard의 복사본 &lt;br /&gt;
-- 장애발생 시 복구, 검색에 대한 Concurrnt Read 보장 &lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;5) 네트워크 바인딩 : 다른 서버의 노드와 바인딩 (자유롭게 Scale-in/out 가능) &lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;3-rest-api-예제-&quot;&gt;3. Rest API 예제 &lt;br /&gt;&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;CRUD&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Elastic Search&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Create&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Post&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Read&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Get&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Update&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Put&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Delete&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Delete&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h5 id=&quot;--curl--x-method-httphostportindextypeid-&quot;&gt;- curl -X {method} http://host:port/{Index}/{Type}/{Id} &lt;br /&gt;&lt;/h5&gt;
-&lt;p&gt;1) POST (생성)&lt;/p&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -XPOST http://localhost:9200/custom/test/1 -d &lt;span class=&quot;s1&quot;&gt;'
-{
-  &quot;title&quot;: &quot;Elasticsearch Test&quot;,
-  &quot;name&quot;: &quot;Lee&quot;,
-  &quot;date&quot;: &quot;2017-07-10&quot;
-}'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Response
-    &lt;blockquote&gt;
-      &lt;p&gt;{“_index”:”custom”,”_type”:”test”,”_id”:”1”,”_version”:1,”result”:”created”,”_shards”:{“total”:2,”successful”:1,”failed”:0},”created”:true}&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;2) PUT (업데이트)&lt;/p&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -XPUT http://localhost:9200/custom/test/1 -d &lt;span class=&quot;s1&quot;&gt;'
-{
-  &quot;title&quot;: &quot;Elasticsearch Test Update&quot;,
-  &quot;name&quot;: [&quot;Lee&quot;, &quot;Cho&quot;],
-  &quot;date&quot;: &quot;2017-07-11&quot;
-}'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Response
-    &lt;blockquote&gt;
-      &lt;p&gt;{“_index”:”custom”,”_type”:”test”,”_id”:”1”,”_version”:2,”result”:”updated”,”_shards”:{“total”:2,”successful”:1,”failed”:0},”created”:false}&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;3) GET (조회 / pretty 옵션은 보기좋게 출력하고 싶을때 사용)&lt;/p&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -XGET http://localhost:9200/custom/test/1?pretty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Response
-    &lt;blockquote&gt;
-      &lt;p&gt;{ &lt;br /&gt;
-“_index” : “custom”, &lt;br /&gt;
-“_type” : “test”, &lt;br /&gt;
-“_id” : “1”, &lt;br /&gt;
-“_version” : 2, &lt;br /&gt;
-“found” : true, &lt;br /&gt;
-“_source” : { &lt;br /&gt;
-  “title” : “Elasticsearch Test Update”, &lt;br /&gt;
-  “name” : [ &lt;br /&gt;
-    “Lee”, &lt;br /&gt;
-    “Cho” &lt;br /&gt;
-  ], &lt;br /&gt;
-  “date” : “2017-07-11” &lt;br /&gt;
-} &lt;br /&gt;
-} &lt;br /&gt;&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;4) DELETE (삭제)&lt;/p&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -XDELETE http://localhost:9200/custom/test/1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Response
-    &lt;blockquote&gt;
-      &lt;p&gt;{“found”:true,”_index”:”custom”,”_type”:”test”,”_id”:”1”,”_version”:3,”result”:”deleted”,”_shards”:{“total”:2,”successful”:1,”failed”:0}}&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;기타-&quot;&gt;기타. &lt;br /&gt;&lt;/h3&gt;
-&lt;p&gt;1) Elasric Search의 동작방식 (NAVER D2) &lt;br /&gt;
-- &lt;a href=&quot;https://www.slideshare.net/deview/2d1elasticsearch#12&quot;&gt;Creating, indexing and deleting a document&lt;/a&gt; &lt;br /&gt;
-- &lt;a href=&quot;https://www.slideshare.net/deview/2d1elasticsearch#13&quot;&gt;Retrieve, query and fetch a document&lt;/a&gt; &lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;2) 설치방법  &lt;br /&gt;
-- &lt;a href=&quot;/elastic/2017/07/05/ELK_install_exec.html&quot;&gt;‘ELK 설치/실행 (Elastic Search + Kibana + Logstash)’ : ‘1. ElasticSearch를 설치합니다. (ubuntu 기준) 참고’&lt;/a&gt; &lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;참고 사이트 &lt;br /&gt;
-seunghyuneom님의 SliceShare : &lt;a href=&quot;https://www.slideshare.net/seunghyuneom/elastic-search-52724188&quot;&gt;https://www.slideshare.net/seunghyuneom/elastic-search-52724188&lt;/a&gt; &lt;br /&gt;
-NAVER D2 SliceShare : &lt;a href=&quot;https://www.slideshare.net/deview/2d1elasticsearch&quot;&gt;https://www.slideshare.net/deview/2d1elasticsearch&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="elastic" /><summary type="html">1. 특징 1) Apache Lucene 기반 (Full Text 검색엔진을 만들 수 있는 라이브러리를 제공, 자바언어로 개발, 사용자위치정보, 다국어 검색지원, 자동완성 지원, 미리보기 지원, 철자수정 기능 지원 / 대부분 Elasticsearch에서도 지원)</summary></entry><entry><title type="html">Elastic Stack을 이용 서버 모니터링 하기 (Elastic Search + Kibana + Metricbeat)</title><link href="http://localhost:4000/elastic/2017/07/10/elastic_stack_monitoring_using_metricbeat.html" rel="alternate" type="text/html" title="Elastic Stack을 이용 서버 모니터링 하기 (Elastic Search + Kibana + Metricbeat)" /><published>2017-07-10T09:51:42+09:00</published><updated>2017-07-10T09:51:42+09:00</updated><id>http://localhost:4000/elastic/2017/07/10/elastic_stack_monitoring_using_metricbeat</id><content type="html" xml:base="http://localhost:4000/elastic/2017/07/10/elastic_stack_monitoring_using_metricbeat.html">&lt;p&gt;아래처럼 Simple한 구조로 서버 모니터링 방법을 구현해보겠습니다. (ubuntu 기준)
-&lt;img src=&quot;/images/elastic_stack_overview/1_developing_elastic_stack_simple.png&quot; alt=&quot;1_developing_elastic_stack_simple&quot; class=&quot;center-image&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;1-elastic-search-kibana의-설치실행은-아래-글을-참고하여-진행하면-됩니다-&quot;&gt;1. Elastic Search, Kibana의 설치/실행은 아래 글을 참고하여 진행하면 됩니다. &lt;br /&gt;&lt;/h4&gt;
-&lt;p&gt;※ &lt;a href=&quot;/elastic/2017/07/05/ELK_install_exec.html&quot;&gt;‘ELK 설치/실행 (Elastic Search + Kibana + Logstash)’&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;2-metricbeat-설치실행을-합니다&quot;&gt;2. Metricbeat 설치/실행을 합니다.&lt;/h4&gt;
-&lt;p&gt;(&lt;a href=&quot;https://www.elastic.co/guide/en/beats/metricbeat/5.5/metricbeat-getting-started.html&quot;&gt;https://www.elastic.co/guide/en/beats/metricbeat/5.5/metricbeat-getting-started.html&lt;/a&gt;)&lt;/p&gt;
-
-&lt;p&gt;2-1. Metricbeat 설치&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;$ curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-5.5.1-amd64.deb &lt;br /&gt;
-$ sudo dpkg -i metricbeat-5.5.1-amd64.deb&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;2-2. Metricbeat yaml 파일 생성&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;아래 localhost:9200 부분은 ElasticSearch가 설치된 호스트와 포트로 써주면 됩니다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;$ vi /etc/metricbeat/metricbeat.yml&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#==========================  Modules configuration ============================
-metricbeat.modules:
-
-#------------------------------- System Module -------------------------------
-- module: system
-  metricsets:
-    # CPU stats
-    - cpu
-    # System Load stats
-    - load
-    # Per CPU core stats
-    #- core
-    # IO stats
-    #- diskio
-    # Per filesystem stats
-    - filesystem
-    # File system summary stats
-    - fsstat
-    # Memory stats
-    - memory
-    # Network stats
-    - network
-    # Per process stats
-    - process
-    # Sockets (linux only)
-    #- socket
-  enabled: true
-  period: 10s
-  processes: ['.*']
-
-#-------------------------- Elasticsearch output ------------------------------
-output.elasticsearch:
-  hosts: [&quot;localhost:9200&quot;]
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;※ output을 Logstash로 설정 할 경우 참고&lt;br /&gt;
-(&lt;a href=&quot;https://www.elastic.co/guide/en/beats/metricbeat/5.5/config-metricbeat-logstash.html&quot;&gt;https://www.elastic.co/guide/en/beats/metricbeat/5.5/config-metricbeat-logstash.html&lt;/a&gt;)&lt;/p&gt;
-
-&lt;p&gt;2-3. Metricbeat 시작 (시스템 모니터링이기 때문에 권한을 sudo 권한 필요)&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;$ sudo /etc/init.d/metricbeat start&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;※ &lt;a href=&quot;https://www.elastic.co/guide/en/beats/metricbeat/5.5/command-line-options.html&quot;&gt;Metricbeat Command Option&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;3-kibana-dasboard로-확인&quot;&gt;3. Kibana Dasboard로 확인&lt;/h4&gt;
-&lt;p&gt;3-1. 기본으로 제공되는 Kibana Dashboard index pattern import&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;$ /usr/share/metricbeat/scripts/import_dashboards&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;3-2 Kibana 접속
-(원격으로 putty 등으로 접속할 경우 터널링 필요) &lt;br /&gt;
-&lt;a href=&quot;http://localhost:5601&quot;&gt;http://localhost:5601&lt;/a&gt; 접속 &lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;3-3. Dashboard 확인
-&lt;img src=&quot;/images/elastic_stack_monitoring_using_metricbeat/elastic_stack_monitoring_using_metricbeat.png&quot; alt=&quot;elastic_stack_monitoring_using_metricbeat&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;참고 사이트 &lt;br /&gt;
-Elastic : &lt;a href=&quot;https://www.elastic.co/guide/en/beats/metricbeat/5.5/metricbeat-getting-started.html&quot;&gt;https://www.elastic.co/guide/en/beats/metricbeat/5.5/metricbeat-getting-started.html&lt;/a&gt; &lt;br /&gt;
-christoph-wurm(Elastic Solution Architecter) : &lt;a href=&quot;https://www.slideshare.net/DevopsCon/using-elastic-to-monitor-everything-christoph-wurm-elastic-devopsdays-tel-aviv-2016&quot;&gt;https://www.slideshare.net/DevopsCon/using-elastic-to-monitor-everything-christoph-wurm-elastic-devopsdays-tel-aviv-2016&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="elastic" /><summary type="html">아래처럼 Simple한 구조로 서버 모니터링 방법을 구현해보겠습니다. (ubuntu 기준)</summary></entry></feed>
+&lt;/blockquote&gt;</content><author><name></name></author><category term="Ubuntu" /><summary type="html">각 서버간 RSA 비대칭키를 이용 패스워드 없이 접속하는 방법 $ ssh-keygen $ ssh-copy-id {계정}@{목적지 서버}</summary></entry></feed>

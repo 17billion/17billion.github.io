@@ -57,32 +57,32 @@ $ sudo ./kafka-start.sh
 
 #### 6. topic 생성 및 테스트 (bin 디렉토리 내에서 실행) <br>
 > 6-1. topic 생성 (replication-factor 1, partitions 1) <br>
-$ ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test_topic <br>
+$ ./kafka-topics.sh -\-create -\-zookeeper localhost:2181 -\-replication-factor 1 -\-partitions 1 -\-topic test_topic <br>
 ```
 결과
 Created topic "test_topic".
 ```
 6-2. 생성된 topic 정보 조회 <br>
-$ ./kafka-topics.sh --describe --zookeeper localhost:2181 --topic test_topic <br>
+$ ./kafka-topics.sh -\-describe -\-zookeeper localhost:2181 -\-topic test_topic <br>
 ```
 결과
 Topic:test_topic        PartitionCount:1        ReplicationFactor:1     Configs: <br>
         Topic: test_topic       Partition: 0    Leader: 1       Replicas: 1     Isr: 1
 ```
 6-3 토픽 내 메세지 생성 (produce / 종료는 ctrl + c) - <a href ='/kafka/2017/09/01/kafka_leader_not_available.html'>LEADER_NOT_AVAILABLE 에러 발생 시 - 참고</a>  <br>
-$ ./kafka-console-producer.sh --broker-list localhost:9092 --topic test_topic <br>
+$ ./kafka-console-producer.sh -\-broker-list localhost:9092 -\-topic test_topic <br>
 ```
 (입력) message test
 ```
 6-4 생성된 메세지 확인 (consume / 종료는 ctrl + c) <br>
-$ ./kafka-console-consumer.sh --zookeeper localhost:2181 --topic test_topic --from-beginning
+$ ./kafka-console-consumer.sh -\-zookeeper localhost:2181 -\-topic test_topic -\-from-beginning
 ```
 결과
 message test
 Processed a total of 1 messages
 ```
 6-5 토픽 삭제 (<a href ='/kafka/2017/08/31/kafka_delete_topic.html'>삭제 전 설정 변경 필요 - 참고</a>) <br>
-$ ./kafka-topics.sh --delete --zookeeper localhost:2181 --topic test_topic
+$ ./kafka-topics.sh -\-delete -\-zookeeper localhost:2181 -\-topic test_topic
 
 
 참고 사이트 <br>
