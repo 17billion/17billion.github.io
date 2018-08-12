@@ -165,28 +165,24 @@ $ sudo mkdir -p /tmp/zookeeper</p>
 <h4 id="4-zookeeper-및-kafka-broker-실행--중지-shell-생성">4. zookeeper 및 kafka broker 실행 / 중지 shell 생성</h4>
 <blockquote>
   <p>../usr/local/kafka$ vi kafka-start.sh <br /></p>
-  <div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 <span class="nv">KAFKA_HOME</span><span class="o">=</span>/usr/local/kafka 
-<span class="nv">$KAFKA_HOME</span>/bin/kafka-server-start.sh -daemon <span class="nv">$KAFKA_HOME</span>/config/server.properties 
-</code></pre>
-  </div>
+<span class="nv">$KAFKA_HOME</span>/bin/kafka-server-start.sh <span class="nt">-daemon</span> <span class="nv">$KAFKA_HOME</span>/config/server.properties 
+</code></pre></div>  </div>
   <p>../usr/local/kafka$ vi kafka-stop.sh</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 <span class="nv">KAFKA_HOME</span><span class="o">=</span>/usr/local/kafka
 <span class="nv">$KAFKA_HOME</span>/bin/kafka-server-stop.sh
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>../usr/local/kafka$ vi zk-start.sh</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
-nohup bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
-</code></pre>
-  </div>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="nb">nohup </span>bin/zookeeper-server-start.sh <span class="nt">-daemon</span> config/zookeeper.properties
+</code></pre></div>  </div>
   <p>../usr/local/kafka$ vi zk-stop.sh</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 <span class="nv">KAFKA_HOME</span><span class="o">=</span>/usr/local/kafka
 <span class="nv">$KAFKA_HOME</span>/bin/zookeeper-server-stop.sh
-</code></pre>
-  </div>
+</code></pre></div>  </div>
 </blockquote>
 
 <h4 id="5-zookeeper-kafka-broker-실행">5. zookeeper, kafka broker 실행</h4>
@@ -199,29 +195,25 @@ $ sudo ./kafka-start.sh</p>
 <blockquote>
   <p>6-1. topic 생성 (replication-factor 1, partitions 1) <br />
 $ ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test_topic <br /></p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>결과
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>결과
 Created topic "test_topic".
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>6-2. 생성된 topic 정보 조회 <br />
 $ ./kafka-topics.sh --describe --zookeeper localhost:2181 --topic test_topic <br /></p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>결과
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>결과
 Topic:test_topic        PartitionCount:1        ReplicationFactor:1     Configs: &lt;br&gt;
         Topic: test_topic       Partition: 0    Leader: 1       Replicas: 1     Isr: 1
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>6-3 토픽 내 메세지 생성 (produce / 종료는 ctrl + c) - <a href="/kafka/2017/09/01/kafka_leader_not_available.html">LEADER_NOT_AVAILABLE 에러 발생 시 - 참고</a>  <br />
 $ ./kafka-console-producer.sh --broker-list localhost:9092 --topic test_topic <br /></p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>(입력) message test
-</code></pre>
-  </div>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(입력) message test
+</code></pre></div>  </div>
   <p>6-4 생성된 메세지 확인 (consume / 종료는 ctrl + c) <br />
 $ ./kafka-console-consumer.sh --zookeeper localhost:2181 --topic test_topic --from-beginning</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>결과
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>결과
 message test
 Processed a total of 1 messages
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>6-5 토픽 삭제 (<a href="/kafka/2017/08/31/kafka_delete_topic.html">삭제 전 설정 변경 필요 - 참고</a>) <br />
 $ ./kafka-topics.sh --delete --zookeeper localhost:2181 --topic test_topic</p>
 </blockquote>

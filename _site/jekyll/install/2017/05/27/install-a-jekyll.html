@@ -164,36 +164,32 @@ $ .. 부분의 명령어를 실행하여 진행해주시면 됩니다.</p>
 <blockquote>
   <p>$ cd C:\RubyDevkit <br />
 $ ruby dk.rb init</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>[INFO] found RubyInstaller v2.3.3 at C:/Ruby23-x64
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[INFO] found RubyInstaller v2.3.3 at C:/Ruby23-x64
 Initialization complete! Please review and modify the auto-generated
 'config.yml' file to ensure it contains the root directories to all
 of the installed Rubies you want enhanced by the DevKit.
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>$ ruby dk.rb instal</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>[INFO] Skipping existing gem override for 'C:/Ruby23-x64'
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[INFO] Skipping existing gem override for 'C:/Ruby23-x64'
 [INFO] Installing 'C:/Ruby23-x64/lib/ruby/site_ruby/devkit.rb'
-</code></pre>
-  </div>
+</code></pre></div>  </div>
 </blockquote>
 
 <h4 id="3-jekyll-설치-git-bash">3. Jekyll 설치 (Git Bash)</h4>
 <blockquote>
   <p>$ cd C:\RubyDevkit <br />
 $ gem install jekyll <br /></p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>Successfully installed jekyll-3.4.3
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Successfully installed jekyll-3.4.3
 Parsing documentation for jekyll-3.4.3
 Done installing documentation for jekyll after 2 seconds
 1 gem installed
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>$ gem install rouge</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>Successfully installed rouge-2.0.7
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Successfully installed rouge-2.0.7
 Parsing documentation for rouge-2.0.7
 Done installing documentation for rouge after 5 seconds
 1 gem installed
-</code></pre>
-  </div>
+</code></pre></div>  </div>
 </blockquote>
 
 <h4 id="4-python-다운로드-및-실행-httpspythonorgdownloads">4. Python 다운로드 및 실행 (<a href="https://python.org/downloads/">https://python.org/downloads/</a>)</h4>
@@ -207,12 +203,11 @@ Done installing documentation for rouge after 5 seconds
 <h5 id="저는-git-bash에서-설치가-안되어-window-cmd에서-pygments-설치를-진행했습니다">저는 git bash에서 설치가 안되어 Window cmd에서 Pygments 설치를 진행했습니다.</h5>
 <blockquote>
   <p>C:\Users\LEE&gt;pip install Pygments</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>Collecting Pygments
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Collecting Pygments
   Using cached Pygments-2.2.0-py2.py3-none-any.whl
 Installing collected packages: Pygments
 Successfully installed Pygments-2.2.0
-</code></pre>
-  </div>
+</code></pre></div>  </div>
 </blockquote>
 
 <h4 id="6-jekyll-생성-및-실행">6. Jekyll 생성 및 실행</h4>
@@ -222,7 +217,7 @@ $ cd jekyll_site/ <br />
 $ jekyll</p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>A subcommand is required.
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>A subcommand is required.
 jekyll 3.4.3 -- Jekyll is a blog-aware, static site generator in Ruby
 
 Usage:
@@ -250,15 +245,14 @@ Subcommands:
   new                   Creates a new Jekyll site scaffold in PATH
   new-theme             Creates a new Jekyll theme scaffold
   serve, server, s      Serve your site locally
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="7-jekyll-로컬에-띄우기">7. Jekyll 로컬에 띄우기</h4>
 <blockquote>
   <p>$ cd C:\jekyll_site <br />
 $ jekyll serve</p>
   <h5 id="모든-과정이-진행되었으면-아래처럼-결과가-나옵니다">모든 과정이 진행되었으면 아래처럼 결과가 나옵니다.</h5>
-  <div class="highlighter-rouge"><pre class="highlight"><code>Configuration file: none
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Configuration file: none
 Configuration file: none
             Source: C:/jekyll_site
        Destination: C:/jekyll_site/_site
@@ -271,8 +265,7 @@ Configuration file: none
 Configuration file: none
     Server address: http://127.0.0.1:4000/
   Server running... press ctrl-c to stop.
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>http://127.0.0.1:4000/ 접속 하면 아래와 같은 화면이 나옵니다.
 <img src="/images/install_a_jekyll/13_jekyll_local.jpg" alt="13_jekyll_local" /></p>
 </blockquote>
@@ -282,7 +275,7 @@ Configuration file: none
 <blockquote>
   <p>$ cd C:\jekyll_site <br />
 $ jekyll new 17billion</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>Running bundle install in C:/jekyll_site/17billion...
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Running bundle install in C:/jekyll_site/17billion...
   Bundler: Fetching gem metadata from https://rubygems.org/............
   Bundler: Fetching version metadata from https://rubygems.org/...
   Bundler: Fetching dependency metadata from https://rubygems.org/..
@@ -314,15 +307,13 @@ $ jekyll new 17billion</p>
   Bundler: Bundle complete! 4 Gemfile dependencies, 24 gems now installed.
   Bundler: Use `bundle show [gemname]` to see where a bundled gem is installed.
 New jekyll site installed in C:/jekyll_site/17billion.
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>$ ls</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>_site/  17billion/
-</code></pre>
-  </div>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_site/  17billion/
+</code></pre></div>  </div>
   <p>$ cd 17billion/ <br />
 $ jekyll serve</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>Configuration file: C:/jekyll_site/17billion/_config.yml
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Configuration file: C:/jekyll_site/17billion/_config.yml
 Configuration file: C:/jekyll_site/17billion/_config.yml
             Source: C:/jekyll_site/17billion
        Destination: C:/jekyll_site/17billion/_site
@@ -335,8 +326,7 @@ Configuration file: C:/jekyll_site/17billion/_config.yml
 Configuration file: C:/jekyll_site/17billion/_config.yml
     Server address: http://127.0.0.1:4000/
   Server running... press ctrl-c to stop.
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>위 과정을 진행 후 다시 http://127.0.0.1:4000/ 접속 하면 아래와 같이 생성한 Jekyll 화면이 나옵니다.
 <img src="/images/install_a_jekyll/16_jekyll_site_local.jpg" alt="16_jekyll_site_local" /></p>
 </blockquote>

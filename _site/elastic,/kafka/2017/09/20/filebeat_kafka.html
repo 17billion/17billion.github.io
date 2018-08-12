@@ -176,7 +176,7 @@ $ cd filebeat-5.3.0-linux-x86_64/ <br />
 $ vi filebeat.yml <br /></p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>filebeat.prospectors:
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>filebeat.prospectors:
 
 - input_type: log
 
@@ -199,8 +199,7 @@ output.kafka:
    required_acks: 1
    compression: gzip
    max_message_bytes: 1000000
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>※ hosts: [“192.168.56.103:9092”]의 IP부분은 kafka가 설치된 인스턴스의 IP</p>
 
@@ -212,11 +211,10 @@ $ nohup ./filebeat -e -c filebeat.yml &amp; <br />
 (실행 후 로그를 보기위해서는 $ ./filebeat -e -c filebeat.yml) <br /></p>
     <ul>
       <li>참고 : 실행이 정상적으로 되지 않고 Failed to connect to broker localhost:9092 이런 로그가 노출될 때 kafka의 설정을 아래처럼 localhost가 아닌 위처럼 ip를 써줘야 함
-        <div class="highlighter-rouge"><pre class="highlight"><code>$ sudo vi /usr/local/kafka/config/server.properties
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo vi /usr/local/kafka/config/server.properties
 advertised.listeners=PLAINTEXT://192.168.56.103:9092
 zookeeper.connect=192.168.56.103:2181
-</code></pre>
-        </div>
+</code></pre></div>        </div>
       </li>
     </ul>
   </blockquote>
@@ -226,12 +224,11 @@ zookeeper.connect=192.168.56.103:2181
 <blockquote>
   <p>(../kafka 디렉토리에서 실행) <br />
 $ bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic apache_logs --from-beginning <br /></p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>결과
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>결과
 user@node2:/usr/local/kafka$ bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic apache_logs --from-beginning
 {"@timestamp":"2017-09-14T00:45:06.589Z","beat":{"hostname":"node1","name":"node1","version":"5.3.0"},"input_type":"log","message":"::1 - - [14/Sep/2017:09:32:21 +0900] \"GET / HTTP/1.1\" 200 11764 \"-\" \"curl/7.35.0\"","offset":82,"source":"/var/log/apache2/access.log","type":"log"}
 Processed a total of 1 messages
-</code></pre>
-  </div>
+</code></pre></div>  </div>
 </blockquote>
 
 

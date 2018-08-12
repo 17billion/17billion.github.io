@@ -228,14 +228,13 @@
 
 <h5 id="--curl--x-method-httphostportindextypeid-">- curl -X {method} http://host:port/{Index}/{Type}/{Id} <br /></h5>
 <p>1) POST (생성)</p>
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>curl -XPOST http://localhost:9200/custom/test/1 -d <span class="s1">'
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-XPOST</span> http://localhost:9200/custom/test/1 <span class="nt">-d</span> <span class="s1">'
 {
   "title": "Elasticsearch Test",
   "name": "Lee",
   "date": "2017-07-10"
 }'</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>Response
@@ -246,14 +245,13 @@
 </ul>
 
 <p>2) PUT (업데이트)</p>
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>curl -XPUT http://localhost:9200/custom/test/1 -d <span class="s1">'
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-XPUT</span> http://localhost:9200/custom/test/1 <span class="nt">-d</span> <span class="s1">'
 {
   "title": "Elasticsearch Test Update",
   "name": ["Lee", "Cho"],
   "date": "2017-07-11"
 }'</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>Response
@@ -264,9 +262,8 @@
 </ul>
 
 <p>3) GET (조회 / pretty 옵션은 보기좋게 출력하고 싶을때 사용)</p>
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>curl -XGET http://localhost:9200/custom/test/1?pretty<span class="o">=</span><span class="nb">true</span>
-</code></pre>
-</div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-XGET</span> http://localhost:9200/custom/test/1?pretty<span class="o">=</span><span class="nb">true</span>
+</code></pre></div></div>
 
 <ul>
   <li>Response
@@ -291,9 +288,8 @@
 </ul>
 
 <p>4) DELETE (삭제)</p>
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>curl -XDELETE http://localhost:9200/custom/test/1
-</code></pre>
-</div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-XDELETE</span> http://localhost:9200/custom/test/1
+</code></pre></div></div>
 
 <ul>
   <li>Response

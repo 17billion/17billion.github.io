@@ -142,15 +142,14 @@
   <p>$ sysctl -a | grep dirty</p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>vm.dirty_background_bytes = 0
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vm.dirty_background_bytes = 0
 vm.dirty_background_ratio = 10
 vm.dirty_bytes = 0
 vm.dirty_expire_centisecs = 3000
 vm.dirty_ratio = 20
 vm.dirty_writeback_centisecs = 500
 vm.dirtytime_expire_seconds = 43200
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>
@@ -184,15 +183,14 @@ vm.dirtytime_expire_seconds = 43200
 (MemAvailable이 없을 경우 : <a href="https://www.reddit.com/r/linux/comments/3h7w8f/better_linux_disk_caching_performance_with/">이용 가능한 메모리 = (MemFree + Cached - Mapped)</a> <br /></p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>※ parameter 변경 및 적용방법
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>※ parameter 변경 및 적용방법
 예) dirty_ratio, dirty_background_ratio
 1) 설정 변경
 $ sudo sysctl -w vm.dirty_ratio=10
 $ sudo sysctl -w vm.dirty_background_ratio=5
 2) 변경내용 적용 (커밋)
 $ sudo sysctl -p
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>참고 사이트
 kernel.org : <a href="https://www.kernel.org/doc/Documentation/sysctl/vm.txt">https://www.kernel.org/doc/Documentation/sysctl/vm.txt</a> <br />

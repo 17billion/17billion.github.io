@@ -155,9 +155,8 @@
 $ Invoke-WebRequest “https://github.com/docker/compose/releases/download/1.14.0/docker-compose-Windows-x86_64.exe” -UseBasicParsing -OutFile $Env:ProgramFiles\docker\docker-compose.exe <br /></p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Latest release 확인 : https://github.com/docker/compose/releases
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Latest release 확인 : https://github.com/docker/compose/releases
+</code></pre></div></div>
 
 <h5 id="2-2-리눅스-우분투-기준">2-2. 리눅스 우분투 기준</h5>
 <blockquote>
@@ -165,10 +164,9 @@ $ Invoke-WebRequest “https://github.com/docker/compose/releases/download/1.14.
 $ curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose <br /></p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Latest release 확인 : https://github.com/docker/compose/releases
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Latest release 확인 : https://github.com/docker/compose/releases
 "Permission denied"의 경우 : $sudo -i 를 통해 root 권한을 가진 사용자로 로그인하여 진행해야 합니다.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="3-실행파일에-실행-권한-적용">3. 실행파일에 실행 권한 적용</h4>
 <blockquote>
@@ -180,9 +178,8 @@ $ curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-comp
   <p>$ docker-compose --version</p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>docker-compose version 1.14.0, build c7bdf9e
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose version 1.14.0, build c7bdf9e
+</code></pre></div></div>
 
 <p>※ 대체 설치 방법 (Install using pip, Install as a container)
 (<a href="https://docs.docker.com/compose/install/#Alternative install options">https://docs.docker.com/compose/install/#Alternative install options</a>)</p>
@@ -197,7 +194,7 @@ $ curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-comp
 
 <h5 id="아래는-docker-composeyml-내용으로-wordpress포트포워딩-808080-mariadb-image를-다운로드-후-실행시켜서-컨테이너화-하겠다는-의미입니다">아래는 docker-compose.yml 내용으로 wordpress(포트포워딩 8080:80) mariadb image를 다운로드 후 실행시켜서 컨테이너화 하겠다는 의미입니다.</h5>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>version: '2'
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: '2'
 
 services:
 
@@ -212,15 +209,14 @@ services:
     image: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: example
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>2) docker-compose up (-d 옵션 : 데몬으로 실행)</p>
 <blockquote>
   <p>$ docker-compose up -d</p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Creating network "dockercompose_default" with the default driver
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Creating network "dockercompose_default" with the default driver
 Pulling wordpress (wordpress:latest)...
 latest: Pulling from library/wordpress
 9f0706ba7422: Pull complete
@@ -232,8 +228,7 @@ a3b5e03d7e24: Pull complete
 .
 .
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>3) http://localhost:8080 접속확인</p>
 <h5 id="접속한-뒤-언어설정-후-사용자-등록을-하면-아래와-같은-화면이-나옵니다">(접속한 뒤 언어설정 후 사용자 등록을 하면 아래와 같은 화면이 나옵니다.)</h5>

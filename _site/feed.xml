@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-10-16T22:10:38+09:00</updated><id>http://localhost:4000/</id><title type="html">17billion</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-08-12T19:54:37+09:00</updated><id>http://localhost:4000/</id><title type="html">17billion</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
 </subtitle><entry><title type="html">Kafka 메세지를 Logstash를 이용하여 Elastic Search에 저장하기 Kafka(0.10.0.1) / Logstash(5.5.1) / Elastic Search(5.5.1)</title><link href="http://localhost:4000/elastic,/kafka/2017/10/05/elastic_stack_elk_kafka.html" rel="alternate" type="text/html" title="Kafka 메세지를 Logstash를 이용하여 Elastic Search에 저장하기 Kafka(0.10.0.1) / Logstash(5.5.1) / Elastic Search(5.5.1)" /><published>2017-10-05T09:51:42+09:00</published><updated>2017-10-05T09:51:42+09:00</updated><id>http://localhost:4000/elastic,/kafka/2017/10/05/elastic_stack_elk_kafka</id><content type="html" xml:base="http://localhost:4000/elastic,/kafka/2017/10/05/elastic_stack_elk_kafka.html">&lt;p&gt;Kafka(2.10-0.10.0.1) + Logstash(5.5.1) + Elastic Search(5.5.1)&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -17,11 +17,10 @@
     &lt;blockquote&gt;
       &lt;p&gt;(../elasticsearch-5.5.1/config 디렉토리에서 실행) &lt;br /&gt;
 $ vi elasticsearch.yml&lt;/p&gt;
-      &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;...
+      &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;...
 network.host: 192.168.56.102
 ...
-&lt;/code&gt;&lt;/pre&gt;
-      &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/div&gt;
       &lt;p&gt;※ 192.168.56.102는 elasticsearch 설치된 인스턴스 ip로 변경&lt;/p&gt;
     &lt;/blockquote&gt;
   &lt;/li&gt;
@@ -30,26 +29,23 @@ network.host: 192.168.56.102
 &lt;p&gt;1-3. system 환경 설정&lt;/p&gt;
 &lt;blockquote&gt;
   &lt;p&gt;$ sudo vi /etc/security/limits.conf&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(아래내용 추가, user는 사용자 계정으로 변경)
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(아래내용 추가, user는 사용자 계정으로 변경)
 user hard nofile 65536
 user soft nofile 65536
 user hard nproc 65536
 user soft nproc 65536
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
 &lt;/blockquote&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;$ sudo vi /etc/rc.local&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(exit 0 윗 부분에 아래 내용추가 )
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(exit 0 윗 부분에 아래 내용추가 )
 echo 1048575 &amp;gt; /proc/sys/vm/max_map_count
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;p&gt;$ sudo sysctl -w fs.file-max=65536&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(확인)
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(확인)
 cat /proc/sys/fs/file-max
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;p&gt;$ sudo reboot 0&lt;/p&gt;
 &lt;/blockquote&gt;
 
@@ -75,30 +71,26 @@ $ ./elasticsearch&lt;/p&gt;
 &lt;blockquote&gt;
   &lt;p&gt;(../logstash-5.5.1/bin 디렉토리에서 실행) &lt;br /&gt;
 $ ./logstash-plugin install --version 8.0.2 logstash-input-kafka&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Validating logstash-input-kafka-8.0.2
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Validating logstash-input-kafka-8.0.2
 Installing logstash-input-kafka
 Installation successful
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;p&gt;(확인) ./logstash-plugin list --verbose input-kafka&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;logstash-input-kafka (8.0.2)
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;logstash-input-kafka (8.0.2)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;3-3. logstash-output-elasticsearch 플러그인 설치&lt;/p&gt;
 &lt;blockquote&gt;
   &lt;p&gt;(../logstash-5.5.1/bin 디렉토리에서 실행) &lt;br /&gt;
 $ ./logstash-plugin install logstash-output-elasticsearch&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Validating logstash-output-elasticsearch
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Validating logstash-output-elasticsearch
 Installing logstash-output-elasticsearch
 Installation successful
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;p&gt;(확인) $ ./logstash-plugin list --verbose logstash-output-elasticsearch&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;logstash-output-elasticsearch (7.3.7)
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;logstash-output-elasticsearch (7.3.7)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;3-4 config 설정&lt;/p&gt;
@@ -107,7 +99,7 @@ Installation successful
 $ vi logstash-kafka-elasticsearch.conf &lt;br /&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;input {
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;input {
   kafka {
     bootstrap_servers =&amp;gt; &quot;192.168.56.103:9092&quot;
     group_id =&amp;gt; &quot;logstash&quot;
@@ -123,8 +115,7 @@ output {
         index =&amp;gt; &quot;server-status-%{+YYYY.MM.dd}&quot;
   }
 }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;input의 bootstrap_servers는 kafka IP주소&lt;/li&gt;
@@ -151,11 +142,10 @@ $ sudo bin/logstash-plugin install x-pack&lt;/p&gt;
 &lt;blockquote&gt;
   &lt;p&gt;(kafka가 설치된 디렉토리에서 실행)
 $ bin/kafka-run-class.sh kafka.tools.ConsumerOffsetChecker –zookeeper localhost:2181 –group logstash –topic apache_logs&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(결과)
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(결과)
 Group           Topic                          Pid Offset          logSize         Lag             Owner
 logstash        apache_logs                    0   3               3               0               none
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;ul&gt;
     &lt;li&gt;Group은 소비그룹&lt;/li&gt;
     &lt;li&gt;logsize는 전체 메세지 개수&lt;/li&gt;
@@ -213,7 +203,7 @@ $ cd filebeat-5.3.0-linux-x86_64/ &lt;br /&gt;
 $ vi filebeat.yml &lt;br /&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;filebeat.prospectors:
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;filebeat.prospectors:
 
 - input_type: log
 
@@ -236,8 +226,7 @@ output.kafka:
    required_acks: 1
    compression: gzip
    max_message_bytes: 1000000
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;※ hosts: [“192.168.56.103:9092”]의 IP부분은 kafka가 설치된 인스턴스의 IP&lt;/p&gt;
 
@@ -249,11 +238,10 @@ $ nohup ./filebeat -e -c filebeat.yml &amp;amp; &lt;br /&gt;
 (실행 후 로그를 보기위해서는 $ ./filebeat -e -c filebeat.yml) &lt;br /&gt;&lt;/p&gt;
     &lt;ul&gt;
       &lt;li&gt;참고 : 실행이 정상적으로 되지 않고 Failed to connect to broker localhost:9092 이런 로그가 노출될 때 kafka의 설정을 아래처럼 localhost가 아닌 위처럼 ip를 써줘야 함
-        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo vi /usr/local/kafka/config/server.properties
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo vi /usr/local/kafka/config/server.properties
 advertised.listeners=PLAINTEXT://192.168.56.103:9092
 zookeeper.connect=192.168.56.103:2181
-&lt;/code&gt;&lt;/pre&gt;
-        &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/blockquote&gt;
@@ -263,12 +251,11 @@ zookeeper.connect=192.168.56.103:2181
 &lt;blockquote&gt;
   &lt;p&gt;(../kafka 디렉토리에서 실행) &lt;br /&gt;
 $ bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic apache_logs --from-beginning &lt;br /&gt;&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;결과
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;결과
 user@node2:/usr/local/kafka$ bin/kafka-console-consumer.sh --zookeeper localhost:2181 --topic apache_logs --from-beginning
 {&quot;@timestamp&quot;:&quot;2017-09-14T00:45:06.589Z&quot;,&quot;beat&quot;:{&quot;hostname&quot;:&quot;node1&quot;,&quot;name&quot;:&quot;node1&quot;,&quot;version&quot;:&quot;5.3.0&quot;},&quot;input_type&quot;:&quot;log&quot;,&quot;message&quot;:&quot;::1 - - [14/Sep/2017:09:32:21 +0900] \&quot;GET / HTTP/1.1\&quot; 200 11764 \&quot;-\&quot; \&quot;curl/7.35.0\&quot;&quot;,&quot;offset&quot;:82,&quot;source&quot;:&quot;/var/log/apache2/access.log&quot;,&quot;type&quot;:&quot;log&quot;}
 Processed a total of 1 messages
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
 &lt;/blockquote&gt;</content><author><name></name></author><category term="elastic" /><category term="kafka" /><summary type="html">filebeat(5.3.0), kafka(2.10-0.10.0.1) 기준</summary></entry><entry><title type="html">kafka(0.10.0.1) 설치 및 실행</title><link href="http://localhost:4000/kafka/2017/09/05/kafka_install_exec.html" rel="alternate" type="text/html" title="kafka(0.10.0.1) 설치 및 실행" /><published>2017-09-05T09:51:42+09:00</published><updated>2017-09-05T09:51:42+09:00</updated><id>http://localhost:4000/kafka/2017/09/05/kafka_install_exec</id><content type="html" xml:base="http://localhost:4000/kafka/2017/09/05/kafka_install_exec.html">&lt;h3 id=&quot;kafka-설치-및-실행-방법ubuntu-1404-기준-&quot;&gt;kafka 설치 및 실행 방법(ubuntu 14.04 기준) &lt;br /&gt;&lt;/h3&gt;
 
 &lt;h4 id=&quot;1-java-설치&quot;&gt;1. JAVA 설치&lt;/h4&gt;
@@ -300,28 +287,24 @@ $ sudo mkdir -p /tmp/zookeeper&lt;/p&gt;
 &lt;h4 id=&quot;4-zookeeper-및-kafka-broker-실행--중지-shell-생성&quot;&gt;4. zookeeper 및 kafka broker 실행 / 중지 shell 생성&lt;/h4&gt;
 &lt;blockquote&gt;
   &lt;p&gt;../usr/local/kafka$ vi kafka-start.sh &lt;br /&gt;&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;KAFKA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/kafka 
-&lt;span class=&quot;nv&quot;&gt;$KAFKA_HOME&lt;/span&gt;/bin/kafka-server-start.sh -daemon &lt;span class=&quot;nv&quot;&gt;$KAFKA_HOME&lt;/span&gt;/config/server.properties 
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;span class=&quot;nv&quot;&gt;$KAFKA_HOME&lt;/span&gt;/bin/kafka-server-start.sh &lt;span class=&quot;nt&quot;&gt;-daemon&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$KAFKA_HOME&lt;/span&gt;/config/server.properties 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;p&gt;../usr/local/kafka$ vi kafka-stop.sh&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;KAFKA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/kafka
 &lt;span class=&quot;nv&quot;&gt;$KAFKA_HOME&lt;/span&gt;/bin/kafka-server-stop.sh
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;p&gt;../usr/local/kafka$ vi zk-start.sh&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-nohup bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;nohup &lt;/span&gt;bin/zookeeper-server-start.sh &lt;span class=&quot;nt&quot;&gt;-daemon&lt;/span&gt; config/zookeeper.properties
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;p&gt;../usr/local/kafka$ vi zk-stop.sh&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
 &lt;span class=&quot;nv&quot;&gt;KAFKA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/kafka
 &lt;span class=&quot;nv&quot;&gt;$KAFKA_HOME&lt;/span&gt;/bin/zookeeper-server-stop.sh
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
 &lt;/blockquote&gt;
 
 &lt;h4 id=&quot;5-zookeeper-kafka-broker-실행&quot;&gt;5. zookeeper, kafka broker 실행&lt;/h4&gt;
@@ -334,29 +317,25 @@ $ sudo ./kafka-start.sh&lt;/p&gt;
 &lt;blockquote&gt;
   &lt;p&gt;6-1. topic 생성 (replication-factor 1, partitions 1) &lt;br /&gt;
 $ ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test_topic &lt;br /&gt;&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;결과
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;결과
 Created topic &quot;test_topic&quot;.
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;p&gt;6-2. 생성된 topic 정보 조회 &lt;br /&gt;
 $ ./kafka-topics.sh --describe --zookeeper localhost:2181 --topic test_topic &lt;br /&gt;&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;결과
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;결과
 Topic:test_topic        PartitionCount:1        ReplicationFactor:1     Configs: &amp;lt;br&amp;gt;
         Topic: test_topic       Partition: 0    Leader: 1       Replicas: 1     Isr: 1
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;p&gt;6-3 토픽 내 메세지 생성 (produce / 종료는 ctrl + c) - &lt;a href=&quot;/kafka/2017/09/01/kafka_leader_not_available.html&quot;&gt;LEADER_NOT_AVAILABLE 에러 발생 시 - 참고&lt;/a&gt;  &lt;br /&gt;
 $ ./kafka-console-producer.sh --broker-list localhost:9092 --topic test_topic &lt;br /&gt;&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(입력) message test
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;(입력) message test
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;p&gt;6-4 생성된 메세지 확인 (consume / 종료는 ctrl + c) &lt;br /&gt;
 $ ./kafka-console-consumer.sh --zookeeper localhost:2181 --topic test_topic --from-beginning&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;결과
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;결과
 message test
 Processed a total of 1 messages
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;p&gt;6-5 토픽 삭제 (&lt;a href=&quot;/kafka/2017/08/31/kafka_delete_topic.html&quot;&gt;삭제 전 설정 변경 필요 - 참고&lt;/a&gt;) &lt;br /&gt;
 $ ./kafka-topics.sh --delete --zookeeper localhost:2181 --topic test_topic&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -369,9 +348,8 @@ ex) WARN Error while fetching metadata with correlation id 0 : {topic_name=LEADE
 
 &lt;blockquote&gt;
   &lt;p&gt;vi {$KAFKA_HOME}/config/server.properties &lt;br /&gt;&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;advertised.listeners = PLAINTEXT://localhost:9092
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;advertised.listeners = PLAINTEXT://localhost:9092
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;설정 추가(주석 해제) 후 kafka 재시작 &lt;br /&gt;&lt;/p&gt;
@@ -381,9 +359,8 @@ kafka.apache.org : &lt;a href=&quot;https://kafka.apache.org/documentation/&quot
 
 &lt;blockquote&gt;
   &lt;p&gt;$ vi {$KAFKA_HOME}/config/server.properties&lt;/p&gt;
-  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;delete.topic.enable=true
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+  &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;delete.topic.enable=true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;p&gt;설정 추가 필요 &lt;br /&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
@@ -396,15 +373,14 @@ kafka.apache.org : &lt;a href=&quot;https://kafka.apache.org/documentation/&quot
   &lt;p&gt;$ sysctl -a | grep dirty&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vm.dirty_background_bytes = 0
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vm.dirty_background_bytes = 0
 vm.dirty_background_ratio = 10
 vm.dirty_bytes = 0
 vm.dirty_expire_centisecs = 3000
 vm.dirty_ratio = 20
 vm.dirty_writeback_centisecs = 500
 vm.dirtytime_expire_seconds = 43200
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -438,15 +414,14 @@ vm.dirtytime_expire_seconds = 43200
 (MemAvailable이 없을 경우 : &lt;a href=&quot;https://www.reddit.com/r/linux/comments/3h7w8f/better_linux_disk_caching_performance_with/&quot;&gt;이용 가능한 메모리 = (MemFree + Cached - Mapped)&lt;/a&gt; &lt;br /&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;※ parameter 변경 및 적용방법
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;※ parameter 변경 및 적용방법
 예) dirty_ratio, dirty_background_ratio
 1) 설정 변경
 $ sudo sysctl -w vm.dirty_ratio=10
 $ sudo sysctl -w vm.dirty_background_ratio=5
 2) 변경내용 적용 (커밋)
 $ sudo sysctl -p
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;참고 사이트
 kernel.org : &lt;a href=&quot;https://www.kernel.org/doc/Documentation/sysctl/vm.txt&quot;&gt;https://www.kernel.org/doc/Documentation/sysctl/vm.txt&lt;/a&gt; &lt;br /&gt;
@@ -504,55 +479,48 @@ Linux Tuning The VM (memory) Subsystem : &lt;a href=&quot;https://www.cyberciti.
 
 &lt;h4 id=&quot;과정&quot;&gt;과정&lt;/h4&gt;
 &lt;p&gt;1) 피봇은 p, 리스트 왼쪽 끝과 오른쪽 끝에서 시작한 인덱스들은 l(left), r(right)&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;5 - 3 - 7 - 6 - 2 - 1 - 4    
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;5 - 3 - 7 - 6 - 2 - 1 - 4    
 l                   r   p 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;2) 리스트 왼쪽에 있는 l 위치의 값이 피봇 값보다 크고, 오른쪽에 있는 r 위치의 값은 피봇 값보다 작으므로 둘을 교환한다.&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;5 - 3 - 7 - 6 - 2 - 1 - 4 
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;5 - 3 - 7 - 6 - 2 - 1 - 4 
 l                   r   p 
 1 - 3 - 7 - 6 - 2 - 5 - 4 
 l                   r   p 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;3) r 위치의 값이 피봇 값보다 작지만, l 위치의 값도 피봇값보다 작으므로 교환하지 않는다.&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1 - 3 - 7 - 6 - 2 - 5 - 4 
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1 - 3 - 7 - 6 - 2 - 5 - 4 
     l           r       p 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;4) l위치를 피봇 값보다 큰 값이 나올 때 까지 진행해 r 위치의 값과 교환(swap)한다.&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1 - 3 - 7 - 6 - 2 - 5 - 4 
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1 - 3 - 7 - 6 - 2 - 5 - 4 
         l       r       p &amp;gt;&amp;gt; swap 
 1 - 3 - 2 - 6 - 7 - 5 - 4  
                          p
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;5) l위치가 r위치보다 같거나 커지면, l위치의 값과 피봇 값을 교환한다.&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1 - 3 - 2 - 6 - 7 - 5 - 4 
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1 - 3 - 2 - 6 - 7 - 5 - 4 
            l,r          p &amp;gt;&amp;gt; swap 
 1 - 3 - 2 - 4 - 7 - 5 - 6 
             p             
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;6) 최종 위치가 정해진 피봇 값을 제외하고 좌우의 리스트에 대해 각각 퀵 정렬을 재귀적으로 수행한다.&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1 - 3 - 2 
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1 - 3 - 2 
 1 - 2 - 3 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;완성된 리스트는 다음과 같다.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1 - 2 - 3 - 4 - 5 - 6 - 7
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1 - 2 - 3 - 4 - 5 - 6 - 7
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h4 id=&quot;java-소스&quot;&gt;Java 소스&lt;/h4&gt;
 
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;quicksort&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;quicksort&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 	&lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;marr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
 
 	&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
@@ -602,16 +570,14 @@ l                   r   p
 		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h4 id=&quot;결과&quot;&gt;결과&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;4 7 6 8 5 9 
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;4 7 6 8 5 9 
 4 7 6 8 5 9 
 4 5 6 8 7 9 
 4 5 6 7 8 9 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;참고 사이트&lt;/p&gt;
 &lt;ul&gt;
@@ -638,7 +604,7 @@ l                   r   p
 
 &lt;h4 id=&quot;java-소스&quot;&gt;Java 소스&lt;/h4&gt;
 
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;mergesort&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;mergesort&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
 	&lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;marr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
 
 	
@@ -688,17 +654,15 @@ l                   r   p
 
 	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h4 id=&quot;결과&quot;&gt;결과&lt;/h4&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;5 8 3 9 1 2 
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;5 8 3 9 1 2 
 3 5 8 9 1 2 
 3 5 8 1 9 2 
 3 5 8 1 2 9 
 1 2 3 5 8 9 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;참고 사이트&lt;/p&gt;
 &lt;ul&gt;
@@ -718,15 +682,14 @@ l                   r   p
 &lt;h3 id=&quot;1-private--public-key-생성-node2에서-실행&quot;&gt;1. Private / Public Key 생성 (node2에서 실행)&lt;/h3&gt;
 &lt;blockquote&gt;
   &lt;p&gt;$ ssh-keygen&lt;/p&gt;
-  &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Generating public/private rsa key pair.
+  &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Generating public/private rsa key pair.
 Enter file &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;which to save the key &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/home/user/.ssh/id_rsa&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
 Enter passphrase &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;empty &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;no passphrase&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
 Enter same passphrase again:
 Your identification has been saved &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; /home/user/.ssh/id_rsa.
 Your public key has been saved &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; /home/user/.ssh/id_rsa.pub.
 The key fingerprint is:
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
   &lt;p&gt;위처럼 메세지가 뜨는데 저장할 경로를 입력하라는 의미, 엔터를 누르면 /home/{계정명}/.ssh/ 경로에 키들이 생성 &lt;br /&gt;
 (Private Key : /home/{계정명}/.ssh/id_rsa / Public Key : /home/{계정명}/.ssh/id_rsa.pub) &lt;br /&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -741,7 +704,7 @@ The key fingerprint is:
 &lt;p&gt;ssh-copy-id {계정}@{목적지 서버 ip} 명령어로 복사 (자동으로 /home/{계정}/.ssh/authorized_keys에 복사됨) &lt;br /&gt;&lt;/p&gt;
 &lt;blockquote&gt;
   &lt;p&gt;$ ssh-copy-id user@192.168.56.101&lt;/p&gt;
-  &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;The authenticity of host &lt;span class=&quot;s1&quot;&gt;'192.168.56.101 (192.168.56.101)'&lt;/span&gt; can&lt;span class=&quot;s1&quot;&gt;'t be established.
+  &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;The authenticity of host &lt;span class=&quot;s1&quot;&gt;'192.168.56.101 (192.168.56.101)'&lt;/span&gt; can&lt;span class=&quot;s1&quot;&gt;'t be established.
 ECDSA key fingerprint is 83:38:0a:e4:16:d5:20:c0:30:e7:0b:00:f1:0f:6d:b0.
 Are you sure you want to continue connecting (yes/no)? yes
 /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
@@ -750,6 +713,5 @@ user@192.168.56.101'&lt;/span&gt;s password:
 Number of key&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; added: 1
 Now try logging into the machine, with:   &lt;span class=&quot;s2&quot;&gt;&quot;ssh 'user@192.168.56.101'&quot;&lt;/span&gt;
 and check to make sure that only the key&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; you wanted were added.
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
 &lt;/blockquote&gt;</content><author><name></name></author><category term="Ubuntu" /><summary type="html">각 서버간 RSA 비대칭키를 이용 패스워드 없이 접속하는 방법 $ ssh-keygen $ ssh-copy-id {계정}@{목적지 서버}</summary></entry></feed>

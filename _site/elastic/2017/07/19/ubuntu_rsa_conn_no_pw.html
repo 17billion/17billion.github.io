@@ -149,15 +149,14 @@
 <h3 id="1-private--public-key-생성-node2에서-실행">1. Private / Public Key 생성 (node2에서 실행)</h3>
 <blockquote>
   <p>$ ssh-keygen</p>
-  <div class="language-bash highlighter-rouge"><pre class="highlight"><code>Generating public/private rsa key pair.
+  <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Generating public/private rsa key pair.
 Enter file <span class="k">in </span>which to save the key <span class="o">(</span>/home/user/.ssh/id_rsa<span class="o">)</span>:
 Enter passphrase <span class="o">(</span>empty <span class="k">for </span>no passphrase<span class="o">)</span>:
 Enter same passphrase again:
 Your identification has been saved <span class="k">in</span> /home/user/.ssh/id_rsa.
 Your public key has been saved <span class="k">in</span> /home/user/.ssh/id_rsa.pub.
 The key fingerprint is:
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>위처럼 메세지가 뜨는데 저장할 경로를 입력하라는 의미, 엔터를 누르면 /home/{계정명}/.ssh/ 경로에 키들이 생성 <br />
 (Private Key : /home/{계정명}/.ssh/id_rsa / Public Key : /home/{계정명}/.ssh/id_rsa.pub) <br /></p>
 </blockquote>
@@ -172,7 +171,7 @@ The key fingerprint is:
 <p>ssh-copy-id {계정}@{목적지 서버 ip} 명령어로 복사 (자동으로 /home/{계정}/.ssh/authorized_keys에 복사됨) <br /></p>
 <blockquote>
   <p>$ ssh-copy-id user@192.168.56.101</p>
-  <div class="language-bash highlighter-rouge"><pre class="highlight"><code>The authenticity of host <span class="s1">'192.168.56.101 (192.168.56.101)'</span> can<span class="s1">'t be established.
+  <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The authenticity of host <span class="s1">'192.168.56.101 (192.168.56.101)'</span> can<span class="s1">'t be established.
 ECDSA key fingerprint is 83:38:0a:e4:16:d5:20:c0:30:e7:0b:00:f1:0f:6d:b0.
 Are you sure you want to continue connecting (yes/no)? yes
 /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
@@ -181,8 +180,7 @@ user@192.168.56.101'</span>s password:
 Number of key<span class="o">(</span>s<span class="o">)</span> added: 1
 Now try logging into the machine, with:   <span class="s2">"ssh 'user@192.168.56.101'"</span>
 and check to make sure that only the key<span class="o">(</span>s<span class="o">)</span> you wanted were added.
-</code></pre>
-  </div>
+</code></pre></div>  </div>
 </blockquote>
 
 

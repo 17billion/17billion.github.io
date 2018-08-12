@@ -200,13 +200,12 @@ $ export ETCD_VERSION=3.2.5 <br /></p>
 <h4 id="3-클러스터-config-설정">3. 클러스터 config 설정</h4>
 <blockquote>
   <p>$ vi {kubernetes}/cluster/ubuntu/config-default.sh <br /></p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>export nodes="root@192.168.56.101 root@192.168.56.102 root@192.168.56.103"
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export nodes="root@192.168.56.101 root@192.168.56.102 root@192.168.56.103"
 export roles="ai i i"
 export NUM_NODES=${NUM_NODES:-3}
 export SERVICE_CLUSTER_IP_RANGE=192.168.3.0/24
 export FLANNEL_NET=172.16.0.0/16
-</code></pre>
-  </div>
+</code></pre></div>  </div>
 </blockquote>
 
 <h5 id="--nodes는-각-노드에-원격으로-접속가능한-계정과-ip를-의미합니다">- nodes는 각 노드에 원격으로 접속가능한 계정과 IP를 의미합니다.</h5>
@@ -227,19 +226,18 @@ export FLANNEL_NET=172.16.0.0/16
 $ KUBERNETES_PROVIDER=ubuntu ./kube-up.sh</p>
 </blockquote>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>... Starting cluster using provider: ubuntu
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>... Starting cluster using provider: ubuntu
 ... calling verify-prereqs
 Identity added: /root/.ssh/id_rsa <span class="o">(</span>/root/.ssh/id_rsa<span class="o">)</span>
 ... calling kube-up
-.
-.
-.
+<span class="nb">.</span>
+<span class="nb">.</span>
+<span class="nb">.</span>
 Cluster validation succeeded
 Done, listing cluster services:
 
 Kubernetes master is running at http://192.168.56.101:8080
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="5-어디서든-kubectl-명령어-사용할-수-있도록-복사">5. 어디서든 kubectl 명령어 사용할 수 있도록 복사</h4>
 <blockquote>
@@ -250,12 +248,11 @@ $ cp ubuntu/binaries/kubectl /opt/bin/.</p>
 <h4 id="6-노드-구성-확인">6. 노드 구성 확인</h4>
 <blockquote>
   <p>$ kubectl get nodes</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>NAME             STATUS    AGE
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NAME             STATUS    AGE
 192.168.56.101   Ready     1m
 192.168.56.102   Ready     56s
 192.168.56.103   Ready     37s
-</code></pre>
-  </div>
+</code></pre></div>  </div>
 </blockquote>
 
 <p>참고 사이트 <br />

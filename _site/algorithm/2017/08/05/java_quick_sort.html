@@ -148,55 +148,48 @@
 
 <h4 id="과정">과정</h4>
 <p>1) 피봇은 p, 리스트 왼쪽 끝과 오른쪽 끝에서 시작한 인덱스들은 l(left), r(right)</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>5 - 3 - 7 - 6 - 2 - 1 - 4    
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5 - 3 - 7 - 6 - 2 - 1 - 4    
 l                   r   p 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>2) 리스트 왼쪽에 있는 l 위치의 값이 피봇 값보다 크고, 오른쪽에 있는 r 위치의 값은 피봇 값보다 작으므로 둘을 교환한다.</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>5 - 3 - 7 - 6 - 2 - 1 - 4 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5 - 3 - 7 - 6 - 2 - 1 - 4 
 l                   r   p 
 1 - 3 - 7 - 6 - 2 - 5 - 4 
 l                   r   p 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>3) r 위치의 값이 피봇 값보다 작지만, l 위치의 값도 피봇값보다 작으므로 교환하지 않는다.</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>1 - 3 - 7 - 6 - 2 - 5 - 4 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 - 3 - 7 - 6 - 2 - 5 - 4 
     l           r       p 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>4) l위치를 피봇 값보다 큰 값이 나올 때 까지 진행해 r 위치의 값과 교환(swap)한다.</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>1 - 3 - 7 - 6 - 2 - 5 - 4 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 - 3 - 7 - 6 - 2 - 5 - 4 
         l       r       p &gt;&gt; swap 
 1 - 3 - 2 - 6 - 7 - 5 - 4  
                          p
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>5) l위치가 r위치보다 같거나 커지면, l위치의 값과 피봇 값을 교환한다.</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>1 - 3 - 2 - 6 - 7 - 5 - 4 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 - 3 - 2 - 6 - 7 - 5 - 4 
            l,r          p &gt;&gt; swap 
 1 - 3 - 2 - 4 - 7 - 5 - 6 
             p             
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>6) 최종 위치가 정해진 피봇 값을 제외하고 좌우의 리스트에 대해 각각 퀵 정렬을 재귀적으로 수행한다.</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>1 - 3 - 2 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 - 3 - 2 
 1 - 2 - 3 
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>완성된 리스트는 다음과 같다.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>1 - 2 - 3 - 4 - 5 - 6 - 7
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 - 2 - 3 - 4 - 5 - 6 - 7
+</code></pre></div></div>
 
 <h4 id="java-소스">Java 소스</h4>
 
-<div class="language-java highlighter-rouge"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">quicksort</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">quicksort</span> <span class="o">{</span>
 	<span class="kd">static</span> <span class="kt">int</span> <span class="n">marr</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="mi">6</span><span class="o">];</span>
 
 	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
@@ -246,16 +239,14 @@ l                   r   p
 		<span class="k">return</span> <span class="n">arr</span><span class="o">;</span>
 	<span class="o">}</span>
 <span class="o">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="결과">결과</h4>
-<div class="highlighter-rouge"><pre class="highlight"><code>4 7 6 8 5 9 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>4 7 6 8 5 9 
 4 7 6 8 5 9 
 4 5 6 8 7 9 
 4 5 6 7 8 9 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>참고 사이트</p>
 <ul>

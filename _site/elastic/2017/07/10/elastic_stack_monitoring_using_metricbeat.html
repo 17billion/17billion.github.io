@@ -158,7 +158,7 @@ $ sudo dpkg -i metricbeat-5.5.1-amd64.deb</p>
   <p>$ vi /etc/metricbeat/metricbeat.yml</p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>#==========================  Modules configuration ============================
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#==========================  Modules configuration ============================
 metricbeat.modules:
 
 #------------------------------- System Module -------------------------------
@@ -192,8 +192,7 @@ metricbeat.modules:
 output.elasticsearch:
   hosts: ["localhost:9200"]
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>※ output을 Logstash로 설정 할 경우 참고<br />
 (<a href="https://www.elastic.co/guide/en/beats/metricbeat/5.5/config-metricbeat-logstash.html">https://www.elastic.co/guide/en/beats/metricbeat/5.5/config-metricbeat-logstash.html</a>)</p>

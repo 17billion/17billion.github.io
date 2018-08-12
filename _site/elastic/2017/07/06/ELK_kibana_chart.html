@@ -143,9 +143,8 @@
 <p>(원격으로 putty 등으로 접속할 경우 터널링 필요) <br />
 <a href="http://localhost:5601">http://localhost:5601</a> 접속 <br />
 지난글에 이어서 접속할 경우 처음에 웹페이지에 접속하면 아래와 같은 메세지가 노출됩니다. <br /></p>
-<div class="highlighter-rouge"><pre class="highlight"><code>Unable to fetch mapping. Do you have indices matching the pattern?
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Unable to fetch mapping. Do you have indices matching the pattern?
+</code></pre></div></div>
 <p>지난 글에서 Logstash 설정으로 server-status-* 형태로 index를 생성해서 logstash-* 형태의 index를 못 찾기 때문입니다. <br /></p>
 
 <p>1-1. 텍스트 박스 안에 logstash-*를 server-status-*로 변경한 후 create 버튼을 클릭하면 해당 index의 데이터를 불러와서 표시해줍니다. <br />

@@ -154,11 +154,10 @@
     <blockquote>
       <p>(../elasticsearch-5.5.1/config 디렉토리에서 실행) <br />
 $ vi elasticsearch.yml</p>
-      <div class="highlighter-rouge"><pre class="highlight"><code>...
+      <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
 network.host: 192.168.56.102
 ...
-</code></pre>
-      </div>
+</code></pre></div>      </div>
       <p>※ 192.168.56.102는 elasticsearch 설치된 인스턴스 ip로 변경</p>
     </blockquote>
   </li>
@@ -167,26 +166,23 @@ network.host: 192.168.56.102
 <p>1-3. system 환경 설정</p>
 <blockquote>
   <p>$ sudo vi /etc/security/limits.conf</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>(아래내용 추가, user는 사용자 계정으로 변경)
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(아래내용 추가, user는 사용자 계정으로 변경)
 user hard nofile 65536
 user soft nofile 65536
 user hard nproc 65536
 user soft nproc 65536
-</code></pre>
-  </div>
+</code></pre></div>  </div>
 </blockquote>
 
 <blockquote>
   <p>$ sudo vi /etc/rc.local</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>(exit 0 윗 부분에 아래 내용추가 )
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(exit 0 윗 부분에 아래 내용추가 )
 echo 1048575 &gt; /proc/sys/vm/max_map_count
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>$ sudo sysctl -w fs.file-max=65536</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>(확인)
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(확인)
 cat /proc/sys/fs/file-max
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>$ sudo reboot 0</p>
 </blockquote>
 
@@ -212,30 +208,26 @@ $ ./elasticsearch</p>
 <blockquote>
   <p>(../logstash-5.5.1/bin 디렉토리에서 실행) <br />
 $ ./logstash-plugin install --version 8.0.2 logstash-input-kafka</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>Validating logstash-input-kafka-8.0.2
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Validating logstash-input-kafka-8.0.2
 Installing logstash-input-kafka
 Installation successful
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>(확인) ./logstash-plugin list --verbose input-kafka</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>logstash-input-kafka (8.0.2)
-</code></pre>
-  </div>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>logstash-input-kafka (8.0.2)
+</code></pre></div>  </div>
 </blockquote>
 
 <p>3-3. logstash-output-elasticsearch 플러그인 설치</p>
 <blockquote>
   <p>(../logstash-5.5.1/bin 디렉토리에서 실행) <br />
 $ ./logstash-plugin install logstash-output-elasticsearch</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>Validating logstash-output-elasticsearch
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Validating logstash-output-elasticsearch
 Installing logstash-output-elasticsearch
 Installation successful
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <p>(확인) $ ./logstash-plugin list --verbose logstash-output-elasticsearch</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>logstash-output-elasticsearch (7.3.7)
-</code></pre>
-  </div>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>logstash-output-elasticsearch (7.3.7)
+</code></pre></div>  </div>
 </blockquote>
 
 <p>3-4 config 설정</p>
@@ -244,7 +236,7 @@ Installation successful
 $ vi logstash-kafka-elasticsearch.conf <br /></p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>input {
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>input {
   kafka {
     bootstrap_servers =&gt; "192.168.56.103:9092"
     group_id =&gt; "logstash"
@@ -260,8 +252,7 @@ output {
         index =&gt; "server-status-%{+YYYY.MM.dd}"
   }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <ul>
   <li>input의 bootstrap_servers는 kafka IP주소</li>
@@ -288,11 +279,10 @@ $ sudo bin/logstash-plugin install x-pack</p>
 <blockquote>
   <p>(kafka가 설치된 디렉토리에서 실행)
 $ bin/kafka-run-class.sh kafka.tools.ConsumerOffsetChecker –zookeeper localhost:2181 –group logstash –topic apache_logs</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>(결과)
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(결과)
 Group           Topic                          Pid Offset          logSize         Lag             Owner
 logstash        apache_logs                    0   3               3               0               none
-</code></pre>
-  </div>
+</code></pre></div>  </div>
   <ul>
     <li>Group은 소비그룹</li>
     <li>logsize는 전체 메세지 개수</li>

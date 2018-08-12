@@ -157,11 +157,10 @@ $ cd elasticsearch-5.5.1 <br /></p>
 $ vi elasticsearch.yml</p>
 </blockquote>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>cluster.name: elk_cluster
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cluster.name: elk_cluster
 node.name: elk_node-1
 http.port: 9200
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>1-4. 실행</p>
 <blockquote>
@@ -172,21 +171,20 @@ http.port: 9200
 <p>1-5. 실행 확인</p>
 <blockquote>
   <p>$ curl localhost:9200</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"elk_node-1"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"cluster_name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"elk_cluster"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"cluster_uuid"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"CEmUNQhIQlmuUdU6qv1JWQ"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"version"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"number"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"5.5.1"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"build_hash"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"19c13d0"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"build_date"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-18T20:44:24.823Z"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"build_snapshot"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"lucene_version"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"6.6.0"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="nt">"tagline"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"You Know, for Search"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-  </div>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "name" : "elk_node-1",
+  "cluster_name" : "elk_cluster",
+  "cluster_uuid" : "CEmUNQhIQlmuUdU6qv1JWQ",
+  "version" : {
+    "number" : "5.5.1",
+    "build_hash" : "19c13d0",
+    "build_date" : "2017-07-18T20:44:24.823Z",
+    "build_snapshot" : false,
+    "lucene_version" : "6.6.0"
+  },
+  "tagline" : "You Know, for Search"
+}
+</code></pre></div>  </div>
 </blockquote>
 
 <h4 id="2-logstash를-설치합니다">2. Logstash를 설치합니다.</h4>
@@ -209,7 +207,7 @@ $ unzip logstash-5.5.1.zip <br /></p>
 <blockquote>
   <p>(../logstash-5.5.1/bin 디렉토리에서 실행) <br />
 $ vi logstash-simple.conf</p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>input {
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>input {
   exec {
     command =&gt; "free | grep buffers/cache | awk '{print int($3/($3+$4)*100)}'"
     interval =&gt; "5"
@@ -237,8 +235,7 @@ output {
         index =&gt; "server-status-%{+YYYY.MM.dd}"
   }
 }
-</code></pre>
-  </div>
+</code></pre></div>  </div>
 </blockquote>
 
 <p>2-3. 실행</p>

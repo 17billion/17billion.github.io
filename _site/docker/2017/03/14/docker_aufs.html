@@ -142,21 +142,19 @@
 <h4 id="--이미지를-저장하는-디렉토리-확인방법-root-dir-확인">- 이미지를 저장하는 디렉토리 확인방법 (Root Dir 확인)</h4>
 <blockquote>
   <p>$ sudo docker info <br /></p>
-  <div class="highlighter-rouge"><pre class="highlight"><code>Storage Driver: aufs
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Storage Driver: aufs
  Root Dir: /mnt/docker/aufs 
  Backing Filesystem: extfs 
  Dirs: 35 
  Dirperm1 Supported: true 
-</code></pre>
-  </div>
+</code></pre></div>  </div>
 </blockquote>
 
 <h4 id="--aufs-하부-디렉토리들의-각각-역할">- aufs 하부 디렉토리들의 각각 역할</h4>
-<div class="highlighter-rouge"><pre class="highlight"><code>../docker/aufs/diff : 이미지 layer 및 데이터 보관장소
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>../docker/aufs/diff : 이미지 layer 및 데이터 보관장소
 ../docker/aufs/layers : 이미지가 어떻게 쌓여있는지에 대한 메타데이터 저장소
 ../docker/aufs/mnt : 이미지가 container화 되었을때 마운트되는 저장소 (컨테이너 미실행인 경우 비어있는 비어있는 디렉토리로 남게됨)
-</code></pre>
-</div>
+</code></pre></div></div>
 <h5 id="만약-의존성이-없는-독립적인-이미지를-삭제-할-경우-diff-layers의-데이터들이이-삭제되는것을-확인할-수-있습니다">만약 의존성이 없는 독립적인 이미지를 삭제 할 경우 …/diff, …/layers의 데이터들이이 삭제되는것을 확인할 수 있습니다.</h5>
 
 
