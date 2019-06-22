@@ -2,7 +2,7 @@
 layout: post
 title:  "RSA 비대칭키를 이용하여 패스워드 없이 ssh 접속방법"
 date:   2017-07-19 09:51:42 +0900
-categories: elastic
+categories: Ubuntu
 tags:
 - Ubuntu
 ---

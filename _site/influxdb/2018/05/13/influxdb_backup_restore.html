@@ -6,11 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>RSA 비대칭키를 이용하여 패스워드 없이 ssh 접속방법</title>
-  <meta name="description" content="각 서버간 RSA 비대칭키를 이용 패스워드 없이 접속하는 방법 $ ssh-keygen $ ssh-copy-id {계정}@{목적지 서버}">
+  <title>Backing up and restoring in InfluxDB</title>
+  <meta name="description" content="InfluxDB Backup / Restore 방법 Backup influxd backup [ -database &amp;lt;db_name&amp;gt; ] [ -portable ] [ -host &amp;lt;host:port&amp;gt; ] [ -retention &amp;lt;rp_name&amp;gt; ] | [...">
 
   <link rel="stylesheet" href="/css/styles.css">
-  <link rel="canonical" href="http://localhost:4000/elastic/2017/07/19/ubuntu_rsa_conn_no_pw.html">
+  <link rel="canonical" href="http://localhost:4000/influxdb/2018/05/13/influxdb_backup_restore.html">
   <link rel="alternate" type="application/rss+xml" title="17billion" href="/feed.xml">
 
 
@@ -121,67 +121,77 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">RSA 비대칭키를 이용하여 패스워드 없이 ssh 접속방법</h1>
+    <h1 class="post-title" itemprop="name headline">Backing up and restoring in InfluxDB</h1>
 
 	<div class="post-tags">
   
   
-  <a href="/tags/#Ubuntu">Ubuntu</a>
+  <a href="/tags/#influxdb">influxdb</a>
   
 </div>
 
-    <p class="post-meta"><time datetime="2017-07-19T09:51:42+09:00" itemprop="datePublished">Jul 19, 2017</time></p>
+    <p class="post-meta"><time datetime="2018-05-13T19:11:42+09:00" itemprop="datePublished">May 13, 2018</time></p>
     </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>각 서버간 RSA 비대칭키를 이용 패스워드 없이 접속하는 방법</p>
-<blockquote>
-  <ol>
-    <li>$ ssh-keygen</li>
-    <li>$ ssh-copy-id {계정}@{목적지 서버}</li>
-  </ol>
-</blockquote>
+    <h4 id="influxdb-backup--restore-방법">InfluxDB Backup / Restore 방법</h4>
+<ol>
+  <li>Backup
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>influxd backup
+ [ -database &lt;db_name&gt; ]
+ [ -portable ]
+ [ -host &lt;host:port&gt; ]
+ [ -retention &lt;rp_name&gt; ] | [ -shard &lt;shard_ID&gt; -retention &lt;rp_name&gt; ]
+ [ -start &lt;timestamp&gt; [ -end &lt;timestamp&gt; ] | -since &lt;timestamp&gt; ]
+ &lt;path-to-backup&gt;
+</code></pre></div>    </div>
+    <ul>
+      <li>전체 백업
+$ influxd backup -portable <path-to-backup></path-to-backup></li>
+      <li>최근 변경된 모든 데이터베이스를 백업
+$ influxd backup -portable -start <timestamp> <path-to-backup></path-to-backup></timestamp></li>
+      <li>특정 데이터베이스만 백업
+$ influxd backup -portable -database telegraf <path-to-backup></path-to-backup></li>
+      <li>지정된 기간 동안의 데이터베이스 배업
+$ influxd backup  -portable -database mytsd -start 2017-04-28T06:49:00Z -end 2017-04-28T06:50:00Z /tmp/backup/influxdb</li>
+    </ul>
+  </li>
+  <li>Restore
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>influxd restore [ -db &lt;db_name&gt; ]
+ -portable | -online
+ [ -host &lt;host:port&gt; ]
+ [ -newdb &lt;newdb_name&gt; ]
+ [ -rp &lt;rp_name&gt; ]
+ [ -newrp &lt;newrp_name&gt; ]
+ [ -shard &lt;shard_ID&gt; ]
+ &lt;path-to-backup-files&gt;
+</code></pre></div>    </div>
+    <ul>
+      <li>백업 디렉토리에있는 모든 데이터베이스를 복원
+$ influxd restore -portable path-to-backup</li>
+      <li>특정 데이터베이스(telegraf)만 복원하려면 (해당 데이터베이스가 없어야 함)
+$ influxd restore -portable -db telegraf path-to-backup</li>
+    </ul>
+  </li>
+</ol>
 
-<p>예시) node2(192.168.56.102)에서 node1(192.168.56.101)로 패스워드 없이 ssh 접속 <br />
-접속을 시도하는 서버(node2)는 Private Key가 필요, 목적지 서버(node1)는 Public Key가 필요 <br />
-(Public Key키는 자물쇠, Private Key는 그 자물쇠를 여는 키)</p>
+<ul>
+  <li>이미 존재하는 데이터베이스로 데이터를 복원할 경우
+    <ol>
+      <li>데이터베이스를 임시 데이터베이스로 복원
+$ influxd restore -portable -db telegraf -newdb telegraf_bak path-to-backup</li>
+      <li>Sideload를 대상 데이터베이스에 추가하고 임시 데이터베이스 삭제
+$ use telegraf_bak
+$ SELECT * INTO telegraf..:MEASUREMENT FROM /.*/ GROUP BY *
+4 drop database telegraf_bak</li>
+    </ol>
+  </li>
+</ul>
 
-<h3 id="1-private--public-key-생성-node2에서-실행">1. Private / Public Key 생성 (node2에서 실행)</h3>
-<blockquote>
-  <p>$ ssh-keygen</p>
-  <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Generating public/private rsa key pair.
-Enter file <span class="k">in </span>which to save the key <span class="o">(</span>/home/user/.ssh/id_rsa<span class="o">)</span>:
-Enter passphrase <span class="o">(</span>empty <span class="k">for </span>no passphrase<span class="o">)</span>:
-Enter same passphrase again:
-Your identification has been saved <span class="k">in</span> /home/user/.ssh/id_rsa.
-Your public key has been saved <span class="k">in</span> /home/user/.ssh/id_rsa.pub.
-The key fingerprint is:
-</code></pre></div>  </div>
-  <p>위처럼 메세지가 뜨는데 저장할 경로를 입력하라는 의미, 엔터를 누르면 /home/{계정명}/.ssh/ 경로에 키들이 생성 <br />
-(Private Key : /home/{계정명}/.ssh/id_rsa / Public Key : /home/{계정명}/.ssh/id_rsa.pub) <br /></p>
-</blockquote>
-
-<h3 id="2-생성한-public-key를-목적지-서버node1에-복사-">2. 생성한 public Key를 목적지 서버(node1)에 복사 <br /></h3>
-
-<h4 id="방법-1-">방법 1) <br /></h4>
-<p>생성된 public 키를 조회(cat)하여 그 내용을 목적지 서버의 /home/{계정}/.ssh/authorized_keys에 복사 <br />
-(authorized_keys파일이 없으면 700권한으로 생성) <br /></p>
-
-<h4 id="방법-2-">방법 2) <br /></h4>
-<p>ssh-copy-id {계정}@{목적지 서버 ip} 명령어로 복사 (자동으로 /home/{계정}/.ssh/authorized_keys에 복사됨) <br /></p>
-<blockquote>
-  <p>$ ssh-copy-id user@192.168.56.101</p>
-  <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The authenticity of host <span class="s1">'192.168.56.101 (192.168.56.101)'</span> can<span class="s1">'t be established.
-ECDSA key fingerprint is 83:38:0a:e4:16:d5:20:c0:30:e7:0b:00:f1:0f:6d:b0.
-Are you sure you want to continue connecting (yes/no)? yes
-/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
-/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
-user@192.168.56.101'</span>s password:
-Number of key<span class="o">(</span>s<span class="o">)</span> added: 1
-Now try logging into the machine, with:   <span class="s2">"ssh 'user@192.168.56.101'"</span>
-and check to make sure that only the key<span class="o">(</span>s<span class="o">)</span> you wanted were added.
-</code></pre></div>  </div>
-</blockquote>
+<p>참고 사이트</p>
+<ul>
+  <li>InfluxData : (<a href="https://docs.influxdata.com/influxdb/v1.5/administration/backup_and_restore/">https://docs.influxdata.com/influxdb/v1.5/administration/backup_and_restore/</a>)</li>
+</ul>
 
 
 
@@ -192,8 +202,8 @@ and check to make sure that only the key<span class="o">(</span>s<span class="o"
 <div id="disqus_thread"></div>
 <script>
 var disqus_config = function () {
-this.page.url = 'http://localhost:4000/elastic/2017/07/19/ubuntu_rsa_conn_no_pw.html';
-this.page.identifier = 'http://localhost:4000/elastic/2017/07/19/ubuntu_rsa_conn_no_pw.html';
+this.page.url = 'http://localhost:4000/influxdb/2018/05/13/influxdb_backup_restore.html';
+this.page.identifier = 'http://localhost:4000/influxdb/2018/05/13/influxdb_backup_restore.html';
 };
 
 (function() { // DON'T EDIT BELOW THIS LINE
