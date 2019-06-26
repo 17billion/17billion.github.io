@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Kubernetes 클러스터 설치 및 구성(kube 1.14.1, ubuntu 16.04)",
+      "category" : "",
+      "tags"     : "kubernetes",
+      "url"      : "/kubernetes/2019/04/15/kubernetes_install_exec_14.01.html",
+      "date"     : "2019-04-15 11:21:42 +0900",
+  "content"   : "[\n  {% for post in site.posts %}\n    {\n      \"title\"    : \"{{ post.title | escape }}\",\n      \"category\" : \"{{ post.category }}\",\n      \"tags\"     : \"{{ post.tags | join: ', ' }}\",\n      \"url\"      : \"{{ site.baseurl }}{{ post.url }}\",\n      \"date\"     : \"{{ post.date }}\",\n  \"content\"   : {{ page.content | jsonify }}\n    } {% unless forloop.last %},{% endunless %}\n  {% endfor %}\n  ,\n  {% for page in site.pages %}\n   {\n     {% if page.title != nil %}\n        \"title\"    : \"{{ page.title | escape }}\",\n        \"category\" : \"{{ page.category }}\",\n        \"tags\"     : \"{{ page.tags | join: ', ' }}\",\n        \"url\"      : \"{{ site.baseurl }}{{ page.url }}\",\n        \"date\"     : \"{{ page.date }}\",\n  \"content\"   : {{ page.content | jsonify }}\n     {% endif %}\n   } {% unless forloop.last %},{% endunless %}\n  {% endfor %}\n]\n\n \n  \n\n\n\n        "
+    } ,
+  
+    {
       "title"    : "Docker Swarm : 특정 조건(hostname, role, labels 등)을 지정하여 컨테이너 올리기 (constraint 옵션)",
       "category" : "",
       "tags"     : "docker",

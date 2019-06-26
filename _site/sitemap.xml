@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://localhost:4000/kubernetes/2019/04/15/kubernetes_install_exec_14.01.html</loc>
+    <lastmod>2019-04-15T11:21:42+09:00</lastmod>
+  </url>
+  <url>
     <loc>http://localhost:4000/docker/2019/03/12/docker_constraint.html</loc>
     <lastmod>2019-03-12T03:31:42+09:00</lastmod>
   </url>
@@ -416,6 +420,9 @@
     </url>
     <url>
       <loc>http://localhost:4000/docker/2019/03/12/docker_constraint.html</loc>
+    </url>
+    <url>
+      <loc>http://localhost:4000/kubernetes/2019/04/15/kubernetes_install_exec_14.01.html</loc>
     </url>
   <url>
     <loc>http://localhost:4000/google7924642da2040245.html</loc>
