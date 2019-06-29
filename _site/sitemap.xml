@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://localhost:4000/kubernetes/2019/05/22/kubernetes_create_token.html</loc>
+    <lastmod>2019-05-22T19:31:12+09:00</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:4000/kubernetes/2019/05/12/kubernetes_kubelet_label.html</loc>
+    <lastmod>2019-05-12T18:21:42+09:00</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:4000/kubernetes/2019/04/24/kubernetes_control_plane_working.html</loc>
+    <lastmod>2019-04-24T18:21:42+09:00</lastmod>
+  </url>
+  <url>
     <loc>http://localhost:4000/kubernetes/2019/04/15/kubernetes_install_exec_14.01.html</loc>
     <lastmod>2019-04-15T11:21:42+09:00</lastmod>
   </url>
@@ -423,6 +435,15 @@
     </url>
     <url>
       <loc>http://localhost:4000/kubernetes/2019/04/15/kubernetes_install_exec_14.01.html</loc>
+    </url>
+    <url>
+      <loc>http://localhost:4000/kubernetes/2019/04/24/kubernetes_control_plane_working.html</loc>
+    </url>
+    <url>
+      <loc>http://localhost:4000/kubernetes/2019/05/12/kubernetes_kubelet_label.html</loc>
+    </url>
+    <url>
+      <loc>http://localhost:4000/kubernetes/2019/05/22/kubernetes_create_token.html</loc>
     </url>
   <url>
     <loc>http://localhost:4000/google7924642da2040245.html</loc>
