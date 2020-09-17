@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://localhost:4000/network/2019/06/13/network_osi.html</loc>
+    <lastmod>2019-06-13T21:28:12+09:00</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:4000/network/2019/06/02/network_tcp.html</loc>
+    <lastmod>2019-06-02T20:20:12+09:00</lastmod>
+  </url>
+  <url>
     <loc>http://localhost:4000/kubernetes/2019/05/22/kubernetes_create_token.html</loc>
     <lastmod>2019-05-22T19:31:12+09:00</lastmod>
   </url>
@@ -444,6 +452,12 @@
     </url>
     <url>
       <loc>http://localhost:4000/kubernetes/2019/05/22/kubernetes_create_token.html</loc>
+    </url>
+    <url>
+      <loc>http://localhost:4000/network/2019/06/02/network_tcp.html</loc>
+    </url>
+    <url>
+      <loc>http://localhost:4000/network/2019/06/13/network_osi.html</loc>
     </url>
   <url>
     <loc>http://localhost:4000/google7924642da2040245.html</loc>
