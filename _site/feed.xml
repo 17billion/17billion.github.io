@@ -1,5 +1,217 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-09-17T21:38:28+09:00</updated><id>http://localhost:4000/</id><title type="html">17billion</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
-</subtitle><entry><title type="html">OSI 7 계층</title><link href="http://localhost:4000/network/2019/06/13/network_osi.html" rel="alternate" type="text/html" title="OSI 7 계층" /><published>2019-06-13T21:28:12+09:00</published><updated>2019-06-13T21:28:12+09:00</updated><id>http://localhost:4000/network/2019/06/13/network_osi</id><content type="html" xml:base="http://localhost:4000/network/2019/06/13/network_osi.html">&lt;h3 id=&quot;osi-7계층&quot;&gt;OSI 7계층&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-12-09T19:01:30+09:00</updated><id>http://localhost:4000/</id><title type="html">17billion</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</subtitle><entry><title type="html">Time Series Analysis - ACF, PACF, AR, MA</title><link href="http://localhost:4000/analysis/2020/04/09/acf_pacf_ar_ma.html" rel="alternate" type="text/html" title="Time Series Analysis - ACF, PACF, AR, MA" /><published>2020-04-09T21:28:12+09:00</published><updated>2020-04-09T21:28:12+09:00</updated><id>http://localhost:4000/analysis/2020/04/09/acf_pacf_ar_ma</id><content type="html" xml:base="http://localhost:4000/analysis/2020/04/09/acf_pacf_ar_ma.html">&lt;h4 id=&quot;acfautocorrelation-function--자기상관함수-pacfpartial-autocorrelation-function--부분자기상관함수&quot;&gt;ACF(Autocorrelation Function / 자기상관함수), PACF(Partial Autocorrelation Function / 부분자기상관함수)&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;어느 시점까지의 데이터가 현재 시점에 영향을 주는지 연산하는 함수&lt;/li&gt;
+  &lt;li&gt;AR, MA 모델 적합성을 설정할때 필요한 함수 (절단값으로 설정됨)&lt;/li&gt;
+  &lt;li&gt;절단값 : 아래 예시 그림 중 값이 파란색 부분으로 들어오기 직전의 값
+    &lt;ul&gt;
+      &lt;li&gt;어느 시점에 절단값을 가진다는 것은 0으로 수렴한다는 뜻으로 이해하면 됨&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;ex) &lt;img src=&quot;/images/analysis_acf_pacf_ar_ma/acf_pacf.png&quot; alt=&quot;ACF_PACF&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;인플럭스디비를 이용한 ACF 실습 (https://www.influxdata.com/blog/autocorrelation-in-time-series-data/)
+    &lt;ul&gt;
+      &lt;li&gt;주피터 파일 : https://github.com/Anaisdg/autocorrelation/blob/master/Autocorrelation.ipynb&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;ar-autoregression--자기회귀&quot;&gt;AR (Autoregression / 자기회귀)&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;이전 관측값의 오차항이 이후 관측값에 영향을 주는 모형
+    &lt;ul&gt;
+      &lt;li&gt;P 시점 전의 값이 현재 값에 영향을 줌&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;ex) ar(1)은 1시점 전에 의해 현재시점이 영향을 받는 모형, ar(2)는 2시점 전까지에 의해 현재 시점에 영향을 주는 모형&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;mamoving-average--이동평균-모형&quot;&gt;MA(Moving Average / 이동평균 모형)&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;관측값이 이전의 연속적인 오차항의 영향을 받는다는 모형
+    &lt;ul&gt;
+      &lt;li&gt;데이터의 평균값 자체가 시간에 따라 변화하는 경향을 시계열 모형으로 구성 한 것&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;ex) ACF는 3시점 이후 절단점을 보이고 PACF가 빠르게 감소하면 MA(2) 모형이라고 볼 수 있음&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;arma-모형과-acfpacf-의-관계&quot;&gt;AR/MA 모형과 ACF/PACF 의 관계&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;요약 관계표
+    &lt;ul&gt;
+      &lt;li&gt;&lt;img src=&quot;/images/analysis_acf_pacf_ar_ma/summary.png&quot; alt=&quot;summary&quot; /&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;참고 사이트 &lt;br /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;NASTY 님 블로그 : http://blog.naver.com/PostView.nhn?blogId=demonicws&amp;amp;logNo=40117378644&lt;/li&gt;
+  &lt;li&gt;Influxdata : https://www.influxdata.com/blog/autocorrelation-in-time-series-data/&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="analysis" /><category term="timeseries" /><category term="anomaly detection" /><summary type="html">ACF(Autocorrelation Function / 자기상관함수), PACF(Partial Autocorrelation Function / 부분자기상관함수) 어느 시점까지의 데이터가 현재 시점에 영향을 주는지 연산하는 함수 AR, MA 모델 적합성을 설정할때 필요한 함수 (절단값으로 설정됨) 절단값 : 아래 예시 그림 중 값이 파란색 부분으로 들어오기 직전의 값 어느 시점에 절단값을 가진다는 것은 0으로 수렴한다는 뜻으로 이해하면 됨 ex) 인플럭스디비를 이용한 ACF 실습 (https://www.influxdata.com/blog/autocorrelation-in-time-series-data/) 주피터 파일 : https://github.com/Anaisdg/autocorrelation/blob/master/Autocorrelation.ipynb</summary></entry><entry><title type="html">정상성(stationarity) 이란</title><link href="http://localhost:4000/analysis/2020/03/21/stationary.html" rel="alternate" type="text/html" title="정상성(stationarity) 이란" /><published>2020-03-21T23:18:12+09:00</published><updated>2020-03-21T23:18:12+09:00</updated><id>http://localhost:4000/analysis/2020/03/21/stationary</id><content type="html" xml:base="http://localhost:4000/analysis/2020/03/21/stationary.html">&lt;h3 id=&quot;특징&quot;&gt;특징&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;추세나 계절성이 있는 시계열은 서로 다른 시간에 시계열의 값에 영향을 줄 것이기 때문에 정상성을 나타내는 시계열이 아님&lt;/li&gt;
+  &lt;li&gt;백색잡음(white noise) 시계열 : 정상성을 나타내는 시계열 (언제 관찰하는지 상관이 없고 시간에 따라 어떤 시점에서 보더라도 똑같이 보일 것이기 때문.)&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;주기성 행동을 가지고 있지만 추세나 계절성은 없는 시계열 : 정상성을 나타내는 시계열 (주기가 고정된 길이를 갖고 있지 않기 때문, 시계열을 관측하기 전에 주기의 고점이나 저점이 어디일지 확실하게 알 수 없음)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;일반적으로는, 정상성을 나타내는 시계열은 어떤 주기적인 행동이 있을 수 있더라도 장기적으로 볼 때 예측할 수 있는 패턴을 나타내지 않음&lt;/li&gt;
+  &lt;li&gt;시간 그래프는 시계열이 일정한 분산을 갖고 대략적으로 평평하게 보임&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/stationary/select_stationary.png&quot; alt=&quot;select&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+
+  &lt;p&gt;Figure 8.1: (a) 200 거래일 동안의 구글 주식 가격 (b) 200 거래일 동안의 구글 주식 가격의 일일 변동 (c) 미국의 연간 파업 수 (d) 미국에서 판매되는 새로운 단독 주택의 월별 판매액 (e) 미국에서 계란 12개의 연간 가격 (고정 달러) (f) 호주 빅토리아 주에서 매월 도살한 돼지의 전체 수 (g) 캐나다 북서부의 맥킨지 강 지역에서 연간 포획된 스라소니의 전체 수 (h) 호주 월별 맥주 생산량; (i) 호주 월별 전기 생산량.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Q. 위 그림 중 정상성을 나타내는 시계열은?&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;분명하게 계절성이 보이는 (d), (h), (i)는 후보가 되지 못함&lt;/li&gt;
+  &lt;li&gt;추세가 있고 수준이 변하는 (a), (c), (e), (f), (i)도 후보가 되지 못함&lt;/li&gt;
+  &lt;li&gt;분산이 증가하는 (i)도 후보가 되지 못함&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;A. (g)&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;언뜻 보면 시계열 (g)에서 나타나는 뚜렷한 주기(cycle) 때문에 정상성을 나타내는 시계열이 아닌 것처럼 보일 수 있음.&lt;/li&gt;
+  &lt;li&gt;하지만 이러한 주기는 불규칙적(aperiodic)임. 먹이를 구하기 힘들만큼 살쾡이 개체수가 너무 많이 늘어나 번식을 멈춰서, 개체수가 작은 숫자로 줄어들고, 그 다음 먹이를 구할 수 있게 되어 개체수가 다시 늘어나는 식이기 때문.&lt;/li&gt;
+  &lt;li&gt;장기적으로 볼 때, 이러한 주기의 시작이나 끝은 예측할 수 없음. 따라서 이 시계열은 정상성을 나타내는 시계열.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;참고 사이트 &lt;br /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;otexts : https://otexts.com/fppkr/stationarity.html#fig:stationary&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><category term="analysis" /><category term="stationary" /><summary type="html">특징 추세나 계절성이 있는 시계열은 서로 다른 시간에 시계열의 값에 영향을 줄 것이기 때문에 정상성을 나타내는 시계열이 아님 백색잡음(white noise) 시계열 : 정상성을 나타내는 시계열 (언제 관찰하는지 상관이 없고 시간에 따라 어떤 시점에서 보더라도 똑같이 보일 것이기 때문.) 주기성 행동을 가지고 있지만 추세나 계절성은 없는 시계열 : 정상성을 나타내는 시계열 (주기가 고정된 길이를 갖고 있지 않기 때문, 시계열을 관측하기 전에 주기의 고점이나 저점이 어디일지 확실하게 알 수 없음)</summary></entry><entry><title type="html">Kafka Overview</title><link href="http://localhost:4000/kafka/2019/12/07/kafka_overview.html" rel="alternate" type="text/html" title="Kafka Overview" /><published>2019-12-07T22:21:42+09:00</published><updated>2019-12-07T22:21:42+09:00</updated><id>http://localhost:4000/kafka/2019/12/07/kafka_overview</id><content type="html" xml:base="http://localhost:4000/kafka/2019/12/07/kafka_overview.html">&lt;h3 id=&quot;kafka-overview-&quot;&gt;Kafka Overview &lt;br /&gt;&lt;/h3&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- 분산 스트리밍 플랫폼
+	- 시스템 또는 애플리케이션간에 데이터를 안정적으로 가져 오는 실시간 스트리밍 데이터 파이프 라인 구축
+	- 데이터 스트림을 변환하거나 반응하는 실시간 스트리밍 애플리케이션 구축
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;1-특징&quot;&gt;1. 특징&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;Publisher / Subscriber 모델
+    &lt;ul&gt;
+      &lt;li&gt;데이터 큐를 중간에 두고 서로 간 독립적으로 데이터를 생산하고 소비하는 구조&lt;/li&gt;
+      &lt;li&gt;이런 느슨한 결합을 통해 Publisher나 Subscriber가 죽을 시, 서로 간에 의존성이 없으므로 안정적으로 데이터를 처리할 수 있음&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;고가용성(High availability) 및 확장성(Scalability)
+    &lt;ul&gt;
+      &lt;li&gt;클러스터로서 동작. 분산 처리를 통해 빠른 데이터 처리를 가능하게 하며 서버를 수평적으로 늘려 안정성 및 성능을 향상시키는 Scale-out이 가능&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;분산 처리(Distributed Processing)
+    &lt;ul&gt;
+      &lt;li&gt;파티션(Partition)이란 개념을 도입하여 여러개의 파티션을 서버들에 분산시켜 나누어 처리 가능.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;2-kafka-api-종류&quot;&gt;2. Kafka API 종류&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;Producer API : 클러스터로 Message를 전송하여 레코드의 스트림을 프로듀싱 할 수 있는 응용 프로그램에 사용&lt;/li&gt;
+  &lt;li&gt;Consumer API : 클러스터에 Message를 요청한 후 Message를 처리하는 응용 프로그램에 사용&lt;/li&gt;
+  &lt;li&gt;Stream API : 양방향 입/출력을 통해 클러스터의 메세지를 처리&lt;/li&gt;
+  &lt;li&gt;Connector API : Kafka 와 다른 응용프로그램들 간 쉽게 연결 시켜서 데이터를 보낼 수 있는 응용 프로그램에 사용&lt;/li&gt;
+  &lt;li&gt;&lt;img src=&quot;/images/kafka_overview/kafka_api.png&quot; alt=&quot;KAFKA_API&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;3-kafka-구성요소-및-개념&quot;&gt;3. Kafka 구성요소 및 개념&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;Processing&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;구성요소&lt;/th&gt;
+      &lt;th&gt;의미&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Message&lt;/td&gt;
+      &lt;td&gt;분산 처리 단위&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Topic&lt;/td&gt;
+      &lt;td&gt;Message들 집합&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Producer&lt;/td&gt;
+      &lt;td&gt;클러스터로 Message를 push (Flume, Fluentd ..)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Consumer&lt;/td&gt;
+      &lt;td&gt;클러스터의 Message를 pull&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Partition&lt;/td&gt;
+      &lt;td&gt;클러스터에 저장된 Topic 별 레코드 스트림&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Topic&lt;/td&gt;
+      &lt;td&gt;Message들 집합&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Offset&lt;/td&gt;
+      &lt;td&gt;Partition내 저장된 Message 인덱스 값&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Lag&lt;/td&gt;
+      &lt;td&gt;Consumer에서 처리해야할 Message 갯수&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Cluster&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;구성요소&lt;/th&gt;
+      &lt;th&gt;의미&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Zookeeper&lt;/td&gt;
+      &lt;td&gt;클러스터의 메타데이터를 저장하는 공간&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Broker&lt;/td&gt;
+      &lt;td&gt;클러스터로 전송된 Message들을 각 Partition으로 분배&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/kafka_overview/flow1.png&quot; alt=&quot;KAFKA_SYSTEM&quot; /&gt;
+&lt;img src=&quot;/images/kafka_overview/flow2.png&quot; alt=&quot;KAFKA_SYSTEM&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;4-kafka-flow&quot;&gt;4. Kafka Flow&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;/images/kafka_overview/example.png&quot; alt=&quot;KAFKA_SYSTEM&quot; /&gt;
+&lt;span style=&quot;color:red&quot;&gt;1. Producer (붉은색) &lt;/span&gt; &lt;br /&gt;
+1) 로그파일 내 실시간으로 발생하는 로그 한줄 약 10KB를 파싱  &lt;br /&gt;
+2) Zookeeper에 Broker를 조회  &lt;br /&gt;
+3) Message를 Broker에 push  &lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&quot;color:red&quot;&gt;2. Kafka Cluster (진한 붉은색) &lt;/span&gt; &lt;br /&gt;
+1) Message가 전송된 Broker가 리더로 있는 Partition에 Message를 라운드로빈 방식으로 저장 &lt;br /&gt;
+2) Partition의 추가된 Index값을 Offset으로 저장 &lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&quot;color:blue&quot;&gt;3. Consumer (푸른색)&lt;/span&gt; &lt;br /&gt;
+1) Broker에 Message 요청 &lt;br /&gt;
+2) Offset 업데이트  &lt;br /&gt;
+3) 반환된 메세지를어플리케이션 목적에 맞게 처리  &lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;span style=&quot;color:blue&quot;&gt;4. Kafka Cluster (진한 푸른색) &lt;/span&gt; &lt;br /&gt;
+1) 해당 Broker가 리더로 있는Partition의 메세지들을 라운드로빈방식으로 반환  &lt;br /&gt;
+2) 처리완료된 Partition의 Index값을 Offset으로 업데이트  &lt;br /&gt;&lt;/p&gt;</content><author><name></name></author><category term="kafka" /><summary type="html">Kafka Overview - 분산 스트리밍 플랫폼 - 시스템 또는 애플리케이션간에 데이터를 안정적으로 가져 오는 실시간 스트리밍 데이터 파이프 라인 구축 - 데이터 스트림을 변환하거나 반응하는 실시간 스트리밍 애플리케이션 구축</summary></entry><entry><title type="html">OSI 7 계층</title><link href="http://localhost:4000/network/2019/06/13/network_osi.html" rel="alternate" type="text/html" title="OSI 7 계층" /><published>2019-06-13T21:28:12+09:00</published><updated>2019-06-13T21:28:12+09:00</updated><id>http://localhost:4000/network/2019/06/13/network_osi</id><content type="html" xml:base="http://localhost:4000/network/2019/06/13/network_osi.html">&lt;h3 id=&quot;osi-7계층&quot;&gt;OSI 7계층&lt;/h3&gt;
 &lt;p&gt;http://blog.naver.com/PostView.nhn?blogId=demonicws&amp;amp;logNo=40117378644&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;OSI란 네트워크 통신의 개발 시스템 상호 연결(Open Systems Interconnection)을 의미&lt;/li&gt;
@@ -526,102 +738,4 @@ ji20e0d966qq        test_nginx.2        nginx:latest        master              
 &lt;/table&gt;
 
 &lt;p&gt;참고사이트 &lt;br /&gt;
-Docker : https://docs.docker.com/engine/reference/commandline/service_create/#specify-service-placement-preferences-placement-pref&lt;/p&gt;</content><author><name></name></author><category term="docker" /><summary type="html">특정 조건(hostname, role, labels 등)을 지정하여 컨테이너 올리기 예시) “node1” Node에만 컨테이너 올리기, Manager Node에만 컨테이너 올리기 등</summary></entry><entry><title type="html">Docker Swarm : yaml 파일을 이용하여 Service 올리기</title><link href="http://localhost:4000/docker/2019/02/25/docker_swarm_stack_yaml.html" rel="alternate" type="text/html" title="Docker Swarm : yaml 파일을 이용하여 Service 올리기" /><published>2019-02-25T03:31:42+09:00</published><updated>2019-02-25T03:31:42+09:00</updated><id>http://localhost:4000/docker/2019/02/25/docker_swarm_stack_yaml</id><content type="html" xml:base="http://localhost:4000/docker/2019/02/25/docker_swarm_stack_yaml.html">&lt;h3 id=&quot;docker-swarm--yaml-파일을-이용하여-service-올리기&quot;&gt;Docker Swarm : yaml 파일을 이용하여 Service 올리기&lt;/h3&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;(Manager Node) $ docker stack deploy [OPTIONS] STACK&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;예시) nginx 컨테이너 2EA 올리기
-user@master:/scloud/docker/yaml$ cat docker-compose.yml
-version: '3'
-services:
-  nginx:
-    image: nginx:latest
-    ports:
-      - 80:80
-      - 443:443
-    deploy:
-      replicas: 2
-    networks:
-      - nginx
-
-networks:
-  nginx:
-
-user@master:/scloud/docker/yaml$ docker stack deploy --compose-file docker-compose.yml test
-Creating network test_nginx
-Creating service test_nginx
-
-user@master:/scloud/docker/yaml$ docker service ls
-ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
-lzc7bkkg9kpc        test_nginx          replicated          2/2                 nginx:latest        *:80-&amp;gt;80/tcp, *:443-&amp;gt;443/tcp
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;추가 예시) 배포된 서비스에서 Scale 1EA로 변경하기
-1. 위 yml파일에서 replicas &amp;gt; 1로 변경
-2. $ docker stack deploy --compose-file docker-compose.yml test
-아래 참고.
-user@master:/scloud/docker/yaml$ cat docker-compose.yml
-version: '3'
-services:
-  nginx:
-    image: nginx:latest
-    ports:
-      - 80:80
-      - 443:443
-    deploy:
-      replicas: 1
-    networks:
-      - nginx
-
-networks:
-  nginx:
-user@master:/scloud/docker/yaml$ docker stack deploy -c docker-compose.yml test
-Updating service test_nginx (id: lzc7bkkg9kpckr0je715iw0r4)
-user@master:/scloud/docker/yaml$ docker service ls
-ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
-lzc7bkkg9kpc        test_nginx          replicated          1/1                 nginx:latest        *:80-&amp;gt;80/tcp, *:443-&amp;gt;443/tcp
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;참고사이트 &lt;br /&gt;
-Docker : https://docs.docker.com/engine/reference/commandline/stack_deploy/&lt;/p&gt;</content><author><name></name></author><category term="docker" /><summary type="html">Docker Swarm : yaml 파일을 이용하여 Service 올리기 (Manager Node) $ docker stack deploy [OPTIONS] STACK</summary></entry><entry><title type="html">Docker Swarm : Worker Node를 Manager Node로 승격시키기</title><link href="http://localhost:4000/docker/2019/02/05/docker_swarm_promote.html" rel="alternate" type="text/html" title="Docker Swarm : Worker Node를 Manager Node로 승격시키기" /><published>2019-02-05T01:31:42+09:00</published><updated>2019-02-05T01:31:42+09:00</updated><id>http://localhost:4000/docker/2019/02/05/docker_swarm_promote</id><content type="html" xml:base="http://localhost:4000/docker/2019/02/05/docker_swarm_promote.html">&lt;h3 id=&quot;docker-swarm--worker-nodenode2를-manager-node로-승격시키기&quot;&gt;Docker Swarm : Worker Node(Node2)를 Manager Node로 승격시키기&lt;/h3&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;(Manager Node에서 실행) $ docker node promote NODE [NODE…]&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;예시)
-user@master:~$ docker node ls
-ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
-oczmgznj47bd58abjmrql4gc5 *   master              Ready               Active              Leader              18.06.1-ce
-z0afqkd570azc1pppxg1b6gsl     node1               Ready               Active                                  18.06.1-ce
-zuz034mvcr2owqb7q4zgw3dn2     node2               Ready               Active                                  18.06.1-ce
-
-user@master:~$ docker node promote node2
-Node node2 promoted to a manager in the swarm.
-
-user@master:~$ docker node ls
-ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
-oczmgznj47bd58abjmrql4gc5 *   master              Ready               Active              Leader              18.06.1-ce
-z0afqkd570azc1pppxg1b6gsl     node1               Ready               Active                                  18.06.1-ce
-zuz034mvcr2owqb7q4zgw3dn2     node2               Ready               Active              Reachable           18.06.1-ce
-
-user@node2:~$ docker service ls
-ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
-f1ii0n7slud7        nginx_service       replicated          1/1                 nginx:latest
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;참고사이트 &lt;br /&gt;
-Docker : https://docs.docker.com/engine/reference/commandline/node_promote/&lt;/p&gt;</content><author><name></name></author><category term="docker" /><summary type="html">Docker Swarm : Worker Node(Node2)를 Manager Node로 승격시키기 (Manager Node에서 실행) $ docker node promote NODE [NODE…]</summary></entry><entry><title type="html">Docker Swarm : Scale In-Out 명령어</title><link href="http://localhost:4000/docker/2019/01/17/docker_scale_swarm_in_out.html" rel="alternate" type="text/html" title="Docker Swarm : Scale In-Out 명령어" /><published>2019-01-17T12:31:42+09:00</published><updated>2019-01-17T12:31:42+09:00</updated><id>http://localhost:4000/docker/2019/01/17/docker_scale_swarm_in_out</id><content type="html" xml:base="http://localhost:4000/docker/2019/01/17/docker_scale_swarm_in_out.html">&lt;h3 id=&quot;docker-swarm-scale-in-out&quot;&gt;Docker Swarm Scale In-Out&lt;/h3&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;$ docker service scale SERVICE=REPLICAS&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;예시)
-0EA로 Scale In $ docker service scale nginx_service=0
-3EA로 Scale Out $ docker service scale nginx_service=3
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;참고사이트 &lt;br /&gt;
-Docker : https://docs.docker.com/engine/reference/commandline/service_scale/&lt;/p&gt;</content><author><name></name></author><category term="docker" /><summary type="html">Docker Swarm Scale In-Out $ docker service scale SERVICE=REPLICAS</summary></entry></feed>
+Docker : https://docs.docker.com/engine/reference/commandline/service_create/#specify-service-placement-preferences-placement-pref&lt;/p&gt;</content><author><name></name></author><category term="docker" /><summary type="html">특정 조건(hostname, role, labels 등)을 지정하여 컨테이너 올리기 예시) “node1” Node에만 컨테이너 올리기, Manager Node에만 컨테이너 올리기 등</summary></entry></feed>
