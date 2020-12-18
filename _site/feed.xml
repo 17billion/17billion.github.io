@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-12-09T19:01:30+09:00</updated><id>http://localhost:4000/</id><title type="html">17billion</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-12-18T17:35:32+09:00</updated><id>http://localhost:4000/</id><title type="html">17billion</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
 </subtitle><entry><title type="html">Time Series Analysis - ACF, PACF, AR, MA</title><link href="http://localhost:4000/analysis/2020/04/09/acf_pacf_ar_ma.html" rel="alternate" type="text/html" title="Time Series Analysis - ACF, PACF, AR, MA" /><published>2020-04-09T21:28:12+09:00</published><updated>2020-04-09T21:28:12+09:00</updated><id>http://localhost:4000/analysis/2020/04/09/acf_pacf_ar_ma</id><content type="html" xml:base="http://localhost:4000/analysis/2020/04/09/acf_pacf_ar_ma.html">&lt;h4 id=&quot;acfautocorrelation-function--자기상관함수-pacfpartial-autocorrelation-function--부분자기상관함수&quot;&gt;ACF(Autocorrelation Function / 자기상관함수), PACF(Partial Autocorrelation Function / 부분자기상관함수)&lt;/h4&gt;
 &lt;ul&gt;
   &lt;li&gt;어느 시점까지의 데이터가 현재 시점에 영향을 주는지 연산하는 함수&lt;/li&gt;
@@ -211,7 +211,43 @@
 
 &lt;p&gt;&lt;span style=&quot;color:blue&quot;&gt;4. Kafka Cluster (진한 푸른색) &lt;/span&gt; &lt;br /&gt;
 1) 해당 Broker가 리더로 있는Partition의 메세지들을 라운드로빈방식으로 반환  &lt;br /&gt;
-2) 처리완료된 Partition의 Index값을 Offset으로 업데이트  &lt;br /&gt;&lt;/p&gt;</content><author><name></name></author><category term="kafka" /><summary type="html">Kafka Overview - 분산 스트리밍 플랫폼 - 시스템 또는 애플리케이션간에 데이터를 안정적으로 가져 오는 실시간 스트리밍 데이터 파이프 라인 구축 - 데이터 스트림을 변환하거나 반응하는 실시간 스트리밍 애플리케이션 구축</summary></entry><entry><title type="html">OSI 7 계층</title><link href="http://localhost:4000/network/2019/06/13/network_osi.html" rel="alternate" type="text/html" title="OSI 7 계층" /><published>2019-06-13T21:28:12+09:00</published><updated>2019-06-13T21:28:12+09:00</updated><id>http://localhost:4000/network/2019/06/13/network_osi</id><content type="html" xml:base="http://localhost:4000/network/2019/06/13/network_osi.html">&lt;h3 id=&quot;osi-7계층&quot;&gt;OSI 7계층&lt;/h3&gt;
+2) 처리완료된 Partition의 Index값을 Offset으로 업데이트  &lt;br /&gt;&lt;/p&gt;</content><author><name></name></author><category term="kafka" /><summary type="html">Kafka Overview - 분산 스트리밍 플랫폼 - 시스템 또는 애플리케이션간에 데이터를 안정적으로 가져 오는 실시간 스트리밍 데이터 파이프 라인 구축 - 데이터 스트림을 변환하거나 반응하는 실시간 스트리밍 애플리케이션 구축</summary></entry><entry><title type="html">Apache, Nginx 비교</title><link href="http://localhost:4000/apache/2019/11/14/apache_nginx_compare.html" rel="alternate" type="text/html" title="Apache, Nginx 비교" /><published>2019-11-14T23:08:12+09:00</published><updated>2019-11-14T23:08:12+09:00</updated><id>http://localhost:4000/apache/2019/11/14/apache_nginx_compare</id><content type="html" xml:base="http://localhost:4000/apache/2019/11/14/apache_nginx_compare.html">&lt;h3 id=&quot;apache와-nginx-비교&quot;&gt;Apache와 Nginx 비교&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Nginx는 비동기 / 이벤트 기반으로 요청을 처리, Apache는 요청당 쓰레드 또는 프로세스가 처리하는 구조.&lt;/li&gt;
+  &lt;li&gt;최근 대용량의 정적 파일 및 큰 규모의 사이트가 많아짐에 따라 대량 접속에도 적은 리소스를 사용하며 빠르게 서비스를 할 수 있는 웹 사이트가 대세가 되었는데, 이런 면에서 Nginx가 각광 받기 시작.&lt;/li&gt;
+  &lt;li&gt;성능 면에서 Apache 2.2는 Nginx에 뒤쳐짐
+    &lt;ul&gt;
+      &lt;li&gt;2012년에 빠른 응답 속도와 적은 리소스 사용 부분을 개선한 Apache 2.4를 발표하면서, Nginx에 대응하기 시작&lt;/li&gt;
+      &lt;li&gt;Nginx가 성능 면에서도 Apahce 2.4 보다 좋다고 함&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;PHP 모듈 등을 직접 적재할 수 있는 Apache가 구조상 이점이 있기에 복잡한 웹 사이트의 경우 Apache가 적합&lt;/li&gt;
+  &lt;li&gt;세션 클러스터링 같은 특별한 목적을 추가적으로 수행하는 세팅을 할 경우에는 별도의 과정을 거쳐야 하기 때문에, 별도의 작업이 많이 필요한 서비스의 경우 유지 보수 측면에서 Apache가 유용&lt;/li&gt;
+  &lt;li&gt;안정성과 확장성, 호환성에서 Apache가 우세, 성능 면에서는 Nginx가 우세하다는 것이 결론&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;참고 사이트 &lt;br /&gt;
+victorydntmd님 블로그 : https://victorydntmd.tistory.com/231#recentComments&lt;/p&gt;</content><author><name></name></author><category term="apaches" /><category term="nginx" /><summary type="html">Apache와 Nginx 비교 Nginx는 비동기 / 이벤트 기반으로 요청을 처리, Apache는 요청당 쓰레드 또는 프로세스가 처리하는 구조. 최근 대용량의 정적 파일 및 큰 규모의 사이트가 많아짐에 따라 대량 접속에도 적은 리소스를 사용하며 빠르게 서비스를 할 수 있는 웹 사이트가 대세가 되었는데, 이런 면에서 Nginx가 각광 받기 시작. 성능 면에서 Apache 2.2는 Nginx에 뒤쳐짐 2012년에 빠른 응답 속도와 적은 리소스 사용 부분을 개선한 Apache 2.4를 발표하면서, Nginx에 대응하기 시작 Nginx가 성능 면에서도 Apahce 2.4 보다 좋다고 함 PHP 모듈 등을 직접 적재할 수 있는 Apache가 구조상 이점이 있기에 복잡한 웹 사이트의 경우 Apache가 적합 세션 클러스터링 같은 특별한 목적을 추가적으로 수행하는 세팅을 할 경우에는 별도의 과정을 거쳐야 하기 때문에, 별도의 작업이 많이 필요한 서비스의 경우 유지 보수 측면에서 Apache가 유용 안정성과 확장성, 호환성에서 Apache가 우세, 성능 면에서는 Nginx가 우세하다는 것이 결론</summary></entry><entry><title type="html">Apache, Tomcat 차이점</title><link href="http://localhost:4000/apache/2019/11/02/apache_apache_tomat_compare.html" rel="alternate" type="text/html" title="Apache, Tomcat 차이점" /><published>2019-11-02T21:28:42+09:00</published><updated>2019-11-02T21:28:42+09:00</updated><id>http://localhost:4000/apache/2019/11/02/apache_apache_tomat_compare</id><content type="html" xml:base="http://localhost:4000/apache/2019/11/02/apache_apache_tomat_compare.html">&lt;h3 id=&quot;apache-tomcat-차이&quot;&gt;Apache, Tomcat 차이&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;웹서버와 웹애플리케이션의 차이&lt;/li&gt;
+  &lt;li&gt;WAS(Tomcat)만 쓰지 않고 Apache를 쓰는 이유는 목적이 다르기 때문 (웹 컨테이너의 유무)&lt;/li&gt;
+  &lt;li&gt;웹서버는 정적인 데이터를 처리하는 서버이며 이미지나 단순 HTML을 처리하는 서버라면 웹 서버가 적당하며 빠르고 안정적&lt;/li&gt;
+  &lt;li&gt;WAS는 동적인 데이터를 처리하는 서버, DB연결 / 데이터 조작등과 같은 처리는 WAS를 활용해야 함&lt;/li&gt;
+  &lt;li&gt;Apache(80 포트) , Tomcat(8080 포트)&lt;/li&gt;
+  &lt;li&gt;Tomcat은 5.5부터 Httpd의 native모듈을 사용해서 Static 파일을 처리하는 기능을 제공.
+    &lt;ul&gt;
+      &lt;li&gt;단지 Static 파일 처리의 성능만을 위해서라면 굳이 Tomcat 앞에 Apache Httpd를 두는 것은 불필요하며 메모리만 추가로 소요되고 불필요한 부하만 생김&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Tomcat 앞에 Apache Httpd을 사용하는 경우
+    &lt;ul&gt;
+      &lt;li&gt;하나의 서버에서 PHP애플리케이션과 자바 애플리케이션을 함께 사용하거나, Httpd 서버로 간단한 로드밸런싱을 위해서 사용해야 하는 경우&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;참고 사이트 &lt;br /&gt;
+dongdong_님 블로그 : https://limmmee.tistory.com/4&lt;/p&gt;</content><author><name></name></author><category term="apaches" /><category term="tomcat" /><summary type="html">Apache, Tomcat 차이 웹서버와 웹애플리케이션의 차이 WAS(Tomcat)만 쓰지 않고 Apache를 쓰는 이유는 목적이 다르기 때문 (웹 컨테이너의 유무) 웹서버는 정적인 데이터를 처리하는 서버이며 이미지나 단순 HTML을 처리하는 서버라면 웹 서버가 적당하며 빠르고 안정적 WAS는 동적인 데이터를 처리하는 서버, DB연결 / 데이터 조작등과 같은 처리는 WAS를 활용해야 함 Apache(80 포트) , Tomcat(8080 포트) Tomcat은 5.5부터 Httpd의 native모듈을 사용해서 Static 파일을 처리하는 기능을 제공. 단지 Static 파일 처리의 성능만을 위해서라면 굳이 Tomcat 앞에 Apache Httpd를 두는 것은 불필요하며 메모리만 추가로 소요되고 불필요한 부하만 생김 Tomcat 앞에 Apache Httpd을 사용하는 경우 하나의 서버에서 PHP애플리케이션과 자바 애플리케이션을 함께 사용하거나, Httpd 서버로 간단한 로드밸런싱을 위해서 사용해야 하는 경우</summary></entry><entry><title type="html">OSI 7 계층</title><link href="http://localhost:4000/network/2019/06/13/network_osi.html" rel="alternate" type="text/html" title="OSI 7 계층" /><published>2019-06-13T21:28:12+09:00</published><updated>2019-06-13T21:28:12+09:00</updated><id>http://localhost:4000/network/2019/06/13/network_osi</id><content type="html" xml:base="http://localhost:4000/network/2019/06/13/network_osi.html">&lt;h3 id=&quot;osi-7계층&quot;&gt;OSI 7계층&lt;/h3&gt;
 &lt;p&gt;http://blog.naver.com/PostView.nhn?blogId=demonicws&amp;amp;logNo=40117378644&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;OSI란 네트워크 통신의 개발 시스템 상호 연결(Open Systems Interconnection)을 의미&lt;/li&gt;
@@ -486,256 +522,4 @@ nginx-deployment-6dd86d77d-4rkhf   1/1     Running   0          35m   10.244.0.7
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/div&gt;
     &lt;/blockquote&gt;
   &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="kubernetes" /><summary type="html">Kubernetes Control-Plane Node에 Pod 올리는 방법</summary></entry><entry><title type="html">Kubernetes 클러스터 설치 및 구성(kube 1.14.1, ubuntu 16.04)</title><link href="http://localhost:4000/kubernetes/2019/04/15/kubernetes_install_exec_14.01.html" rel="alternate" type="text/html" title="Kubernetes 클러스터 설치 및 구성(kube 1.14.1, ubuntu 16.04)" /><published>2019-04-15T11:21:42+09:00</published><updated>2019-04-15T11:21:42+09:00</updated><id>http://localhost:4000/kubernetes/2019/04/15/kubernetes_install_exec_14.01</id><content type="html" xml:base="http://localhost:4000/kubernetes/2019/04/15/kubernetes_install_exec_14.01.html">&lt;h3 id=&quot;kubernetes-1141-구성-방법-ubuntu-1604&quot;&gt;kubernetes 1.14.1 구성 방법 (ubuntu 16.04)&lt;/h3&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;클러스터 구성 예시&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;IP Address&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Role&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;192.168.56.101&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;control-plane Node&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;192.168.56.102&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Worker Node&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;192.168.56.103&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Worker Node&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h4 id=&quot;1-k8s-설치-전체-노드-실행&quot;&gt;1) k8s 설치 (전체 노드 실행)&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;Docker 설치 : 지난 글 참고 “&lt;a href=&quot;/docker/2019/01/10/docker_swarm.html&quot;&gt;Docker 설치 참고 (docker-ce=18.06.1~ce~3-0~ubuntu)&lt;/a&gt;” &lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;$ sudo apt install apt-transport-https&lt;/li&gt;
-  &lt;li&gt;$ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add&lt;/li&gt;
-  &lt;li&gt;$ sudo add-apt-repository “deb https://apt.kubernetes.io/ kubernetes-$(lsb_release -cs) main”&lt;/li&gt;
-  &lt;li&gt;$ sudo apt update&lt;/li&gt;
-  &lt;li&gt;$ sudo apt install kubelet=1.14.1-00 kubeadm=1.14.1-00 kubectl=1.14.1-00 kubernetes-cni=0.7.5-00&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;2-control-plane-node-구-master-node-구성&quot;&gt;2) Control Plane Node (구 Master Node) 구성&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;kubeadm-config.yaml 파일 생성 (아래 control-plane-node 부분은 Bode IP나 HA구성을 할 경우 연결 시킬 LB 주소를 입력)
-    &lt;blockquote&gt;
-      &lt;p&gt;$ vi kubeadm-config.yaml&lt;/p&gt;
-      &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;apiVersion: kubeadm.k8s.io/v1beta1
-kind: ClusterConfiguration
-kubernetesVersion: v1.14.1
-controlPlaneEndpoint: 192.168.56.101:6443
-networking:
-  podSubnet: 10.244.0.0/16
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/div&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-  &lt;li&gt;생성된 파일을 이용하여 초기화
-    &lt;blockquote&gt;
-      &lt;p&gt;$ sudo kubeadm init –config=kubeadm-config.yaml –experimental-upload-certs&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;결과 : 
-... 생략
-To start using your cluster, you need to run the following as a regular user:
-
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-You should now deploy a pod network to the cluster.
-Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:
-  https://kubernetes.io/docs/concepts/cluster-administration/addons/
-
-You can now join any number of the control-plane node running the following command on each as root:
-
-  kubeadm join 192.168.56.101:6443 --token tf9afj.p3hglea5pdk4v23m \
-    --discovery-token-ca-cert-hash sha256:e46f607087a9daf7d30b9afd0ff4f5ec7c4eb41f49ca2f5ba271eb01137e8e78 \
-    --experimental-control-plane --certificate-key f4fdb1c3d25baa05eef7c5cd92f49e0d01425679da7871b760ddee33eaaddf57
-
-Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
-As a safeguard, uploaded-certs will be deleted in two hours; If necessary, you can use
-&quot;kubeadm init phase upload-certs --experimental-upload-certs&quot; to reload certs afterward.
-
-Then you can join any number of worker nodes by running the following on each as root:
-
-kubeadm join 192.168.56.101:6443 --token tf9afj.p3hglea5pdk4v23m \
-    --discovery-token-ca-cert-hash sha256:e46f607087a9daf7d30b9afd0ff4f5ec7c4eb41f49ca2f5ba271eb01137e8e78
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;$ mkdir -p $HOME/.kube &lt;br /&gt;
-  $ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config &lt;br /&gt;
-  $ sudo chown $(id -u):$(id -g) $HOME/.kube/config &lt;br /&gt;
-  :: kubectl 명령어를 사용하고 싶은 계정에서 실행 &lt;br /&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;$ kubeadm join 192.168.56.101:6443 –token tf9afj.p3hglea5pdk4v13m \ &lt;br /&gt;
-    –discovery-token-ca-cert-hash sha256:e46f607087a9daf7d30b9afd0ff4f5ec7c4eb41f49ca2f5ba271eb0113123 \ &lt;br /&gt;
-    –experimental-control-plane –certificate-key f4fdb1c3d25baa05eef7c5cd92f49e0d01425679da7871b760ddee33eaa123 &lt;br /&gt;
-  :: 타 노드에서 Control-Plane Node로 HA로 구성하고 싶을 경우 실행 (전체가 한개의 명령어) &lt;br /&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;$ kubeadm join 192.168.56.101:6443 –token tf9afj.p3hglea5pdk4v13m \ &lt;br /&gt;
-    –discovery-token-ca-cert-hash sha256:e46f607087a9daf7d30b9afd0ff4f5ec7c4eb41f49ca2f5ba271eb0113123&lt;br /&gt;
-  :: 타 노드에서 일반 Worker Node로 올릴 경우 실행 (전체가 한개의 명령어) &lt;br /&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h4 id=&quot;3-worker-node-구성&quot;&gt;3) Worker Node 구성&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;위 명령어 중
-    &lt;blockquote&gt;
-      &lt;p&gt;$ kubeadm join 192.168.56.101:6443 –token tf9afj.p3hglea5pdk4v13m \ &lt;br /&gt;
- –discovery-token-ca-cert-hash sha256:e46f607087a9daf7d30b9afd0ff4f5ec7c4eb41f49ca2f5ba271eb0113123 &lt;br /&gt;
-  위 형식의 명령어를 실행 &lt;br /&gt;&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;4-cluster-구성-확인-control-plane-node에서-실행&quot;&gt;4) Cluster 구성 확인 (Control-Plane Node에서 실행)&lt;/h4&gt;
-&lt;ol&gt;
-  &lt;li&gt;kubectl get nodes
-    &lt;blockquote&gt;
-      &lt;p&gt;$ kubectl get nodes&lt;/p&gt;
-      &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;NAME     STATUS     ROLES    AGE   VERSION
-master   Ready      master   1h   v1.14.1
-node1    Ready   &amp;lt;none&amp;gt;   1h   v1.14.1
-node2    Ready   &amp;lt;none&amp;gt;   1h   v1.14.1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/div&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;toubleshooting&quot;&gt;Toubleshooting&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;coredns가 안떠서 NotReady 상태인 경우
-    &lt;blockquote&gt;
-      &lt;p&gt;$ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-  &lt;li&gt;running with swap on is not supported. Please disable swap 이 메세지가 뜰 경우
-    &lt;blockquote&gt;
-      &lt;p&gt;$ sudo swapoff -a&lt;/p&gt;
-    &lt;/blockquote&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="kubernetes" /><summary type="html">kubernetes 1.14.1 구성 방법 (ubuntu 16.04)</summary></entry><entry><title type="html">Docker Swarm : 특정 조건(hostname, role, labels 등)을 지정하여 컨테이너 올리기 (constraint 옵션)</title><link href="http://localhost:4000/docker/2019/03/12/docker_constraint.html" rel="alternate" type="text/html" title="Docker Swarm : 특정 조건(hostname, role, labels 등)을 지정하여 컨테이너 올리기 (constraint 옵션)" /><published>2019-03-12T03:31:42+09:00</published><updated>2019-03-12T03:31:42+09:00</updated><id>http://localhost:4000/docker/2019/03/12/docker_constraint</id><content type="html" xml:base="http://localhost:4000/docker/2019/03/12/docker_constraint.html">&lt;h3 id=&quot;특정-조건hostname-role-labels-등을-지정하여-컨테이너-올리기&quot;&gt;특정 조건(hostname, role, labels 등)을 지정하여 컨테이너 올리기&lt;/h3&gt;
-&lt;p&gt;예시) “node1” Node에만 컨테이너 올리기, Manager Node에만 컨테이너 올리기 등&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;예시 1) &quot;node1&quot; Node에만 컨테이너 올리기
-user@master:/scloud/docker/yaml$ cat docker-compose.yml
-version: '3'
-services:
-  nginx:
-    image: nginx:latest
-    ports:
-      - 80:80
-      - 443:443
-    deploy:
-      replicas: 2
-      placement:
-        constraints: [node.hostname == node1]
-    networks:
-      - nginx
-
-networks:
-  nginx:
-
-user@master:/scloud/docker/yaml$ docker service ls
-ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
-lzc7bkkg9kpc        test_nginx          replicated          2/2                 nginx:latest        *:80-&amp;gt;80/tcp, *:443-&amp;gt;443/tcp
-user@master:/scloud/docker/yaml$ docker service ps test_nginx
-ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
-lkxuit71s0l9        test_nginx.1        nginx:latest        node1               Running             Running 23 minutes ago
-t357q0jes2sk        test_nginx.2        nginx:latest        node1               Running             Running 13 seconds ago
-
-
-예시 2) Manager Node에만 컨테이너 올리기 (Manager Node : Master, Node2)
-user@master:/scloud/docker/yaml$ cat docker-compose.yml
-version: '3'
-services:
-  nginx:
-    image: nginx:latest
-    ports:
-      - 80:80
-      - 443:443
-    deploy:
-      replicas: 2
-      placement:
-        constraints: [node.role==manager]
-    networks:
-      - nginx
-
-networks:
-  nginx:
-
-user@master:/scloud/docker/yaml$ docker stack deploy -c docker-compose.yml test
-Updating service test_nginx (id: lzc7bkkg9kpckr0je715iw0r4)
-
-user@master:/scloud/docker/yaml$ docker service ps test_nginx
-ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE             ERROR               PORTS
-2eao19s4q53m        test_nginx.1        nginx:latest        node2               Running             Running 19 seconds ago
-lkxuit71s0l9         \_ test_nginx.1    nginx:latest        node1               Shutdown            Shutdown 20 seconds ago
-ji20e0d966qq        test_nginx.2        nginx:latest        master              Running             Running 23 seconds ago
-t357q0jes2sk         \_ test_nginx.2    nginx:latest        node1               Shutdown            Shutdown 24 seconds ago
-
-user@master:/scloud/docker/yaml$ docker service ps test_nginx
-ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS
-2eao19s4q53m        test_nginx.1        nginx:latest        node2               Running             Running 4 minutes ago
-ji20e0d966qq        test_nginx.2        nginx:latest        master              Running             Running 4 minutes ago
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;옵션 종류(https://docs.docker.com/engine/reference/commandline/service_create/#specify-service-placement-preferences-placement-pref 참고)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;node&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;attribute&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;matches	example&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;node.id&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Node ID&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;node.id==2ivku8v2gvtg4&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;node.hostname&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Node hostname&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;node.hostname!=node-2&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;node.role&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Node role&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;node.role==manager&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;node.labels&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;user defined node labels&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;node.labels.security==high&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;engine.labels&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;Docker Engine’s labels&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;engine.labels.operatingsystem==ubuntu 14.04&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;참고사이트 &lt;br /&gt;
-Docker : https://docs.docker.com/engine/reference/commandline/service_create/#specify-service-placement-preferences-placement-pref&lt;/p&gt;</content><author><name></name></author><category term="docker" /><summary type="html">특정 조건(hostname, role, labels 등)을 지정하여 컨테이너 올리기 예시) “node1” Node에만 컨테이너 올리기, Manager Node에만 컨테이너 올리기 등</summary></entry></feed>
+&lt;/ol&gt;</content><author><name></name></author><category term="kubernetes" /><summary type="html">Kubernetes Control-Plane Node에 Pod 올리는 방법</summary></entry></feed>

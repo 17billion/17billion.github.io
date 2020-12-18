@@ -13,6 +13,14 @@
     <lastmod>2019-12-07T22:21:42+09:00</lastmod>
   </url>
   <url>
+    <loc>http://localhost:4000/apache/2019/11/14/apache_nginx_compare.html</loc>
+    <lastmod>2019-11-14T23:08:12+09:00</lastmod>
+  </url>
+  <url>
+    <loc>http://localhost:4000/apache/2019/11/02/apache_apache_tomat_compare.html</loc>
+    <lastmod>2019-11-02T21:28:42+09:00</lastmod>
+  </url>
+  <url>
     <loc>http://localhost:4000/network/2019/06/13/network_osi.html</loc>
     <lastmod>2019-06-13T21:28:12+09:00</lastmod>
   </url>
@@ -470,6 +478,12 @@
     </url>
     <url>
       <loc>http://localhost:4000/network/2019/06/13/network_osi.html</loc>
+    </url>
+    <url>
+      <loc>http://localhost:4000/apache/2019/11/02/apache_apache_tomat_compare.html</loc>
+    </url>
+    <url>
+      <loc>http://localhost:4000/apache/2019/11/14/apache_nginx_compare.html</loc>
     </url>
     <url>
       <loc>http://localhost:4000/kafka/2019/12/07/kafka_overview.html</loc>
